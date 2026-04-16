@@ -300,42 +300,26 @@ if st.button("Calc"):
         st.dataframe(df_UB)
 
 with st.container(border=True):
-    st.subheader("Monochromator / Analyzer d-spacing")
+    st.subheader("Mono / Ana d-spacing")
 
     col1, col2 = st.columns(2)
 
-    # =========================
-    # Monochromator
-    # =========================
     with col1:
-        st.markdown("### Monochromator")
-
         mono_choice = st.selectbox(
-            "Crystal",
+            "Monochromator crystal",
             list(d_options.keys()),
-            key="mono_choice"
+            key="mono"
         )
 
-        d_mono = st.number_input(
-            "d (Å)",
-            value=float(d_options[mono_choice]),
-            key="d_mono"
-        )
+        d_mono = d_options[mono_choice]
+        st.number_input("d (Å)", value=d_mono, key="d_mono")
 
-    # =========================
-    # Analyzer
-    # =========================
     with col2:
-        st.markdown("### Analyzer")
-
         ana_choice = st.selectbox(
-            "Crystal",
+            "Analyzer crystal",
             list(d_options.keys()),
-            key="ana_choice"
+            key="ana"
         )
 
-        d_ana = st.number_input(
-            "d (Å)",
-            value=float(d_options[ana_choice]),
-            key="d_ana"
-        )
+        d_ana = d_options[ana_choice]
+        st.number_input("d (Å)", value=d_ana, key="d_ana")
