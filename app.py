@@ -247,14 +247,28 @@ with st.container(border=True):
     with col1:
         with st.container(border=True):
             st.markdown("### monochromator")
+
             c1, c2 = st.columns(2)
+
             with c1:
-                mono_choice = st.selectbox("Monochromator", list(d_options.keys()), key="mono")
-                d_mono = d_options[mono_choice]
+                mono_choice = st.selectbox(
+                    "Monochromator",
+                    list(d_options.keys()) + ["Other"],
+                    key="mono"
+                )
+
+                if mono_choice == "Other":
+                    d_mono = st.number_input("d (Å)", value=3.0, key="d_mono_manual")
+                else:
+                    d_mono = d_options[mono_choice]
+                    st.number_input(
+                        "d (Å)",
+                        value=d_mono,
+                        disabled=True,
+                        key="d_mono_auto"
+                    )
+
                 st.write("d =", d_mono)
-            with c2:
-                mos_mono_h= st.number_input("horizontal", value=30, key="mos_mono_h")
-                mos_mono_v = st.number_input("vertical", value=30, key="mos_mono_v")
 
     with col2:
         with st.container(border=True):
