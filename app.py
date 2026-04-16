@@ -190,21 +190,21 @@ with st.container(border=True):
 
     with col2:
         with st.container(border=True):
-            st.markdown("### 2nd collimator")
-            col2_h = st.number_input("1st Horizontal (min)", value=80)
-            col2_v = st.number_input("1st Vertical (min)", value=240)
+            st.markdown("### 1st collimator")
+            col1_h = st.number_input("1st Horizontal (min)", value=80)
+            col1_v = st.number_input("1st Vertical (min)", value=240)
 
     with col3:
         with st.container(border=True):
-            st.markdown("### 3rd collimator")
-            col3_h = st.number_input("1st Horizontal (min)", value=80)
-            col3_v = st.number_input("1st Vertical (min)", value=240)
+            st.markdown("### 1st collimator")
+            col1_h = st.number_input("1st Horizontal (min)", value=80)
+            col1_v = st.number_input("1st Vertical (min)", value=240)
 
     with col4:
         with st.container(border=True):
-            st.markdown("### 4th collimator")
-            col4_h = st.number_input("1st Horizontal (min)", value=80)
-            col4_v = st.number_input("1st Vertical (min)", value=240)
+            st.markdown("### 1st collimator")
+            col1_h = st.number_input("1st Horizontal (min)", value=80)
+            col1_v = st.number_input("1st Vertical (min)", value=240)
 
 
 ##################################################################################3
