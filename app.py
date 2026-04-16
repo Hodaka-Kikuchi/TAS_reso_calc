@@ -120,6 +120,22 @@ def UB_calc(sv1, sv2, astar, bstar, cstar,
         "UB": UB
     }
 
+d_options = {
+    "PG(002)": 3.355,
+    "PG(004)": 1.677,
+    "Heusler": 3.362,
+    "CoFe": 1.771,
+    "Ge(111)": 3.266,
+    "Ge(311)": 1.714,
+    "Ge(511)": 1.089,
+    "Ge(533)": 0.863,
+    "Si(111)": 3.135,
+    "Cu(111)": 2.087,
+    "Cu(002)": 1.807,
+    "Cu(220)": 1.278,
+}
+
+#################################################################################
 
 # =========================
 # Streamlit UI
@@ -282,3 +298,44 @@ if st.button("Calc"):
         st.markdown("### UB matrix")
         df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
         st.dataframe(df_UB)
+
+with st.container(border=True):
+    st.subheader("Monochromator / Analyzer d-spacing")
+
+    col1, col2 = st.columns(2)
+
+    # =========================
+    # Monochromator
+    # =========================
+    with col1:
+        st.markdown("### Monochromator")
+
+        mono_choice = st.selectbox(
+            "Crystal",
+            list(d_options.keys()),
+            key="mono_choice"
+        )
+
+        d_mono = st.number_input(
+            "d (Å)",
+            value=float(d_options[mono_choice]),
+            key="d_mono"
+        )
+
+    # =========================
+    # Analyzer
+    # =========================
+    with col2:
+        st.markdown("### Analyzer")
+
+        ana_choice = st.selectbox(
+            "Crystal",
+            list(d_options.keys()),
+            key="ana_choice"
+        )
+
+        d_ana = st.number_input(
+            "d (Å)",
+            value=float(d_options[ana_choice]),
+            key="d_ana"
+        )
