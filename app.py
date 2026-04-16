@@ -128,7 +128,7 @@ st.title("TAS Resolution Calculator")
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
 
 st.subheader("Lattice parameters")
-col1, col2, col3, col4, col5, col6  = st.columns(3)
+col1, col2, col3, col4, col5, col6  = st.columns(6)
 with col1:
     a = st.number_input("a (Å)", value=5.0)
 with col2:
