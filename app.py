@@ -269,6 +269,9 @@ with st.container(border=True):
                     )
 
                 st.write("d =", d_mono)
+            with c2:
+                mos_mono_h= st.number_input("horizontal", value=30, key="mos_mono_h")
+                mos_mono_v = st.number_input("vertical", value=30, key="mos_mono_v")
 
     with col2:
         with st.container(border=True):
@@ -281,9 +284,25 @@ with st.container(border=True):
             st.markdown("### analyzer")
             c1, c2 = st.columns(2)
             with c1:
-                ana_choice = st.selectbox("Analyzer", list(d_options.keys()), key="ana")
-                d_ana = d_options[ana_choice]
+                ana_choice = st.selectbox(
+                    "analyzer",
+                    list(d_options.keys()) + ["Other"],
+                    key="ana"
+                )
+
+                if ana_choice == "Other":
+                    d_ana = st.number_input("d (Å)", value=3.0, key="d_ana_manual")
+                else:
+                    d_ana = d_options[ana_choice]
+                    st.number_input(
+                        "d (Å)",
+                        value=d_ana,
+                        disabled=True,
+                        key="d_ana_auto"
+                    )
+
                 st.write("d =", d_ana)
+
             with c2:
                 mos_ana_h = st.number_input("horizontal", value=60, key="mos_ana_h")
                 mos_ana_v = st.number_input("vertical", value=60, key="mos_ana_v")
