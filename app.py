@@ -264,6 +264,7 @@ with st.container(border=True):
                     st.number_input(
                         "d (Å)",
                         value=d_mono,
+                        format="%.3f",
                         disabled=True,
                         key="d_mono_auto"
                     )
@@ -297,6 +298,7 @@ with st.container(border=True):
                     st.number_input(
                         "d (Å)",
                         value=d_ana,
+                        format="%.3f",
                         disabled=True,
                         key="d_ana_auto"
                     )
