@@ -207,10 +207,6 @@ with st.container(border=True):
             st.markdown("### 4th collimator")
             col4_h = st.number_input("4th H (min)", value=80, key="col4_h")
             col4_v = st.number_input("4th V (min)", value=240, key="col4_v")
-        with st.container(border=True):
-            st.markdown("### 1st collimator")
-            col1_h = st.number_input("1st Horizontal (min)", value=80)
-            col1_v = st.number_input("1st Vertical (min)", value=240)
 
 
 ##################################################################################3
