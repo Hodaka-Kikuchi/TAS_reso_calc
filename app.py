@@ -127,54 +127,54 @@ def UB_calc(sv1, sv2, astar, bstar, cstar,
 st.title("TAS Resolution Calculator")
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
 
-st.subheader("Lattice parameters")
-col1, col2, col3, col4, col5, col6  = st.columns(6)
-with col1:
-    a = st.number_input("a (Å)", value=5.0)
-with col2:
-    b = st.number_input("b (Å)", value=5.0)
-with col3:
-    c = st.number_input("c (Å)", value=5.0)
-with col4:
-    alpha = st.number_input("alpha (deg)", value=90.0)
-with col5:
-    beta = st.number_input("beta (deg)", value=90.0)
-with col6:
-    gamma = st.number_input("gamma (deg)", value=90.0)
+with st.container(border=True):
+    st.subheader("Lattice parameters")
+    col1, col2, col3, col4, col5, col6  = st.columns(6)
+    with col1:
+        a = st.number_input("a (Å)", value=5.0)
+    with col2:
+        b = st.number_input("b (Å)", value=5.0)
+    with col3:
+        c = st.number_input("c (Å)", value=5.0)
+    with col4:
+        alpha = st.number_input("alpha (deg)", value=90.0)
+    with col5:
+        beta = st.number_input("beta (deg)", value=90.0)
+    with col6:
+        gamma = st.number_input("gamma (deg)", value=90.0)
 
-st.subheader("Crystal axes")
+with st.container(border=True):
+    st.subheader("Crystal axes")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("### axis 1 (in plane)")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            h1 = st.number_input("h1", value=1)
+        with c2:
+            k1 = st.number_input("k1", value=0)
+        with c3:
+            l1 = st.number_input("l1", value=0)
 
-col1, col2, col3 = st.columns(3)
+    with col2:
+        st.markdown("### axis 2 (in plane)")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            h2 = st.number_input("h2", value=0)
+        with c2:
+            k2 = st.number_input("k2", value=1)
+        with c3:
+            l2 = st.number_input("l2", value=0)
 
-with col1:
-    st.markdown("### axis 1 (in plane)")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        h1 = st.number_input("h1", value=1)
-    with c2:
-        k1 = st.number_input("k1", value=0)
-    with c3:
-        l1 = st.number_input("l1", value=0)
-
-with col2:
-    st.markdown("### axis 2 (in plane)")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        h2 = st.number_input("h2", value=0)
-    with c2:
-        k2 = st.number_input("k2", value=1)
-    with c3:
-        l2 = st.number_input("l2", value=0)
-
-with col3:
-    st.markdown("### axis 3 (out of plane)")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        h3 = st.number_input("h3", value=0)
-    with c2:
-        k3 = st.number_input("k3", value=1)
-    with c3:
-        l3 = st.number_input("l3", value=0)
+    with col3:
+        st.markdown("### axis 3 (out of plane)")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            h3 = st.number_input("h3", value=0)
+        with c2:
+            k3 = st.number_input("k3", value=1)
+        with c3:
+            l3 = st.number_input("l3", value=0)
 
 if st.button("Calc"):
 
