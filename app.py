@@ -167,33 +167,33 @@ with st.container(border=True):
             st.markdown("### axis 1 (in plane)")
             c1, c2, c3 = st.columns(3)
             with c1:
-                h1 = st.number_input("h1", value=1)
+                h1 = st.number_input("h1", value=1.0)
             with c2:
-                k1 = st.number_input("k1", value=0)
+                k1 = st.number_input("k1", value=0.0)
             with c3:
-                l1 = st.number_input("l1", value=0)
+                l1 = st.number_input("l1", value=0.0)
 
     with col2:
         with st.container(border=True):
             st.markdown("### axis 2 (in plane)")
             c1, c2, c3 = st.columns(3)
             with c1:
-                h2 = st.number_input("h2", value=0)
+                h2 = st.number_input("h2", value=0.0)
             with c2:
-                k2 = st.number_input("k2", value=1)
+                k2 = st.number_input("k2", value=1.0)
             with c3:
-                l2 = st.number_input("l2", value=0)
+                l2 = st.number_input("l2", value=0.0)
     
     with col3:
         with st.container(border=True):
             st.markdown("### axis 3 (out of plane)")
             c1, c2, c3 = st.columns(3)
             with c1:
-                h3 = st.number_input("h3", value=0)
+                h3 = st.number_input("h3", value=0.0)
             with c2:
-                k3 = st.number_input("k3", value=1)
+                k3 = st.number_input("k3", value=0.0)
             with c3:
-                l3 = st.number_input("l3", value=0)
+                l3 = st.number_input("l3", value=1.0)
 
 with st.container(border=True):
     st.subheader("Collimator conditions (unit:min)")
@@ -208,7 +208,7 @@ with st.container(border=True):
             if gm_1st:
                 div_1st_m = st.number_input(
                     "mirror factor",
-                    value=1.0,
+                    value=1.2,
                     key="div_1st_m"
                 )
 
