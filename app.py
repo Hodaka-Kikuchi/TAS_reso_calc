@@ -144,21 +144,33 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown("### axis 1 (in plane)")
-    h1 = st.number_input("h1", value=1)
-    k1 = st.number_input("k1", value=0)
-    l1 = st.number_input("l1", value=0)
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        h1 = st.number_input("h1", value=1)
+    with c2:
+        k1 = st.number_input("k1", value=0)
+    with c3:
+        l1 = st.number_input("l1", value=0)
 
 with col2:
     st.markdown("### axis 2 (in plane)")
-    h2 = st.number_input("h2", value=0)
-    k2 = st.number_input("k2", value=1)
-    l2 = st.number_input("l2", value=0)
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        h2 = st.number_input("h2", value=0)
+    with c2:
+        k2 = st.number_input("k2", value=1)
+    with c3:
+        l2 = st.number_input("l2", value=0)
 
 with col3:
     st.markdown("### axis 3 (out of plane)")
-    h3 = st.number_input("h3", value=0)
-    k3 = st.number_input("k3", value=0)
-    l3 = st.number_input("l3", value=1)
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        h3 = st.number_input("h3", value=0)
+    with c2:
+        k3 = st.number_input("k3", value=1)
+    with c3:
+        l3 = st.number_input("l3", value=0)
 
 if st.button("Calc"):
 
