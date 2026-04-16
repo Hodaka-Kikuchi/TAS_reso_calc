@@ -172,28 +172,28 @@ if st.button("Calc"):
     )
 
     st.subheader("Reciprocal lattice vectors")
-
+    
     col1, col2, col3 = st.columns(3)
-
     with col1:
+        a = rl["astar"]
         st.markdown("### astar")
-        st.write(f"x = {rl['astar'][0]:.6f}")
-        st.write(f"y = {rl['astar'][1]:.6f}")
-        st.write(f"z = {rl['astar'][2]:.6f}")
-
+        st.write(f"({a[0]:.6f}, {a[1]:.6f}, {a[2]:.6f})")
     with col2:
+        b = rl["bstar"]
         st.markdown("### bstar")
-        st.write(f"x = {rl['bstar'][0]:.6f}")
-        st.write(f"y = {rl['bstar'][1]:.6f}")
-        st.write(f"z = {rl['bstar'][2]:.6f}")
-
+        st.write(f"({b[0]:.6f}, {b[1]:.6f}, {b[2]:.6f})")
     with col3:
+        c = rl["cstar"]
         st.markdown("### cstar")
-        st.write(f"x = {rl['cstar'][0]:.6f}")
-        st.write(f"y = {rl['cstar'][1]:.6f}")
-        st.write(f"z = {rl['cstar'][2]:.6f}")
+        st.write(f"({c[0]:.6f}, {c[1]:.6f}, {c[2]:.6f})")
 
     st.subheader("Matrices (U, B, UB)")
+    df_U = pd.DataFrame(UB["U"])
+    df_B = pd.DataFrame(UB["B"])
+    df_UB = pd.DataFrame(UB["UB"])
+    st.dataframe(df_U, header=False, index=False)
+    st.dataframe(df_B, header=False, index=False)
+    st.dataframe(df_UB, header=False, index=False)
 
     col1, col2, col3 = st.columns(3)
 
