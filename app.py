@@ -124,7 +124,7 @@ def UB_calc(sv1, sv2, astar, bstar, cstar,
 # =========================
 # Streamlit UI
 # =========================
-st.title("TAS UB Matrix Calculator")
+st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
 
 st.subheader("Lattice parameters")
 col1, col2, col3 = st.columns(3)
