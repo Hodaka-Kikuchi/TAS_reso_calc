@@ -144,7 +144,7 @@ with st.container(border=True):
         gamma = st.number_input("gamma (deg)", value=90.0)
 
 with st.container(border=True):
-    st.subheader("Crystal axes")
+    st.subheader("Scattering plane")
     col1, col2, col3 = st.columns(3)
     with col1:
         with st.container(border=True):
@@ -178,6 +178,40 @@ with st.container(border=True):
                 k3 = st.number_input("k3", value=1)
             with c3:
                 l3 = st.number_input("l3", value=0)
+
+with st.container(border=True):
+    st.subheader("Collimator conditions")
+
+    st.markdown("### 1st collimator")
+    col1, col2 = st.columns(2)
+    with col1:
+        col1_h = st.number_input("1st Horizontal (min)", value=80)
+    with col2:
+        col1_v = st.number_input("1st Vertical (min)", value=240)
+
+    st.markdown("### 2nd collimator")
+    col1, col2 = st.columns(2)
+    with col1:
+        col2_h = st.number_input("2nd Horizontal (min)", value=120)
+    with col2:
+        col2_v = st.number_input("2nd Vertical (min)", value=240)
+
+    st.markdown("### 3rd collimator")
+    col1, col2 = st.columns(2)
+    with col1:
+        col3_h = st.number_input("3rd Horizontal (min)", value=80)
+    with col2:
+        col3_v = st.number_input("3rd Vertical (min)", value=240)
+
+    st.markdown("### 4th collimator")
+    col1, col2 = st.columns(2)
+    with col1:
+        col4_h = st.number_input("4th Horizontal (min)", value=120)
+    with col2:
+        col4_v = st.number_input("4th Vertical (min)", value=240)
+
+
+##################################################################################3
 
 if st.button("Calc"):
 
