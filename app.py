@@ -140,8 +140,8 @@ d_options = {
 # =========================
 # Streamlit UI
 # =========================
-st.title("TAS Resolution Calculator")
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
+st.title("TAS Resolution Calculator")
 
 with st.container(border=True):
     st.subheader("Lattice parameters")
@@ -196,33 +196,43 @@ with st.container(border=True):
                 l3 = st.number_input("l3", value=0)
 
 with st.container(border=True):
-    st.subheader("Collimator conditions (unit:min)")
+    st.subheader("Guide / Divergence (1st)")
 
-    col1, col2, col3, col4 = st.columns(4)
+    gm_1st = st.checkbox("supermirror", key="gm_1st")
 
-    with col1:
-        with st.container(border=True):
-            st.markdown("### 1st")
-            col1_h = st.number_input("horizontal", value=80, key="col1_h")
-            col1_v = st.number_input("vertical", value=240, key="col1_v")
+    if gm_1st:
+        div_1st_m = st.number_input(
+            "mirror factor",
+            value=1.0,
+            key="div_1st_m"
+        )
+
+        st.number_input("horizontal (disabled)", value=80, disabled=True, key="div_1st_h_disabled")
+        st.number_input("vertical (disabled)", value=240, disabled=True, key="div_1st_v_disabled")
+
+    else:
+        div_1st_h = st.number_input("horizontal", value=80, key="div_1st_h")
+        div_1st_v = st.number_input("vertical", value=240, key="div_1st_v")
+
+        st.number_input("mirror factor (disabled)", value=1.0, disabled=True, key="div_1st_m_disabled")
 
     with col2:
         with st.container(border=True):
             st.markdown("### 2nd")
-            col2_h = st.number_input("horizontal", value=80, key="col2_h")
-            col2_v = st.number_input("vertical", value=240, key="col2_v")
+            div_2nd_h = st.number_input("horizontal", value=80, key="div_2nd_h")
+            div_2nd_v = st.number_input("vertical", value=240, key="div_2nd_v")
 
     with col3:
         with st.container(border=True):
             st.markdown("### 3rd")
-            col3_h = st.number_input("horizontal", value=80, key="col3_h")
-            col3_v = st.number_input("vertical", value=240, key="col3_v")
+            div_3rd_h = st.number_input("horizontal", value=80, key="div_3rd_h")
+            div_3rd_v = st.number_input("vertical", value=240, key="div_3rd_v")
 
     with col4:
         with st.container(border=True):
             st.markdown("### 4th")
-            col4_h = st.number_input("4th H (min)", value=80, key="col4_h")
-            col4_v = st.number_input("4th V (min)", value=240, key="col4_v")
+            div_4th_h = st.number_input("4th H (min)", value=80, key="div_4th_h")
+            div_4th_v = st.number_input("4th V (min)", value=240, key="div_4th_v")
 
 with st.container(border=True):
     st.subheader("Crystal & Mosacis conditions (unit:min)")
@@ -238,14 +248,14 @@ with st.container(border=True):
                 d_mono = d_options[mono_choice]
                 st.write("d =", d_mono)
             with c2:
-                mono_mos_h= st.number_input("horizontal", value=80, key="mono_mos_h")
-                mono_mos_v = st.number_input("vertical", value=240, key="mono_mos_v")
+                mos_mono_h= st.number_input("horizontal", value=30, key="mos_mono_h")
+                mos_mono_v = st.number_input("vertical", value=30, key="mos_mono_v")
 
     with col2:
         with st.container(border=True):
             st.markdown("### sample")
-            sam_mos_h = st.number_input("horizontal", value=80, key="sam_mos_h")
-            sam_mos_v = st.number_input("vertical", value=240, key="sam_mos_v")
+            mos_sam_h = st.number_input("horizontal", value=60, key="mos_sam_h")
+            mos_sam_v = st.number_input("vertical", value=60, key="mos_sam_v")
 
     with col3:
         with st.container(border=True):
@@ -256,8 +266,8 @@ with st.container(border=True):
                 d_ana = d_options[ana_choice]
                 st.write("d =", d_ana)
             with c2:
-                ana_mos_h = st.number_input("horizontal", value=80, key="ana_mos_h")
-                ana_mos_v = st.number_input("vertical", value=240, key="ana_mos_v")
+                mos_ana_h = st.number_input("horizontal", value=60, key="mos_ana_h")
+                mos_ana_v = st.number_input("vertical", value=60, key="mos_ana_v")
             
 
 
