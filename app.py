@@ -127,23 +127,45 @@ st.title("TAS UB Matrix Calculator")
 
 st.subheader("Lattice parameters")
 
-a = st.number_input("a (Å)", value=5.0)
-b = st.number_input("b (Å)", value=5.0)
-c = st.number_input("c (Å)", value=5.0)
+col1, col2, col3 = st.columns(3)
 
-alpha = st.number_input("alpha (deg)", value=90.0)
-beta  = st.number_input("beta (deg)", value=90.0)
-gamma = st.number_input("gamma (deg)", value=90.0)
+with col1:
+    a = st.number_input("a (Å)", value=5.0)
+    alpha = st.number_input("alpha (deg)", value=90.0)
+with col2:
+    b = st.number_input("b (Å)", value=5.0)
+    beta = st.number_input("beta (deg)", value=90.0)
+with col3:
+    c = st.number_input("c (Å)", value=5.0)
+    gamma = st.number_input("gamma (deg)", value=90.0)
 
 st.subheader("Reflection vectors (hkl)")
 
-h1 = st.number_input("sv1 h", value=1)
-k1 = st.number_input("sv1 k", value=0)
-l1 = st.number_input("sv1 l", value=0)
+st.subheader("sv1 (hkl)")
 
-h2 = st.number_input("sv2 h", value=0)
-k2 = st.number_input("sv2 k", value=1)
-l2 = st.number_input("sv2 l", value=0)
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    h1 = st.number_input("h1", value=1)
+
+with col2:
+    k1 = st.number_input("k1", value=0)
+
+with col3:
+    l1 = st.number_input("l1", value=0)
+
+st.subheader("sv2 (hkl)")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    h2 = st.number_input("h2", value=0)
+
+with col2:
+    k2 = st.number_input("k2", value=1)
+
+with col3:
+    l2 = st.number_input("l2", value=0)
 
 if st.button("Calc"):
 
