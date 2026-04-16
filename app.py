@@ -138,25 +138,27 @@ with col3:
     c = st.number_input("c (Å)", value=5.0)
     gamma = st.number_input("gamma (deg)", value=90.0)
 
-st.subheader("Reflection vectors (hkl)")
+st.subheader("Crystal axes")
 
-st.subheader("sv1 (hkl)")
 col1, col2, col3 = st.columns(3)
+
 with col1:
+    st.markdown("### axis 1 (in plane)")
     h1 = st.number_input("h1", value=1)
-with col2:
     k1 = st.number_input("k1", value=0)
-with col3:
     l1 = st.number_input("l1", value=0)
 
-st.subheader("sv2 (hkl)")
-col1, col2, col3 = st.columns(3)
-with col1:
-    h2 = st.number_input("h2", value=0)
 with col2:
+    st.markdown("### axis 2 (in plane)")
+    h2 = st.number_input("h2", value=0)
     k2 = st.number_input("k2", value=1)
-with col3:
     l2 = st.number_input("l2", value=0)
+
+with col3:
+    st.markdown("### axis 3 (out of plane)")
+    h3 = st.number_input("h3", value=0)
+    k3 = st.number_input("k3", value=0)
+    l3 = st.number_input("l3", value=1)
 
 if st.button("Calc"):
 
