@@ -146,9 +146,9 @@ with st.container(border=True):
 with st.container(border=True):
     st.subheader("Crystal axes")
     col1, col2, col3 = st.columns(3)
-    with st.container(border=True):
-        with col1:
-            st.markdown("### axis 1 (in plane)")
+    with col1:
+        st.markdown("### axis 1 (in plane)")
+        with st.container(border=True):
             c1, c2, c3 = st.columns(3)
             with c1:
                 h1 = st.number_input("h1", value=1)
@@ -156,9 +156,10 @@ with st.container(border=True):
                 k1 = st.number_input("k1", value=0)
             with c3:
                 l1 = st.number_input("l1", value=0)
-    with st.container(border=True):
-        with col2:
-            st.markdown("### axis 2 (in plane)")
+
+    with col2:
+        st.markdown("### axis 2 (in plane)")
+        with st.container(border=True):
             c1, c2, c3 = st.columns(3)
             with c1:
                 h2 = st.number_input("h2", value=0)
@@ -166,9 +167,10 @@ with st.container(border=True):
                 k2 = st.number_input("k2", value=1)
             with c3:
                 l2 = st.number_input("l2", value=0)
-    with st.container(border=True):
-        with col3:
-            st.markdown("### axis 3 (out of plane)")
+    
+    with col3:
+        st.markdown("### axis 3 (out of plane)")
+        with st.container(border=True):
             c1, c2, c3 = st.columns(3)
             with c1:
                 h3 = st.number_input("h3", value=0)
