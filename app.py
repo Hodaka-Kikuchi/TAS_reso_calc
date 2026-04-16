@@ -181,26 +181,32 @@ with st.container(border=True):
 
 with st.container(border=True):
     st.subheader("Collimator conditions")
+
     col1, col2, col3, col4 = st.columns(4)
+
     with col1:
         with st.container(border=True):
             st.markdown("### 1st collimator")
-            col1_h = st.number_input("1st Horizontal (min)", value=80)
-            col1_v = st.number_input("1st Vertical (min)", value=240)
+            col1_h = st.number_input("1st H (min)", value=80, key="col1_h")
+            col1_v = st.number_input("1st V (min)", value=240, key="col1_v")
 
     with col2:
         with st.container(border=True):
-            st.markdown("### 1st collimator")
-            col1_h = st.number_input("1st Horizontal (min)", value=80)
-            col1_v = st.number_input("1st Vertical (min)", value=240)
+            st.markdown("### 2nd collimator")
+            col2_h = st.number_input("2nd H (min)", value=80, key="col2_h")
+            col2_v = st.number_input("2nd V (min)", value=240, key="col2_v")
 
     with col3:
         with st.container(border=True):
-            st.markdown("### 1st collimator")
-            col1_h = st.number_input("1st Horizontal (min)", value=80)
-            col1_v = st.number_input("1st Vertical (min)", value=240)
+            st.markdown("### 3rd collimator")
+            col3_h = st.number_input("3rd H (min)", value=80, key="col3_h")
+            col3_v = st.number_input("3rd V (min)", value=240, key="col3_v")
 
     with col4:
+        with st.container(border=True):
+            st.markdown("### 4th collimator")
+            col4_h = st.number_input("4th H (min)", value=80, key="col4_h")
+            col4_v = st.number_input("4th V (min)", value=240, key="col4_v")
         with st.container(border=True):
             st.markdown("### 1st collimator")
             col1_h = st.number_input("1st Horizontal (min)", value=80)
