@@ -258,7 +258,7 @@ with st.container(border=True):
                 )
 
                 if mono_choice == "Other":
-                    d_mono = st.number_input("d (Å)", value=3.0, key="d_mono_manual")
+                    d_mono = st.number_input("d (Å)", value=3.0, format="%.3f", key="d_mono_manual")
                 else:
                     d_mono = d_options[mono_choice]
                     st.number_input(
@@ -292,7 +292,7 @@ with st.container(border=True):
                 )
 
                 if ana_choice == "Other":
-                    d_ana = st.number_input("d (Å)", value=3.0, key="d_ana_manual")
+                    d_ana = st.number_input("d (Å)", value=3.0, format="%.3f", key="d_ana_manual")
                 else:
                     d_ana = d_options[ana_choice]
                     st.number_input(
