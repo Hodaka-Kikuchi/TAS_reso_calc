@@ -232,12 +232,14 @@ with st.container(border=True):
     with col1:
         with st.container(border=True):
             st.markdown("### monochromator")
-            mono_mos_h= st.number_input("horizontal", value=80, key="mono_mos_h")
-            mono_mos_v = st.number_input("vertical", value=240, key="mono_mos_v")
-
-            mono_choice = st.selectbox("Monochromator", list(d_options.keys()), key="mono")
-            d_mono = d_options[mono_choice]
-            st.write("d =", d_mono)
+            c1, c2 = st.columns(2)
+            with c1:
+                mono_choice = st.selectbox("Monochromator", list(d_options.keys()), key="mono")
+                d_mono = d_options[mono_choice]
+                st.write("d =", d_mono)
+            with c2:
+                mono_mos_h= st.number_input("horizontal", value=80, key="mono_mos_h")
+                mono_mos_v = st.number_input("vertical", value=240, key="mono_mos_v")
 
     with col2:
         with st.container(border=True):
@@ -248,11 +250,15 @@ with st.container(border=True):
     with col3:
         with st.container(border=True):
             st.markdown("### analyzer")
-            ana_mos_h = st.number_input("horizontal", value=80, key="ana_mos_h")
-            ana_mos_v = st.number_input("vertical", value=240, key="ana_mos_v")
-            ana_choice = st.selectbox("Analyzer", list(d_options.keys()), key="ana")
-            d_ana = d_options[ana_choice]
-            st.write("d =", d_ana)
+            c1, c2 = st.columns(2)
+            with c1:
+                ana_choice = st.selectbox("Analyzer", list(d_options.keys()), key="ana")
+                d_ana = d_options[ana_choice]
+                st.write("d =", d_ana)
+            with c2:
+                ana_mos_h = st.number_input("horizontal", value=80, key="ana_mos_h")
+                ana_mos_v = st.number_input("vertical", value=240, key="ana_mos_v")
+            
 
 
 
