@@ -196,25 +196,30 @@ with st.container(border=True):
                 l3 = st.number_input("l3", value=0)
 
 with st.container(border=True):
-    st.subheader("Guide / Divergence (1st)")
+    st.subheader("Collimator conditions (unit:min)")
 
-    gm_1st = st.checkbox("supermirror", key="gm_1st")
+    col1, col2, col3, col4 = st.columns(4)
 
-    if gm_1st:
-        div_1st_m = st.number_input(
-            "mirror factor",
-            value=1.0,
-            key="div_1st_m"
-        )
+    with col1:
+        with st.container(border=True):
+            st.markdown("### 1st")
+            gm_1st = st.checkbox("supermirror", key="gm_1st")
 
-        st.number_input("horizontal (disabled)", value=80, disabled=True, key="div_1st_h_disabled")
-        st.number_input("vertical (disabled)", value=240, disabled=True, key="div_1st_v_disabled")
+            if gm_1st:
+                div_1st_m = st.number_input(
+                    "mirror factor",
+                    value=1.0,
+                    key="div_1st_m"
+                )
 
-    else:
-        div_1st_h = st.number_input("horizontal", value=80, key="div_1st_h")
-        div_1st_v = st.number_input("vertical", value=240, key="div_1st_v")
+                st.number_input("horizontal (disabled)", value=80, disabled=True, key="div_1st_h_disabled")
+                st.number_input("vertical (disabled)", value=240, disabled=True, key="div_1st_v_disabled")
 
-        st.number_input("mirror factor (disabled)", value=1.0, disabled=True, key="div_1st_m_disabled")
+            else:
+                div_1st_h = st.number_input("horizontal", value=80, key="div_1st_h")
+                div_1st_v = st.number_input("vertical", value=240, key="div_1st_v")
+
+                st.number_input("mirror factor (disabled)", value=1.0, disabled=True, key="div_1st_m_disabled")
 
     with col2:
         with st.container(border=True):
