@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import math
+import pandas as pd
 
 # =========================
 # 逆格子計算
@@ -126,9 +127,7 @@ def UB_calc(sv1, sv2, astar, bstar, cstar,
 st.title("TAS UB Matrix Calculator")
 
 st.subheader("Lattice parameters")
-
 col1, col2, col3 = st.columns(3)
-
 with col1:
     a = st.number_input("a (Å)", value=5.0)
     alpha = st.number_input("alpha (deg)", value=90.0)
@@ -142,28 +141,20 @@ with col3:
 st.subheader("Reflection vectors (hkl)")
 
 st.subheader("sv1 (hkl)")
-
 col1, col2, col3 = st.columns(3)
-
 with col1:
     h1 = st.number_input("h1", value=1)
-
 with col2:
     k1 = st.number_input("k1", value=0)
-
 with col3:
     l1 = st.number_input("l1", value=0)
 
 st.subheader("sv2 (hkl)")
-
 col1, col2, col3 = st.columns(3)
-
 with col1:
     h2 = st.number_input("h2", value=0)
-
 with col2:
     k2 = st.number_input("k2", value=1)
-
 with col3:
     l2 = st.number_input("l2", value=0)
 
@@ -180,22 +171,43 @@ if st.button("Calc"):
         a, b, c, alpha, beta, gamma
     )
 
-    st.subheader("Results")
+    st.subheader("Reciprocal lattice vectors")
 
-    st.write("### astar")
-    st.write(rl["astar"])
+    col1, col2, col3 = st.columns(3)
 
-    st.write("### bstar")
-    st.write(rl["bstar"])
+    with col1:
+        st.markdown("### astar")
+        st.write(f"x = {rl['astar'][0]:.6f}")
+        st.write(f"y = {rl['astar'][1]:.6f}")
+        st.write(f"z = {rl['astar'][2]:.6f}")
 
-    st.write("### cstar")
-    st.write(rl["cstar"])
+    with col2:
+        st.markdown("### bstar")
+        st.write(f"x = {rl['bstar'][0]:.6f}")
+        st.write(f"y = {rl['bstar'][1]:.6f}")
+        st.write(f"z = {rl['bstar'][2]:.6f}")
 
-    st.write("### U matrix")
-    st.write(UB["U"])
+    with col3:
+        st.markdown("### cstar")
+        st.write(f"x = {rl['cstar'][0]:.6f}")
+        st.write(f"y = {rl['cstar'][1]:.6f}")
+        st.write(f"z = {rl['cstar'][2]:.6f}")
 
-    st.write("### B matrix")
-    st.write(UB["B"])
+    st.subheader("Matrices (U, B, UB)")
 
-    st.write("### UB matrix")
-    st.write(UB["UB"])
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("### U matrix")
+        df_U = pd.DataFrame(UB["U"], columns=["x", "y", "z"])
+        st.dataframe(df_U)
+
+    with col2:
+        st.markdown("### B matrix")
+        df_B = pd.DataFrame(UB["B"], columns=["x", "y", "z"])
+        st.dataframe(df_B)
+
+    with col3:
+        st.markdown("### UB matrix")
+        df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
+        st.dataframe(df_UB)
