@@ -192,19 +192,20 @@ if st.button("Calc"):
         st.write(f"({c[0]:.6f}, {c[1]:.6f}, {c[2]:.6f})")
 
     st.subheader("Matrices (U, B, UB)")
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("### U matrix")
-        df_U = pd.DataFrame(safe_matrix(UB["U"]))
-        st.dataframe(df_U, header=False, index=False)
+        df_U = pd.DataFrame(UB["U"], columns=["x", "y", "z"])
+        st.dataframe(df_U)
 
     with col2:
         st.markdown("### B matrix")
-        df_B = pd.DataFrame(safe_matrix(UB["B"]))
-        st.dataframe(df_B, header=False, index=False)
+        df_B = pd.DataFrame(UB["B"], columns=["x", "y", "z"])
+        st.dataframe(df_B)
 
     with col3:
         st.markdown("### UB matrix")
-        df_UB = pd.DataFrame(safe_matrix(UB["UB"]))
-        st.dataframe(df_UB, header=False, index=False)
+        df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
+        st.dataframe(df_UB)
