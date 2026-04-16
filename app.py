@@ -225,7 +225,7 @@ with st.container(border=True):
             col4_v = st.number_input("4th V (min)", value=240, key="col4_v")
 
 with st.container(border=True):
-    st.subheader("Mosacis conditions (unit:min)")
+    st.subheader("Crystal & Mosacis conditions (unit:min)")
 
     col1, col2, col3 = st.columns(3)
 
@@ -234,6 +234,10 @@ with st.container(border=True):
             st.markdown("### monochromator")
             mono_mos_h= st.number_input("horizontal", value=80, key="mono_mos_h")
             mono_mos_v = st.number_input("vertical", value=240, key="mono_mos_v")
+
+            mono_choice = st.selectbox("Monochromator", list(d_options.keys()), key="mono")
+            d_mono = d_options[mono_choice]
+            st.write("d =", d_mono)
 
     with col2:
         with st.container(border=True):
@@ -246,18 +250,13 @@ with st.container(border=True):
             st.markdown("### analyzer")
             ana_mos_h = st.number_input("horizontal", value=80, key="ana_mos_h")
             ana_mos_v = st.number_input("vertical", value=240, key="ana_mos_v")
+            ana_choice = st.selectbox("Analyzer", list(d_options.keys()), key="ana")
+            d_ana = d_options[ana_choice]
+            st.write("d =", d_ana)
 
-col1, col2 = st.columns(2)
 
-with col1:
-    mono_choice = st.selectbox("Monochromator", list(d_options.keys()), key="mono")
-    d_mono = d_options[mono_choice]
-    st.write("d =", d_mono)
 
-with col2:
-    ana_choice = st.selectbox("Analyzer", list(d_options.keys()), key="ana")
-    d_ana = d_options[ana_choice]
-    st.write("d =", d_ana)
+
 
 ##################################################################################
 
