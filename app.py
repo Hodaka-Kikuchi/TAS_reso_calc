@@ -147,11 +147,11 @@ with st.container(border=True):
     st.subheader("Lattice parameters")
     col1, col2, col3, col4, col5, col6  = st.columns(6)
     with col1:
-        a = st.number_input("a (Å)", value=5.0)
+        a = st.number_input("a (Å)", value=5.0, format="%.4f")
     with col2:
-        b = st.number_input("b (Å)", value=5.0)
+        b = st.number_input("b (Å)", value=5.0, format="%.4f")
     with col3:
-        c = st.number_input("c (Å)", value=5.0)
+        c = st.number_input("c (Å)", value=5.0, format="%.4f")
     with col4:
         alpha = st.number_input("alpha (deg)", value=90.0)
     with col5:
