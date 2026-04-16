@@ -173,7 +173,11 @@ if st.button("Calc"):
 
     st.subheader("Reciprocal lattice vectors")
     
+    def safe_matrix(M):
+        return np.array(M, dtype=float)
+
     col1, col2, col3 = st.columns(3)
+
     with col1:
         a = rl["astar"]
         st.markdown("### astar")
@@ -192,15 +196,15 @@ if st.button("Calc"):
 
     with col1:
         st.markdown("### U matrix")
-        df_U = pd.DataFrame(UB["U"])
+        df_U = pd.DataFrame(safe_matrix(UB["U"]))
         st.dataframe(df_U, header=False, index=False)
 
     with col2:
         st.markdown("### B matrix")
-        df_B = pd.DataFrame(UB["B"])
+        df_B = pd.DataFrame(safe_matrix(UB["B"]))
         st.dataframe(df_B, header=False, index=False)
 
     with col3:
         st.markdown("### UB matrix")
-        df_UB = pd.DataFrame(UB["UB"])
+        df_UB = pd.DataFrame(safe_matrix(UB["UB"]))
         st.dataframe(df_UB, header=False, index=False)
