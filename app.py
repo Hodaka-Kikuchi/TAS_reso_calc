@@ -246,7 +246,33 @@ with st.container(border=True):
             st.markdown("### analyzer")
             ana_mos_h = st.number_input("horizontal", value=80, key="ana_mos_h")
             ana_mos_v = st.number_input("vertical", value=240, key="ana_mos_v")
-##################################################################################3
+
+with st.container(border=True):
+    st.subheader("Mono / Ana d-spacing")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        mono_choice = st.selectbox(
+            "Monochromator crystal",
+            list(d_options.keys()),
+            key="mono"
+        )
+
+        d_mono = d_options[mono_choice]
+        st.number_input("d (Å)", value=d_mono, key="d_mono")
+
+    with col2:
+        ana_choice = st.selectbox(
+            "Analyzer crystal",
+            list(d_options.keys()),
+            key="ana"
+        )
+
+        d_ana = d_options[ana_choice]
+        st.number_input("d (Å)", value=d_ana, key="d_ana")
+
+##################################################################################
 
 if st.button("Calc"):
 
@@ -298,28 +324,3 @@ if st.button("Calc"):
         st.markdown("### UB matrix")
         df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
         st.dataframe(df_UB)
-
-with st.container(border=True):
-    st.subheader("Mono / Ana d-spacing")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        mono_choice = st.selectbox(
-            "Monochromator crystal",
-            list(d_options.keys()),
-            key="mono"
-        )
-
-        d_mono = d_options[mono_choice]
-        st.number_input("d (Å)", value=d_mono, key="d_mono")
-
-    with col2:
-        ana_choice = st.selectbox(
-            "Analyzer crystal",
-            list(d_options.keys()),
-            key="ana"
-        )
-
-        d_ana = d_options[ana_choice]
-        st.number_input("d (Å)", value=d_ana, key="d_ana")
