@@ -219,7 +219,7 @@ with st.container(border=True):
                 div_1st_h = st.number_input("horizontal", value=80, key="div_1st_h")
                 div_1st_v = st.number_input("vertical", value=240, key="div_1st_v")
 
-                st.number_input("mirror factor (disabled)", value=1.0, disabled=True, key="div_1st_m_disabled")
+                st.number_input("m-value (disabled)", value=1.2, disabled=True, key="div_1st_m_disabled")
 
     with col2:
         with st.container(border=True):
@@ -246,7 +246,7 @@ with st.container(border=True):
 
     with col1:
         with st.container(border=True):
-            st.markdown("### monochromator")
+            st.markdown("<h5>monochromator</h5>", unsafe_allow_html=True)
 
             c1, c2 = st.columns(2)
 
@@ -276,13 +276,13 @@ with st.container(border=True):
 
     with col2:
         with st.container(border=True):
-            st.markdown("### sample")
+            st.markdown("<h5>sample</h5>", unsafe_allow_html=True)
             mos_sam_h = st.number_input("horizontal", value=60, key="mos_sam_h")
             mos_sam_v = st.number_input("vertical", value=60, key="mos_sam_v")
 
     with col3:
         with st.container(border=True):
-            st.markdown("### analyzer")
+            st.markdown("<h5>analyzer</h5>", unsafe_allow_html=True)
             c1, c2 = st.columns(2)
             with c1:
                 ana_choice = st.selectbox(
