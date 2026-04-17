@@ -252,7 +252,7 @@ with st.container(border=True):
 
             with c1:
                 mono_choice = st.selectbox(
-                    "Monochromator",
+                    "crystal",
                     list(d_options.keys()) + ["Other"],
                     key="mono"
                 )
@@ -286,7 +286,7 @@ with st.container(border=True):
             c1, c2 = st.columns(2)
             with c1:
                 ana_choice = st.selectbox(
-                    "analyzer",
+                    "crystal",
                     list(d_options.keys()) + ["Other"],
                     key="ana"
                 )
