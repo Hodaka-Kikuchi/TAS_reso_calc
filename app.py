@@ -133,7 +133,7 @@ d_options = {
 with st.container(border=True):
     st.subheader("Crystal & Mosacis conditions (unit:min)")
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([2, 1, 2])
 
     with col1:
         with st.container(border=True):
