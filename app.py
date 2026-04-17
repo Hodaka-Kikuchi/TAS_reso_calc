@@ -207,7 +207,7 @@ with st.container(border=True):
 
             if gm_1st:
                 div_1st_m = st.number_input(
-                    "mirror factor",
+                    "m-value",
                     value=1.2,
                     key="div_1st_m"
                 )
@@ -236,8 +236,8 @@ with st.container(border=True):
     with col4:
         with st.container(border=True):
             st.markdown("### 4th")
-            div_4th_h = st.number_input("4th H (min)", value=80, key="div_4th_h")
-            div_4th_v = st.number_input("4th V (min)", value=240, key="div_4th_v")
+            div_4th_h = st.number_input("horizontal", value=80, key="div_4th_h")
+            div_4th_v = st.number_input("vertical", value=240, key="div_4th_v")
 
 with st.container(border=True):
     st.subheader("Crystal & Mosacis conditions (unit:min)")
@@ -329,7 +329,7 @@ if st.button("Calc"):
         a, b, c, alpha, beta, gamma
     )
 
-    st.subheader("Reciprocal lattice vectors")
+    st.caption("Reciprocal lattice vectors")
     
     def safe_matrix(M):
         return np.array(M, dtype=float)
