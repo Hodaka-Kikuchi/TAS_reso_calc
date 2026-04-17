@@ -164,7 +164,7 @@ with st.container(border=True):
     col1, col2, col3 = st.columns(3)
     with col1:
         with st.container(border=True):
-            st.markdown("### axis 1 (in plane)")
+            st.markdown("<h5>axis 1 (in plane)</h5>", unsafe_allow_html=True)
             c1, c2, c3 = st.columns(3)
             with c1:
                 h1 = st.number_input("h1", value=1.0)
@@ -175,7 +175,7 @@ with st.container(border=True):
 
     with col2:
         with st.container(border=True):
-            st.markdown("### axis 2 (in plane)")
+            st.markdown("<h5>axis 2 (in plane)</h5>", unsafe_allow_html=True)
             c1, c2, c3 = st.columns(3)
             with c1:
                 h2 = st.number_input("h2", value=0.0)
@@ -186,7 +186,7 @@ with st.container(border=True):
     
     with col3:
         with st.container(border=True):
-            st.markdown("### axis 3 (out of plane)")
+            st.markdown("<h5>axis 3 (out of plane)</h5>", unsafe_allow_html=True)
             c1, c2, c3 = st.columns(3)
             with c1:
                 h3 = st.number_input("h3", value=0.0)
@@ -329,7 +329,7 @@ if st.button("Calc"):
         a, b, c, alpha, beta, gamma
     )
 
-    st.caption("Reciprocal lattice vectors")
+    st.subheader("Reciprocal lattice vectors")
     
     def safe_matrix(M):
         return np.array(M, dtype=float)
