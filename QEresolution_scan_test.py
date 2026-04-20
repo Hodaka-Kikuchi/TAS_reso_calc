@@ -183,9 +183,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             
         alpha2 = div_2nd_h / 60 / 180 * pi * 0.4246609
         # focusingの場合式が異なる。
-        if AHF==0:
+        if AHF:
             alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
-        elif AHF==1:
+        else:
             L=L2
             W=ana_width*num_ana_h*np.sin(np.radians(A3))
             af=2 * np.degrees(np.arctan((W / 2) / L))
