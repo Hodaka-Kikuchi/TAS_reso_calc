@@ -286,7 +286,7 @@ with st.container(border=True):
         "mos_sam_v":mos_sam_v,
         "d_ana":d_ana,
         "mos_ana_h":mos_ana_h,
-        "mos_ana_h":mos_ana_h,
+        "mos_ana_v":mos_ana_v,
     }
 
 with st.container(border=True):
