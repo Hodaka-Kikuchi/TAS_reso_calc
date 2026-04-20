@@ -575,12 +575,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax3.clear()
         ax4.clear()
 
-        if fixe==0: # ei fix
-            Ei = bpe
-            Ef = bpe - hw
-        elif fixe==1: # ef fix
-            Ei = bpe + hw
-            Ef = bpe
+        if energy_mode == "Ei fixed":
+            Ef = Ei - hw
+        else:
+            Ei = Ef + hw
 
         ki=(Ei/2.072)**(1/2)
         kf=(Ef/2.072)**(1/2)
