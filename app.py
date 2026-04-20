@@ -551,7 +551,7 @@ with st.container(border=True):
 
         if st.button("Calc single"):
             rl = RL_calc(lc_param)
-            calcresolution_scan3(lc_param,rl,col_param,mos_param,geom,calc_params)
+            #calcresolution_scan3(lc_param,rl,col_param,mos_param,geom,calc_params)
     
     # ======================
     # scan mode
