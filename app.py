@@ -461,7 +461,6 @@ lc_param = {
 }
 
 col_param = {
-    "gm_1st":gm_1st,
     "div_1st_m":div_1st_m,
     "div_1st_h":div_1st_h,
     "div_1st_v":div_1st_v,
