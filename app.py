@@ -313,44 +313,44 @@ with st.container(border=True):
             with st.container(border=True):
                 st.markdown("**Distance**")
 
-                L0 = st.number_input("L0 (source→mono)", value=2.0, step=0.1)
-                L1 = st.number_input("L1 (mono→sample)", value=2.0, step=0.1)
-                L2 = st.number_input("L2 (sample→ana)", value=2.0, step=0.1)
-                L3 = st.number_input("L3 (ana→det)", value=2.0, step=0.1)
+                L0 = st.number_input("L0 (source→mono)", value=10.0, step=0.01)
+                L1 = st.number_input("L1 (mono→sample)", value=1.60, step=0.01)
+                L2 = st.number_input("L2 (sample→ana)", value=1.02, step=0.01)
+                L3 = st.number_input("L3 (ana→det)", value=0.49, step=0.01)
 
         # ===== Beam =====
         with col2:
             with st.container(border=True):
                 st.markdown("**Beam**")
 
-                beam_width = st.number_input("B_Width", value=1.0, step=0.1)
-                beam_height = st.number_input("B_Height", value=1.0, step=0.1)
+                beam_width = st.number_input("B_Width", value=0.140, step=0.001)
+                beam_height = st.number_input("B_Height", value=0.020, step=0.001)
 
         # ===== Monochromator =====
         with col3:
             with st.container(border=True):
-                st.markdown("**Monochromator**")
+                st.markdown("**Monochromator(per piece)**")
 
-                mono_width = st.number_input("M_Width", value=5.0, step=0.1)
-                mono_height = st.number_input("M_Height", value=5.0, step=0.1)
-                mono_thickness = st.number_input("M_Thickness", value=0.2, step=0.01)
+                mono_width = st.number_input("M_Width", value=0.020, step=0.001)
+                mono_height = st.number_input("M_Height", value=0.020, step=0.001)
+                mono_thickness = st.number_input("M_Thickness", value=0.002, step=0.001)
 
         # ===== Analyzer =====
         with col4:
             with st.container(border=True):
-                st.markdown("**Analyzer**")
+                st.markdown("**Analyzer(per piece)**")
 
-                ana_width = st.number_input("A_Width", value=5.0, step=0.1)
-                ana_height = st.number_input("A_Height", value=5.0, step=0.1)
-                ana_thickness = st.number_input("A_Thickness", value=0.2, step=0.01)
+                ana_width = st.number_input("A_Width", value=0.020, step=0.001)
+                ana_height = st.number_input("A_Height", value=0.020, step=0.001)
+                ana_thickness = st.number_input("A_Thickness", value=0.002, step=0.001)
 
         # ===== Detector =====
         with col5:
             with st.container(border=True):
                 st.markdown("**Detector**")
 
-                det_width = st.number_input("D_Width", value=5.0, step=0.1)
-                det_height = st.number_input("D_Height", value=5.0, step=0.1)
+                det_width = st.number_input("D_Width", value=0.032, step=0.001)
+                det_height = st.number_input("D_Height", value=0.120, step=0.001)
 
 ##################################################################################
 
