@@ -74,49 +74,61 @@ with st.container(border=True):
                 with c3:
                     l3 = st.number_input("l3", value=1.0)
 
+    lc_param = {
+        "a":a,
+        "b":b,
+        "c":c,
+        "alpha":alpha,
+        "beta":beta,
+        "gamma":gamma,
+        "sv1":np.array([h1, k1, l1]),
+        "sv2":np.array([h2, k2, l2]),
+        "sv3":np.array([h3, k3, l3]),
+    }
+
     if st.button("Calc"):
 
-    rl = RL_calc(lc_param)
-    UB = UB_calc(lc_param,rl)
+        rl = RL_calc(lc_param)
+        UB = UB_calc(lc_param,rl)
 
-    st.subheader("Reciprocal lattice vectors")
-    
-    def safe_matrix(M):
-        return np.array(M, dtype=float)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        a = rl["astar"]
-        st.markdown("### astar")
-        st.write(f"({a[0]:.6f}, {a[1]:.6f}, {a[2]:.6f})")
-    with col2:
-        b = rl["bstar"]
-        st.markdown("### bstar")
-        st.write(f"({b[0]:.6f}, {b[1]:.6f}, {b[2]:.6f})")
-    with col3:
-        c = rl["cstar"]
-        st.markdown("### cstar")
-        st.write(f"({c[0]:.6f}, {c[1]:.6f}, {c[2]:.6f})")
-
-    st.subheader("Matrices (U, B, UB)")
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown("### U matrix")
-        df_U = pd.DataFrame(UB["U"], columns=["x", "y", "z"])
-        st.dataframe(df_U)
-
-    with col2:
-        st.markdown("### B matrix")
-        df_B = pd.DataFrame(UB["B"], columns=["x", "y", "z"])
-        st.dataframe(df_B)
-
-    with col3:
-        st.markdown("### UB matrix")
-        df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
-        st.dataframe(df_UB)
+        st.subheader("Reciprocal lattice vectors")
         
+        def safe_matrix(M):
+            return np.array(M, dtype=float)
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            a = rl["astar"]
+            st.markdown("### astar")
+            st.write(f"({a[0]:.6f}, {a[1]:.6f}, {a[2]:.6f})")
+        with col2:
+            b = rl["bstar"]
+            st.markdown("### bstar")
+            st.write(f"({b[0]:.6f}, {b[1]:.6f}, {b[2]:.6f})")
+        with col3:
+            c = rl["cstar"]
+            st.markdown("### cstar")
+            st.write(f"({c[0]:.6f}, {c[1]:.6f}, {c[2]:.6f})")
+
+        st.subheader("Matrices (U, B, UB)")
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            st.markdown("### U matrix")
+            df_U = pd.DataFrame(UB["U"], columns=["x", "y", "z"])
+            st.dataframe(df_U)
+
+        with col2:
+            st.markdown("### B matrix")
+            df_B = pd.DataFrame(UB["B"], columns=["x", "y", "z"])
+            st.dataframe(df_B)
+
+        with col3:
+            st.markdown("### UB matrix")
+            df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
+            st.dataframe(df_UB)
+
 with st.container(border=True):
     st.subheader("Collimator conditions (unit:min)")
 
@@ -166,6 +178,18 @@ with st.container(border=True):
             div_4th_h = st.number_input("horizontal", value=80, key="div_4th_h")
             div_4th_v = st.number_input("vertical", value=240, key="div_4th_v")
 
+    col_param = {
+        "div_1st_m":div_1st_m,
+        "div_1st_h":div_1st_h,
+        "div_1st_v":div_1st_v,
+        "div_2nd_h":div_2nd_h,
+        "div_2nd_v":div_2nd_v,
+        "div_3rd_h":div_3rd_h,
+        "div_3rd_v":div_3rd_v,
+        "div_4th_h":div_4th_h,
+        "div_4th_v":div_4th_v,
+    }
+
 d_options = {
     "PG(002)": 3.355,
     "PG(004)": 1.677,
@@ -182,7 +206,7 @@ d_options = {
 }
 
 with st.container(border=True):
-    st.subheader("Crystal & Mosacis conditions (unit:min)")
+    st.subheader("Crystal & Mosaic conditions (unit:min)")
 
     col1, col2, col3 = st.columns([2, 1, 2])
 
@@ -250,6 +274,17 @@ with st.container(border=True):
             with c2:
                 mos_ana_h = st.number_input("horizontal", value=60, key="mos_ana_h")
                 mos_ana_v = st.number_input("vertical", value=60, key="mos_ana_v")
+
+    mos_param = {
+        "d_mono":d_mono,
+        "mos_mono_h":mos_mono_h,
+        "mos_mono_v":mos_mono_v,
+        "mos_sam_h":mos_sam_h,
+        "mos_sam_v":mos_sam_v,
+        "d_ana":d_ana,
+        "mos_ana_h":mos_ana_h,
+        "mos_ana_h":mos_ana_h,
+    }
 
 with st.container(border=True):
     st.subheader("Instrument setting")
@@ -401,6 +436,23 @@ with st.container(border=True):
                 det_width = st.number_input("D_Width", value=0.032, step=0.001,format="%.3f")
                 det_height = st.number_input("D_Height", value=0.120, step=0.001,format="%.3f")
 
+    geom = {
+        "L0": L0,
+        "L1": L1,
+        "L2": L2,
+        "L3": L3,
+        "beam_width": beam_width,
+        "beam_height": beam_height,
+        "mono_width": mono_width,
+        "mono_height": mono_height,
+        "mono_thickness": mono_thickness,
+        "ana_width": ana_width,
+        "ana_height": ana_height,
+        "ana_thickness": ana_thickness,
+        "det_width": det_width,
+        "det_height": det_height,
+    }
+
 with st.container(border=True):
     st.subheader("Calculation")
 
@@ -496,61 +548,6 @@ with st.container(border=True):
         if st.button("calc scan"):
             st.write("scan mode selected")
             st.write(hw_i,hw_f,h_i, h_f, k_i, k_f, l_i, l_f, npts)
-
-##################################################################################
-# パラメータまとめ
-lc_param = {
-    "a":a,
-    "b":b,
-    "c":c,
-    "alpha":alpha,
-    "beta":beta,
-    "gamma":gamma,
-    "sv1":np.array([h1, k1, l1]),
-    "sv2":np.array([h2, k2, l2]),
-    "sv3":np.array([h3, k3, l3]),
-}
-
-col_param = {
-    "div_1st_m":div_1st_m,
-    "div_1st_h":div_1st_h,
-    "div_1st_v":div_1st_v,
-    "div_2nd_h":div_2nd_h,
-    "div_2nd_v":div_2nd_v,
-    "div_3rd_h":div_3rd_h,
-    "div_3rd_v":div_3rd_v,
-    "div_4th_h":div_4th_h,
-    "div_4th_v":div_4th_v,
-}
-
-mos_param = {
-    "d_mono":d_mono,
-    "mos_mono_h":mos_mono_h,
-    "mos_mono_v":mos_mono_v,
-    "mos_sam_h":mos_sam_h,
-    "mos_sam_v":mos_sam_v,
-    "d_ana":d_ana,
-    "mos_ana_h":mos_ana_h,
-    "mos_ana_h":mos_ana_h,
-}
-
-geom = {
-    "L0": L0,
-    "L1": L1,
-    "L2": L2,
-    "L3": L3,
-    "beam_width": beam_width,
-    "beam_height": beam_height,
-    "mono_width": mono_width,
-    "mono_height": mono_height,
-    "mono_thickness": mono_thickness,
-    "ana_width": ana_width,
-    "ana_height": ana_height,
-    "ana_thickness": ana_thickness,
-    "det_width": det_width,
-    "det_height": det_height,
-}
-
 
 ##################################################################################
 
