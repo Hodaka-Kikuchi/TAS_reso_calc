@@ -119,10 +119,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         A1, A2, A3 = A_sets[index]
         hw = QE_sets[index][0]
         
-    if energy_mode == "Ei fixed":
-        Ef = Ei - hw
-    else:
-        Ei = Ef + hw
+        if energy_mode == "Ei fixed":
+            Ef = Ei - hw
+        else:
+            Ei = Ef + hw
         
         ki=(Ei/2.072)**(1/2)
         kf=(Ef/2.072)**(1/2)
