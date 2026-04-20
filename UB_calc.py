@@ -3,8 +3,8 @@ import numpy as np
 
 def UB_calc(lc_param,rl):
 
-    sv1 = lc_param[sv1]
-    sv2 = lc_param[sv2]
+    sv1 = lc_param['sv1']
+    sv2 = lc_param['sv2']
     a = lc_param['a']
     b = lc_param['b']
     c = lc_param['c']
