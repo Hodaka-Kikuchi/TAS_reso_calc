@@ -213,22 +213,19 @@ with st.container(border=True):
             with c1:
                 energy_mode = st.radio(
                     "Energy mode",
-                    ["Ei fixed", "Ef fixed"],
-                    horizontal=True
+                    ["Ei fixed", "Ef fixed"]
                 )
 
             with c2:
                 geometry = st.radio(
                     "Geometry",
-                    ["W", "anti-W"],
-                    horizontal=True
+                    ["W", "anti-W"]
                 )
 
             with c3:
                 sign_config = st.radio(
                     "Sign",
-                    ["+-+", "-+-"],
-                    horizontal=True
+                    ["+-+", "-+-"]
                 )
     with col2:
         with st.container(border=True):
@@ -236,8 +233,7 @@ with st.container(border=True):
 
             method = st.radio(
                 "Method",
-                ["Cooper-Nathans", "Popovici"],
-                horizontal=True
+                ["Cooper-Nathans", "Popovici"]
             )
     with col3:
         with st.container(border=True):
