@@ -92,13 +92,14 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     cph = calc_params["h"]
     cpk = calc_params["k"]
     cpl = calc_params["l"]
+    cphw = calc_params["hw"]
 
     ####################
     initial_index = 0
     if energy_mode == "Ei fixed":
-        Ef = Ei - calc_params["hw"]
+        Ef = Ei - cphw
     else:
-        Ei = Ef + calc_params["hw"]
+        Ei = Ef + cphw
     C1 = np.degrees(np.arcsin((2 * np.pi / d_mono) / (2 * np.sqrt(Ei / 2.072))))
     C3 = np.degrees(np.arcsin((2 * np.pi / d_ana) / (2 * np.sqrt(Ef / 2.072))))
     if geometry == "anti-W":
@@ -109,7 +110,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     Nhkl_cal=np.linalg.norm(hkl_cal)
     phi_cal = np.degrees(np.arccos((ki_cal**2 + kf_cal**2 - Nhkl_cal**2) / (2 * ki_cal * kf_cal)))
     A_sets = np.array([2*C1,phi_cal,2*C3])
-    QE_sets = np.array([cph,cpk,cpl])
+    QE_sets = []
+    QE_sets.append([cphw, cph, cpk, cpl])
     ####################
     
     fig, axs = plt.subplots(2, 2, figsize=(10, 8))  # 2x2グリッドのサブプロット作成
