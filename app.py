@@ -200,10 +200,121 @@ with st.container(border=True):
                 mos_ana_h = st.number_input("horizontal", value=60, key="mos_ana_h")
                 mos_ana_v = st.number_input("vertical", value=60, key="mos_ana_v")
             
+with st.container(border=True):
+    st.subheader("Calculation point")
+    col1, col2, col3, col4, col5, col6  = st.columns(6)
+    with col1:
+        a = st.number_input("a (Å)", value=5.0, format="%.4f")
+    with col2:
+        b = st.number_input("b (Å)", value=5.0, format="%.4f")
+    with col3:
+        c = st.number_input("c (Å)", value=5.0, format="%.4f")
+    with col4:
+        alpha = st.number_input("alpha (deg)", value=90.0)
+    with col5:
+        beta = st.number_input("beta (deg)", value=90.0)
+    with col6:
+        gamma = st.number_input("gamma (deg)", value=90.0)
 
+with st.container(border=True):
+    st.markdown("<h5>Scan configuration</h5>", unsafe_allow_html=True)
 
+    c1, c2, c3 = st.columns(3)
 
+    with c1:
+        energy_mode = st.radio(
+            "Energy mode",
+            ["Ei fixed", "Ef fixed"],
+            horizontal=True
+        )
 
+    with c2:
+        geometry = st.radio(
+            "Geometry",
+            ["W", "anti-W"],
+            horizontal=True
+        )
+
+    with c3:
+        sign_config = st.radio(
+            "Sign",
+            ["+-+", "-+-"],
+            horizontal=True
+        )
+
+with st.container(border=True):
+    st.markdown("<h5>Resolution model</h5>", unsafe_allow_html=True)
+
+    method = st.radio(
+        "Method",
+        ["Cooper-Nathans", "Popovici"],
+        horizontal=True
+    )
+
+with st.container(border=True):
+    st.markdown("<h5>Blade settings</h5>", unsafe_allow_html=True)
+
+    col1, col2 = st.columns(2)
+
+    # ===== Monochromator =====
+    with col1:
+        st.markdown("**Monochromator**")
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            mono_h = st.checkbox("Horizontal", key="mono_h")
+        with c2:
+            mono_h_blade = st.number_input(
+                "Blade number",
+                min_value=1,
+                value=10,
+                disabled=not mono_h,
+                key="mono_h_blade"
+            )
+
+        c3, c4 = st.columns(2)
+
+        with c3:
+            mono_v = st.checkbox("Vertical", key="mono_v")
+        with c4:
+            mono_v_blade = st.number_input(
+                "Blade number",
+                min_value=1,
+                value=10,
+                disabled=not mono_v,
+                key="mono_v_blade"
+            )
+
+    # ===== Analyzer =====
+    with col2:
+        st.markdown("**Analyzer**")
+
+        c1, c2 = st.columns(2)
+
+        with c1:
+            ana_h = st.checkbox("Horizontal", key="ana_h")
+        with c2:
+            ana_h_blade = st.number_input(
+                "Blade number",
+                min_value=1,
+                value=10,
+                disabled=not ana_h,
+                key="ana_h_blade"
+            )
+
+        c3, c4 = st.columns(2)
+
+        with c3:
+            ana_v = st.checkbox("Vertical", key="ana_v")
+        with c4:
+            ana_v_blade = st.number_input(
+                "Blade number",
+                min_value=1,
+                value=10,
+                disabled=not ana_v,
+                key="ana_v_blade"
+            )
 
 ##################################################################################
 
