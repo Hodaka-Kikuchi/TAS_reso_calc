@@ -20,56 +20,59 @@ st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
 st.title("TAS Resolution Calculator")
 
 with st.container(border=True):
-    st.subheader("Lattice parameters")
-    col1, col2, col3, col4, col5, col6  = st.columns(6)
-    with col1:
-        a = st.number_input("a (Å)", value=5.0, format="%.4f")
-    with col2:
-        b = st.number_input("b (Å)", value=5.0, format="%.4f")
-    with col3:
-        c = st.number_input("c (Å)", value=5.0, format="%.4f")
-    with col4:
-        alpha = st.number_input("alpha (deg)", value=90.0)
-    with col5:
-        beta = st.number_input("beta (deg)", value=90.0)
-    with col6:
-        gamma = st.number_input("gamma (deg)", value=90.0)
+    st.markdown("<h5>Lattice information</h5>", unsafe_allow_html=True)
 
-with st.container(border=True):
-    st.subheader("Scattering plane")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        with st.container(border=True):
-            st.markdown("<h5>axis 1 (in plane)</h5>", unsafe_allow_html=True)
-            c1, c2, c3 = st.columns(3)
-            with c1:
-                h1 = st.number_input("h1", value=1.0)
-            with c2:
-                k1 = st.number_input("k1", value=0.0)
-            with c3:
-                l1 = st.number_input("l1", value=0.0)
+    with st.container(border=True):
+        st.markdown("<h5>Lattice paramter</h5>", unsafe_allow_html=True)
+        col1, col2, col3, col4, col5, col6  = st.columns(6)
+        with col1:
+            a = st.number_input("a (Å)", value=5.0, format="%.4f")
+        with col2:
+            b = st.number_input("b (Å)", value=5.0, format="%.4f")
+        with col3:
+            c = st.number_input("c (Å)", value=5.0, format="%.4f")
+        with col4:
+            alpha = st.number_input("alpha (deg)", value=90.0)
+        with col5:
+            beta = st.number_input("beta (deg)", value=90.0)
+        with col6:
+            gamma = st.number_input("gamma (deg)", value=90.0)
 
-    with col2:
-        with st.container(border=True):
-            st.markdown("<h5>axis 2 (in plane)</h5>", unsafe_allow_html=True)
-            c1, c2, c3 = st.columns(3)
-            with c1:
-                h2 = st.number_input("h2", value=0.0)
-            with c2:
-                k2 = st.number_input("k2", value=1.0)
-            with c3:
-                l2 = st.number_input("l2", value=0.0)
-    
-    with col3:
-        with st.container(border=True):
-            st.markdown("<h5>axis 3 (out of plane)</h5>", unsafe_allow_html=True)
-            c1, c2, c3 = st.columns(3)
-            with c1:
-                h3 = st.number_input("h3", value=0.0)
-            with c2:
-                k3 = st.number_input("k3", value=0.0)
-            with c3:
-                l3 = st.number_input("l3", value=1.0)
+    with st.container(border=True):
+        st.markdown("<h5>scattering plane</h5>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            with st.container(border=True):
+                st.markdown("<h5>axis 1 (in plane)</h5>", unsafe_allow_html=True)
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    h1 = st.number_input("h1", value=1.0)
+                with c2:
+                    k1 = st.number_input("k1", value=0.0)
+                with c3:
+                    l1 = st.number_input("l1", value=0.0)
+
+        with col2:
+            with st.container(border=True):
+                st.markdown("<h5>axis 2 (in plane)</h5>", unsafe_allow_html=True)
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    h2 = st.number_input("h2", value=0.0)
+                with c2:
+                    k2 = st.number_input("k2", value=1.0)
+                with c3:
+                    l2 = st.number_input("l2", value=0.0)
+        
+        with col3:
+            with st.container(border=True):
+                st.markdown("<h5>axis 3 (out of plane)</h5>", unsafe_allow_html=True)
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    h3 = st.number_input("h3", value=0.0)
+                with c2:
+                    k3 = st.number_input("k3", value=0.0)
+                with c3:
+                    l3 = st.number_input("l3", value=1.0)
 
 with st.container(border=True):
     st.subheader("Collimator conditions (unit:min)")
@@ -447,7 +450,7 @@ with st.container(border=True):
             "npts": npts
         }
 
-        if st.button("Run scan"):
+        if st.button("calc scan"):
             st.write("scan mode selected")
             st.write(hw_i,hw_f,h_i, h_f, k_i, k_f, l_i, l_f, npts)
 
