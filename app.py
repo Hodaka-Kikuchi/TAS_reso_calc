@@ -74,6 +74,49 @@ with st.container(border=True):
                 with c3:
                     l3 = st.number_input("l3", value=1.0)
 
+    if st.button("Calc"):
+
+    rl = RL_calc(lc_param)
+    UB = UB_calc(lc_param,rl)
+
+    st.subheader("Reciprocal lattice vectors")
+    
+    def safe_matrix(M):
+        return np.array(M, dtype=float)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        a = rl["astar"]
+        st.markdown("### astar")
+        st.write(f"({a[0]:.6f}, {a[1]:.6f}, {a[2]:.6f})")
+    with col2:
+        b = rl["bstar"]
+        st.markdown("### bstar")
+        st.write(f"({b[0]:.6f}, {b[1]:.6f}, {b[2]:.6f})")
+    with col3:
+        c = rl["cstar"]
+        st.markdown("### cstar")
+        st.write(f"({c[0]:.6f}, {c[1]:.6f}, {c[2]:.6f})")
+
+    st.subheader("Matrices (U, B, UB)")
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("### U matrix")
+        df_U = pd.DataFrame(UB["U"], columns=["x", "y", "z"])
+        st.dataframe(df_U)
+
+    with col2:
+        st.markdown("### B matrix")
+        df_B = pd.DataFrame(UB["B"], columns=["x", "y", "z"])
+        st.dataframe(df_B)
+
+    with col3:
+        st.markdown("### UB matrix")
+        df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
+        st.dataframe(df_UB)
+        
 with st.container(border=True):
     st.subheader("Collimator conditions (unit:min)")
 
