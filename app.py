@@ -446,7 +446,7 @@ with st.container(border=True):
     # ===== 下：コンポーネントサイズ入力 =====
 
     with st.container(border=True):
-        st.markdown("<h5>Components size</h5>", unsafe_allow_html=True)
+        st.markdown("<h5>Components size (unit:m)</h5>", unsafe_allow_html=True)
 
         col1, col2, col3, col4, col5 = st.columns(5)
 
