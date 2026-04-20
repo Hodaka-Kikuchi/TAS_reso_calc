@@ -181,6 +181,7 @@ with st.container(border=True):
             div_4th_v = st.number_input("vertical", value=240, key="div_4th_v")
 
     col_param = {
+        'gm_1st':gm_1st,
         "div_1st_m":div_1st_m,
         "div_1st_h":div_1st_h,
         "div_1st_v":div_1st_v,
@@ -308,8 +309,8 @@ with st.container(border=True):
                 if energy_mode == "Ei fixed":
                     Ei = st.number_input(
                         "Ei (meV)",
-                        value=14.7,
-                        step=0.1,
+                        value=3.635,
+                        step=0.001,
                         format="%.3f",
                         key="Ei"
                     )
@@ -357,26 +358,26 @@ with st.container(border=True):
                 c1, c2 = st.columns(2)
 
                 with c1:
-                    mono_h = st.checkbox("Horizontal", key="mono_h")
+                    fc_mono_h = st.checkbox("Horizontal", key="fc_mono_h")
                 with c2:
                     mono_h_blade = st.number_input(
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not mono_h,
+                        disabled=not fc_mono_h,
                         key="mono_h_blade"
                     )
 
                 c3, c4 = st.columns(2)
 
                 with c3:
-                    mono_v = st.checkbox("Vertical", key="mono_v")
+                    fc_mono_v = st.checkbox("Vertical", key="fc_mono_v")
                 with c4:
                     mono_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not mono_v,
+                        disabled=not fc_mono_v,
                         key="mono_v_blade"
                     )
 
@@ -387,26 +388,26 @@ with st.container(border=True):
                 c1, c2 = st.columns(2)
 
                 with c1:
-                    ana_h = st.checkbox("Horizontal", key="ana_h")
+                    fc_ana_h = st.checkbox("Horizontal", key="fc_ana_h")
                 with c2:
                     ana_h_blade = st.number_input(
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not ana_h,
+                        disabled=not fc_ana_h,
                         key="ana_h_blade"
                     )
 
                 c3, c4 = st.columns(2)
 
                 with c3:
-                    ana_v = st.checkbox("Vertical", key="ana_v")
+                    fc_ana_v = st.checkbox("Vertical", key="fc_ana_v")
                 with c4:
                     ana_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not ana_v,
+                        disabled=not fc_ana_v,
                         key="ana_v_blade"
                     )
 
@@ -423,22 +424,22 @@ with st.container(border=True):
     focusing = {
         "monochromator": {
             "horizontal": {
-                "enabled": mono_h,
-                "blades": mono_h_blade if mono_h else None
+                "enabled": fc_mono_h,
+                "blades": mono_h_blade if fc_mono_h else None
             },
             "vertical": {
-                "enabled": mono_v,
-                "blades": mono_v_blade if mono_v else None
+                "enabled": fc_mono_v,
+                "blades": mono_v_blade if fc_mono_v else None
             }
         },
         "analyzer": {
             "horizontal": {
-                "enabled": ana_h,
-                "blades": ana_h_blade if ana_h else None
+                "enabled": fc_ana_h,
+                "blades": ana_h_blade if fc_ana_h else None
             },
             "vertical": {
-                "enabled": ana_v,
-                "blades": ana_v_blade if ana_v else None
+                "enabled": fc_ana_v,
+                "blades": ana_v_blade if fc_ana_v else None
             }
         }
     }
@@ -550,7 +551,7 @@ with st.container(border=True):
 
         if st.button("Calc single"):
             rl = RL_calc(lc_param)
-            #calcresolution_scan3(lc_param,rl,col_param,mos_param,geom,calc_params)
+            calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
     
     # ======================
     # scan mode

@@ -14,49 +14,93 @@ from scipy.linalg import block_diag
 
 from PIL import Image  # GIF 保存のために必要
 
-def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE_sets,Ni_mir,bpe,fixe,focus_cond,inst_param,entry_values,initial_index=0,save_gif=False,gif_name="resolution.gif"):
-    # save_gifがTrueだと保存、Falseだと非保存
-    '''
-    # INIファイルから設定を読み込む
-    config = configparser.ConfigParser()
-    # .exe化した場合に対応する
-    if getattr(sys, 'frozen', False):
-        # .exeの場合、sys.argv[0]が実行ファイルのパスになる
-        ini_path = os.path.join(os.path.dirname(sys.argv[0]), 'config.ini')
-    else:
-        # .pyの場合、__file__がスクリプトのパスになる
-        ini_path = os.path.join(os.path.dirname(__file__), 'config.ini')
+def calcresolution_scan3calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params):
 
-    config.read(ini_path)
-    '''
     # divergenceの読み出し
-    div_1st_m = float(entry_values.get("div_1st_m"))
-    div_1st_h = float(entry_values.get("div_1st_h"))
-    div_1st_v = float(entry_values.get("div_1st_v"))
-    div_2nd_h = float(entry_values.get("div_2nd_h"))
-    div_2nd_v = float(entry_values.get("div_2nd_v"))
-    div_3rd_h = float(entry_values.get("div_3rd_h"))
-    div_3rd_v = float(entry_values.get("div_3rd_v"))
-    div_4th_h = float(entry_values.get("div_4th_h"))
-    div_4th_v = float(entry_values.get("div_4th_v"))
-    
-    mos_mono_h = float(entry_values.get("mos_mono_h"))
-    mos_mono_v = float(entry_values.get("mos_mono_v"))
-    mos_sam_h = float(entry_values.get("mos_sam_h"))
-    mos_sam_v = float(entry_values.get("mos_sam_v"))
-    mos_ana_h = float(entry_values.get("mos_ana_h"))
-    mos_ana_v = float(entry_values.get("mos_ana_v"))
+    gm_1st = col_param["gm_1st"]
+    div_1st_m = col_param["div_1st_m"]
+    div_1st_h = col_param["div_1st_h"]
+    div_1st_v = col_param["div_1st_v"]
+    div_2nd_h = col_param["div_2nd_h"]
+    div_2nd_v = col_param["div_2nd_v"]
+    div_3rd_h = col_param["div_3rd_h"]
+    div_3rd_v = col_param["div_3rd_v"]
+    div_4th_h = col_param["div_4th_h"]
+    div_4th_v = col_param["div_4th_v"]
 
     # focusing conditionの読み出し
-    MHF = focus_cond["MHF"]
-    MVF = focus_cond["MVF"]
-    AHF = focus_cond["AHF"]
-    AVF = focus_cond["AVF"]
+    MHF = focusing["fc_mono_h"]
+    MVF = focusing["fc_mono_v"]
+    AHF = focusing["fc_ana_h"]
+    AVF = focusing["fc_ana_v"]
 
-    num_mono_h = focus_cond["num_mono_h"]
-    num_mono_v = focus_cond["num_mono_v"]
-    num_ana_h  = focus_cond["num_ana_h"]
-    num_ana_v  = focus_cond["num_ana_v"]
+    num_mono_h = focusing["mono_h_blade"]
+    num_mono_v = focusing["mono_v_blade"]
+    num_ana_h  = focusing["ana_h_blade"]
+    num_ana_v  = focusing["ana_v_blade"]
+    
+    # geom
+    L0 = geom["L0"]
+    L1 = geom["L1"]
+    L2 = geom["L2"]
+    L3 = geom["L3"]
+    beam_width = geom["beam_width"]
+    beam_height = geom["beam_height"]
+    mono_width = geom["mono_width"]
+    mono_height = geom["mono_height"]
+    mono_depth = geom["mono_thickness"]
+    ana_width = geom["ana_width"]
+    ana_height = geom["ana_height"]
+    ana_depth = geom["ana_thickness"]
+    det_width = geom["det_width"]
+    det_height = geom["det_height"]
+
+    #
+    d_mono = mos_param["d_mono"]
+    mos_mono_h = mos_param["mos_mono_h"]
+    mos_mono_v = mos_param["mos_mono_v"]
+    mos_sam_h = mos_param["mos_sam_h"]
+    mos_sam_v = mos_param["mos_sam_v"]
+    d_ana = mos_param["d_ana"]
+    mos_ana_h = mos_param["mos_ana_h"]
+    mos_ana_v = mos_param["mos_ana_vs"]
+
+    energy_mode = config["energy_mode"]
+    Ei = config["Ei"]
+    Ef = config["Ef"]
+    geometry = config["geometry"]
+    sense = config["sign_config"]
+    method = approximation["method"]
+
+    #
+    sv1 = lc_param['sv1']
+    sv2 = lc_param['sv2']
+    sv3 = lc_param['sv3']
+    astar = rl["astar"]
+    bstar = rl["bstar"]
+    cstar = rl["cstar"]
+    cph = calc_params["h"]
+    cpk = calc_params["k"]
+    cpl = calc_params["l"]
+
+    ####################
+    initial_index = 0
+    if energy_mode == "Ei fixed":
+        Ef = Ei - calc_params["hw"]
+    else:
+        Ei = Ef + calc_params["hw"]
+    C1 = np.degrees(np.arcsin((2 * np.pi / d_mono) / (2 * np.sqrt(Ei / 2.072))))
+    C3 = np.degrees(np.arcsin((2 * np.pi / d_ana) / (2 * np.sqrt(Ef / 2.072))))
+    if geometry == "anti-W":
+        C3 = -C3
+    ki_cal=(Ei/2.072)**(1/2)
+    kf_cal=(Ef/2.072)**(1/2)
+    hkl_cal=cph*astar+cpk*bstar+cpl*cstar
+    Nhkl_cal=np.linalg.norm(hkl_cal)
+    phi_cal = np.degrees(np.arccos((ki_cal**2 + kf_cal**2 - Nhkl_cal**2) / (2 * ki_cal * kf_cal)))
+    A_sets = np.array([2*C1,phi_cal,2*C3])
+    QE_sets = np.array([cph,cpk,cpl])
+    ####################
     
     fig, axs = plt.subplots(2, 2, figsize=(10, 8))  # 2x2グリッドのサブプロット作成
     plt.subplots_adjust(left=0.1, bottom=0.15, wspace=0.3, hspace=0.4)
@@ -95,12 +139,10 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         A1, A2, A3 = A_sets[index]
         hw = QE_sets[index][0]
         
-        if fixe==0: # ei fix
-            Ei = bpe
-            Ef = bpe - hw
-        elif fixe==1: # ef fix
-            Ei = bpe + hw
-            Ef = bpe
+        if energy_mode == "Ei fixed":
+            Ef = Ei - hw
+        else:
+            Ei = Ef + hw
 
         ki=(Ei/2.072)**(1/2)
         kf=(Ef/2.072)**(1/2)
@@ -125,10 +167,10 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         #theta0 = 0.1 #(A^-1)
         #lamda = (81.81 / Ei)**(1/2)
         # 0.4246609 = 1/(2*sqrt(2*log(2)))
-        if Ni_mir == 0:
+        if not gm_1st:
             alpha1 = div_1st_h / 60 / 180 * pi * 0.4246609
             beta1 = div_1st_v / 60 / 180 * pi * 0.4246609 
-        elif Ni_mir == 1:
+        else:
             NA = 6.022*10**(23) # mol^(-1)
             ro = 8.908 # g/cm^2
             M = 58.69 # g/mol
@@ -145,8 +187,8 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         if AHF==0:
             alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
         elif AHF==1:
-            L=inst_param["sample_to_ana"]
-            W=inst_param["ana_width"]*num_ana_h*np.sin(np.radians(A3))
+            L=L2
+            W=ana_width*num_ana_h*np.sin(np.radians(A3))
             af=2 * np.degrees(np.arctan((W / 2) / L))
             #alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
             alpha3 = af / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
@@ -208,18 +250,13 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         C[3, 7] = -C[3, 6]
         
         # popovic近似へ分岐
-        if apr_value == "P":
-            beam_width = inst_param["beam_width"]
-            beam_height = inst_param["beam_height"]
+        if method == "Popovici":
             # ==== Beam shape ====
             beamw = (beam_width)**2
             beamh = (beam_height)**2
             bshape = np.diag([beamw, beamh])
 
             # ==== Mono shape ====
-            mono_width = inst_param["mono_width"]
-            mono_height = inst_param["mono_height"]
-            mono_depth = inst_param["mono_depth"]
             monow = (num_mono_h*mono_width)**2
             monoh = (num_mono_v*mono_height)**2
             monod = (mono_depth)**2
@@ -245,17 +282,12 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
             sshape = rot@sshape@rot.T
 
             # ==== ana shape ====
-            ana_width = inst_param["ana_width"]
-            ana_height = inst_param["ana_height"]
-            ana_depth = inst_param["ana_depth"]
             anaw = (num_ana_h*ana_width)**2
             anah = (num_ana_v*ana_height)**2
             anad = (ana_depth)**2
             ashape = np.diag([anad, anaw, anah])
 
             # ==== det shape ====
-            det_width = inst_param["det_width"]
-            det_height = inst_param["det_height"]
             detw = (det_width)**2
             deth = (det_height)**2
             dshape = np.diag([detw, deth])
@@ -265,11 +297,6 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
             S = np.linalg.inv(Sinv)
 
             # ==== Distances ====
-            L0 = inst_param["source_to_mono"]
-            L1 = inst_param["mono_to_sample"]
-            #L1mon = 1 # only flux normalization
-            L2 = inst_param["sample_to_ana"]
-            L3 = inst_param["ana_to_det"]
 
             def focusing_curvature(L_1, L_2, theta):
                 # 有効焦点距離。ただし、単位をmmからmに直す必要がある。
@@ -361,9 +388,9 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         term = np.linalg.inv(G + C.T @ F @ C)  # G + C' * F * C の逆行列
         HF = A @ term @ A.T  # A * (G + C' * F * C)^(-1) * A'
         # HFまでreslibと一致
-        if apr_value == "P":
+        if method == "Popovici":
             Minv = (B @ A @ np.linalg.inv(np.linalg.inv(D @ np.linalg.inv(S + T.T @ F @ T) @ D.T) + G) @ A.T @ B.T)
-        elif apr_value == "CN":
+        elif method == "Cooper-Nathans":
             if AHF == 1:
                 P = np.linalg.inv(HF)
                 P[4, 4] = (1 / (kf * alpha3)) ** 2
@@ -648,18 +675,13 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         C[3, 7] = -C[3, 6]
         
         # popovic近似へ分岐
-        if apr_value == "P":
-            beam_width = inst_param["beam_width"]
-            beam_height = inst_param["beam_height"]
+        if method == "Popovici":
             # ==== Beam shape ====
             beamw = (beam_width)**2
             beamh = (beam_height)**2
             bshape = np.diag([beamw, beamh])
 
             # ==== Mono shape ====
-            mono_width = inst_param["mono_width"]
-            mono_height = inst_param["mono_height"]
-            mono_depth = inst_param["mono_depth"]
             monow = (num_mono_h*mono_width)**2
             monoh = (num_mono_v*mono_height)**2
             monod = (mono_depth)**2
@@ -685,17 +707,12 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
             sshape = rot@sshape@rot.T
 
             # ==== ana shape ====
-            ana_width = inst_param["ana_width"]
-            ana_height = inst_param["ana_height"]
-            ana_depth = inst_param["ana_depth"]
             anaw = (num_ana_h*ana_width)**2
             anah = (num_ana_v*ana_height)**2
             anad = (ana_depth)**2
             ashape = np.diag([anad, anaw, anah])
 
             # ==== det shape ====
-            det_width = inst_param["det_width"]
-            det_height = inst_param["det_height"]
             detw = (det_width)**2
             deth = (det_height)**2
             dshape = np.diag([detw, deth])
@@ -705,12 +722,6 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
             S = np.linalg.inv(Sinv)
 
             # ==== Distances ====
-            L0 = inst_param["source_to_mono"]
-            L1 = inst_param["mono_to_sample"]
-            #L1mon = 1 # only flux normalization
-            L2 = inst_param["sample_to_ana"]
-            L3 = inst_param["ana_to_det"]
-
             def focusing_curvature(L_1, L_2, theta):
                 # 有効焦点距離。ただし、単位をmmからmに直す必要がある。
                 f = 1.0 / (1.0/L_1 + 1.0/L_2)
@@ -801,9 +812,9 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         term = np.linalg.inv(G + C.T @ F @ C)  # G + C' * F * C の逆行列
         HF = A @ term @ A.T  # A * (G + C' * F * C)^(-1) * A'
         # HFまでreslibと一致
-        if apr_value == "P":
+        if method == "Popovici":
             Minv = (B @ A @ np.linalg.inv(np.linalg.inv(D @ np.linalg.inv(S + T.T @ F @ T) @ D.T) + G) @ A.T @ B.T)
-        elif apr_value == "CN":
+        elif method == "Cooper-Nathans":
             if AHF == 1:
                 P = np.linalg.inv(HF)
                 P[4, 4] = (1 / (kf * alpha3)) ** 2
@@ -1234,13 +1245,6 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
         ax4.set_xlim([-Wrange_lim/np.linalg.norm(Qz), Wrange_lim/np.linalg.norm(Qz)])
         ax4.set_ylim([-Zrange_lim, Zrange_lim])
         ax4.grid(True)
-        
-        # フレーム保存（GIF用）
-        if save_gif:
-            fig.canvas.draw()
-            image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
-            image = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
-            frames.append(Image.fromarray(image))
 
         # プロットの表示
         plt.draw()
@@ -1261,9 +1265,3 @@ def calcresolution_scan3(apr_value,sense,astar,bstar,cstar,sv1,sv2,sv3,A_sets,QE
 
     # キーイベントを設定
     fig.canvas.mpl_connect('key_press_event', on_key)
-    
-    if save_gif:
-        for val in range(1, len(A_sets) + 1):
-            slider.set_val(val)
-        frames[0].save(gif_name, save_all=True, append_images=frames[1:], duration=100, loop=0)
-        print(f"GIF 保存完了: {gif_name}")
