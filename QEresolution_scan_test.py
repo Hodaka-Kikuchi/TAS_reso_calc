@@ -846,4 +846,4 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax4.set_ylim([-Zrange_lim, Zrange_lim])
     ax4.grid(True)
 
-    return RM, fig
+    return A_sets,QE_sets,RM, fig
