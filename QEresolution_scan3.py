@@ -31,18 +31,21 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     div_4th_v = col_param["div_4th_v"]
 
     # focusing conditionの読み出し
-    MHF = focusing["fc_mono_h"]
-    if MHF:
-        num_mono_h = focusing["mono_h_blade"]
-    MVF = focusing["fc_mono_v"]
-    if MVF:
-        num_mono_v = focusing["mono_v_blade"]
-    AHF = focusing["fc_ana_h"]
-    if AHF:
-        num_ana_h  = focusing["ana_h_blade"]
-    AVF = focusing["fc_ana_v"]
-    if AVF:
-        num_ana_v  = focusing["ana_v_blade"]
+    # Monochromator Horizontal
+    MHF = focusing["monochromator"]["horizontal"]["enabled"]
+    num_mono_h = focusing["monochromator"]["horizontal"]["blades"] if MHF else None
+
+    # Monochromator Vertical
+    MVF = focusing["monochromator"]["vertical"]["enabled"]
+    num_mono_v = focusing["monochromator"]["vertical"]["blades"] if MVF else None
+
+    # Analyzer Horizontal
+    AHF = focusing["analyzer"]["horizontal"]["enabled"]
+    num_ana_h = focusing["analyzer"]["horizontal"]["blades"] if AHF else None
+
+    # Analyzer Vertical
+    AVF = focusing["analyzer"]["vertical"]["enabled"]
+    num_ana_v = focusing["analyzer"]["vertical"]["blades"] if AVF else None
 
     # geom
     L0 = geom["L0"]
