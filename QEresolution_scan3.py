@@ -603,10 +603,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         #theta0 = 0.1 #(A^-1)
         #lamda = (81.81 / Ei)**(1/2)
         # 0.4246609 = 1/(2*sqrt(2*log(2)))
-        if Ni_mir == 0:
+        if not gm_1st:
             alpha1 = div_1st_h / 60 / 180 * pi * 0.4246609
             beta1 = div_1st_v / 60 / 180 * pi * 0.4246609 
-        elif Ni_mir == 1:
+        else:
             NA = 6.022*10**(23) # mol^(-1)
             ro = 8.908 # g/cm^2
             M = 58.69 # g/mol
@@ -623,8 +623,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         if AHF==0:
             alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
         elif AHF==1:
-            L=inst_param["sample_to_ana"]
-            W=inst_param["ana_width"]*num_ana_h*np.sin(np.radians(A3))
+            L=L2
+            W=ana_width*num_ana_h*np.sin(np.radians(A3))
             af=2 * np.degrees(np.arctan((W / 2) / L))
             #alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
             alpha3 = af / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
