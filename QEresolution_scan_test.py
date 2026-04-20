@@ -438,5 +438,5 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             pass
 
     return {
-            "D": D
+            "Ef": Ef
         }
