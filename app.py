@@ -350,6 +350,79 @@ with st.container(border=True):
                 det_width = st.number_input("D_Width", value=0.032, step=0.001,format="%.3f")
                 det_height = st.number_input("D_Height", value=0.120, step=0.001,format="%.3f")
 
+with st.container(border=True):
+    st.subheader("Calculation")
+
+    mode = st.radio(
+        "Mode",
+        ["single", "scan"],
+        horizontal=True,
+        key="calc_mode"
+    )
+
+    # ======================
+    # single mode
+    # ======================
+    if mode == "single":
+
+        st.markdown("### Single calculation")
+
+        c1, c2, c3, c4 = st.columns(4)
+
+        with c1:
+            hw = st.number_input("hw (meV)", value=5.0, step=0.1, key="single_hw")
+
+        with c2:
+            h = st.number_input("H", value=1.0, step=1.0, key="single_h")
+
+        with c3:
+            k = st.number_input("K", value=0.0, step=1.0, key="single_k")
+
+        with c4:
+            l = st.number_input("L", value=0.0, step=1.0, key="single_l")
+
+        if st.button("Calculate single"):
+            st.write("single mode selected")
+            st.write(hw, h, k, l)
+
+    # ======================
+    # scan mode
+    # ======================
+    elif mode == "scan":
+
+        st.markdown("### Scan calculation")
+
+        c1, c2, c3 = st.columns(3)
+
+        with c1:
+            hw = st.number_input("hw (meV)", value=5.0, step=0.1, key="scan_hw")
+
+        st.markdown("#### Q vector")
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            h_i = st.number_input("H initial", value=0.0, step=1.0, key="h_i")
+            h_f = st.number_input("H final", value=1.0, step=1.0, key="h_f")
+
+        with c2:
+            k_i = st.number_input("K initial", value=0.0, step=1.0, key="k_i")
+            k_f = st.number_input("K final", value=0.0, step=1.0, key="k_f")
+
+        with c3:
+            l_i = st.number_input("L initial", value=0.0, step=1.0, key="l_i")
+            l_f = st.number_input("L final", value=0.0, step=1.0, key="l_f")
+
+        npts = st.number_input(
+            "Number of scan points",
+            value=10,
+            step=1,
+            key="scan_npts"
+        )
+
+        if st.button("Run scan"):
+            st.write("scan mode selected")
+            st.write(h_i, h_f, k_i, k_f, l_i, l_f, npts)
+
 ##################################################################################
 
 if st.button("Calc"):
