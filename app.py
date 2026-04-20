@@ -199,22 +199,6 @@ with st.container(border=True):
             with c2:
                 mos_ana_h = st.number_input("horizontal", value=60, key="mos_ana_h")
                 mos_ana_v = st.number_input("vertical", value=60, key="mos_ana_v")
-            
-with st.container(border=True):
-    st.subheader("Calculation point")
-    col1, col2, col3, col4, col5, col6  = st.columns(6)
-    with col1:
-        a = st.number_input("a (Å)", value=5.0, format="%.4f")
-    with col2:
-        b = st.number_input("b (Å)", value=5.0, format="%.4f")
-    with col3:
-        c = st.number_input("c (Å)", value=5.0, format="%.4f")
-    with col4:
-        alpha = st.number_input("alpha (deg)", value=90.0)
-    with col5:
-        beta = st.number_input("beta (deg)", value=90.0)
-    with col6:
-        gamma = st.number_input("gamma (deg)", value=90.0)
 
 with st.container(border=True):
     st.markdown("<h5>Scan configuration</h5>", unsafe_allow_html=True)
