@@ -91,7 +91,7 @@ with st.container(border=True):
         rl = RL_calc(lc_param)
         UB = UB_calc(lc_param,rl)
 
-        st.subheader("Reciprocal lattice vectors")
+        st.markdown("Reciprocal lattice vectors", unsafe_allow_html=True)
         
         def safe_matrix(M):
             return np.array(M, dtype=float)
@@ -111,7 +111,7 @@ with st.container(border=True):
             st.markdown("c*", unsafe_allow_html=True)
             st.write(f"({c[0]:.6f}, {c[1]:.6f}, {c[2]:.6f})")
 
-        st.subheader("Matrices (U, B, UB)")
+        st.markdown("U,B,UB matrix", unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
 
         with col1:
