@@ -91,11 +91,16 @@ with st.container(border=True):
                 st.number_input("horizontal (disabled)", value=80, disabled=True, key="div_1st_h_disabled")
                 st.number_input("vertical (disabled)", value=240, disabled=True, key="div_1st_v_disabled")
 
+                div_1st_h = None
+                div_1st_v = None
+
             else:
                 div_1st_h = st.number_input("horizontal", value=80, key="div_1st_h")
                 div_1st_v = st.number_input("vertical", value=240, key="div_1st_v")
 
                 st.number_input("m-value (disabled)", value=1.2, disabled=True, key="div_1st_m_disabled")
+
+                div_1st_m = None
 
     with col2:
         with st.container(border=True):
