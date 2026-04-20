@@ -551,8 +551,9 @@ with st.container(border=True):
 
         if st.button("Calc single"):
             rl = RL_calc(lc_param)
-            martix = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
-            st.write("RM", martix)
+            RM, fig = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            st.write("RM", RM)
+            st.pyplot(fig)
     
     # ======================
     # scan mode
