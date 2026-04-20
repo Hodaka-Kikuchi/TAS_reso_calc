@@ -212,7 +212,7 @@ with st.container(border=True):
 
             with c1:
                 energy_mode = st.radio(
-                    "Energy mode",
+                    "Mode",
                     ["Ei fixed", "Ef fixed"]
                 )
 
@@ -229,7 +229,7 @@ with st.container(border=True):
                 )
     with col2:
         with st.container(border=True):
-            st.markdown("<h5>Resolution model</h5>", unsafe_allow_html=True)
+            st.markdown("<h5>Approximation</h5>", unsafe_allow_html=True)
 
             method = st.radio(
                 "Method",
@@ -237,7 +237,7 @@ with st.container(border=True):
             )
     with col3:
         with st.container(border=True):
-            st.markdown("<h5>Blade settings</h5>", unsafe_allow_html=True)
+            st.markdown("<h5>Focusing Conditions</h5>", unsafe_allow_html=True)
 
             col1, col2 = st.columns(2)
 
@@ -300,6 +300,70 @@ with st.container(border=True):
                         disabled=not ana_v,
                         key="ana_v_blade"
                     )
+    # ===== 下：コンポーネントサイズ入力 =====
+    st.markdown("---")  # 区切り線
+
+    st.markdown("<h5>Component size (unit:m)</h5>", unsafe_allow_html=True)
+    # ===== 距離 =====
+    st.markdown("**Distances (m)**")
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        L0 = st.number_input("L0 (source→mono)", value=2.0, step=0.1)
+    with c2:
+        L1 = st.number_input("L1 (mono→sample)", value=2.0, step=0.1)
+    with c3:
+        L2 = st.number_input("L2 (sample→ana)", value=2.0, step=0.1)
+    with c4:
+        L3 = st.number_input("L3 (ana→det)", value=2.0, step=0.1)
+
+    st.markdown("---")
+
+    # ===== ビームサイズ =====
+    st.markdown("**Beam size (cm)**")
+    c1, c2 = st.columns(2)
+
+    with c1:
+        beam_width = st.number_input("Beam width", value=1.0, step=0.1)
+    with c2:
+        beam_height = st.number_input("Beam height", value=1.0, step=0.1)
+
+    st.markdown("---")
+
+    # ===== モノクロメータ =====
+    st.markdown("**Monochromator (cm)**")
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        mono_width = st.number_input("Width", value=5.0, step=0.1)
+    with c2:
+        mono_height = st.number_input("Height", value=5.0, step=0.1)
+    with c3:
+        mono_thickness = st.number_input("Thickness", value=0.2, step=0.01)
+
+    st.markdown("---")
+
+    # ===== アナライザー =====
+    st.markdown("**Analyzer (cm)**")
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        ana_width = st.number_input("Width", value=5.0, step=0.1)
+    with c2:
+        ana_height = st.number_input("Height", value=5.0, step=0.1)
+    with c3:
+        ana_thickness = st.number_input("Thickness", value=0.2, step=0.01)
+
+    st.markdown("---")
+
+    # ===== 検出器 =====
+    st.markdown("**Detector (cm)**")
+    c1, c2 = st.columns(2)
+
+    with c1:
+        det_width = st.number_input("Width", value=5.0, step=0.1)
+    with c2:
+        det_height = st.number_input("Height", value=5.0, step=0.1)
 
 ##################################################################################
 
