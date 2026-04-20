@@ -71,7 +71,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     mos_sam_v = mos_param["mos_sam_v"]
     d_ana = mos_param["d_ana"]
     mos_ana_h = mos_param["mos_ana_h"]
-    mos_ana_v = mos_param["mos_ana_vs"]
+    mos_ana_v = mos_param["mos_ana_v"]
 
     energy_mode = config["energy_mode"]
     if energy_mode == "Ei fixed":
