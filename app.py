@@ -9,6 +9,9 @@ from RL_calc import RL_calc
 # UB計算
 from UB_calc import UB_calc
 
+# single QE positionでの計算
+from QEresolution_scan3 import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+
 
 
 #################################################################################
@@ -299,8 +302,29 @@ with st.container(border=True):
             with c1:
                 energy_mode = st.radio(
                     "Mode",
-                    ["Ei fixed", "Ef fixed"]
+                    ["Ei fixed", "Ef fixed"],
+                    key="energy_mode"
                 )
+
+                if energy_mode == "Ei fixed":
+                    Ei = st.number_input(
+                        "Ei (meV)",
+                        value=14.7,
+                        step=0.1,
+                        format="%.3f",
+                        key="Ei"
+                    )
+                    Ef = None
+
+                else:
+                    Ef = st.number_input(
+                        "Ef (meV)",
+                        value=14.7,
+                        step=0.1,
+                        format="%.3f",
+                        key="Ef"
+                    )
+                    Ei = None
 
             with c2:
                 geometry = st.radio(
@@ -386,7 +410,41 @@ with st.container(border=True):
                         disabled=not ana_v,
                         key="ana_v_blade"
                     )
+
+    config = {
+        "energy_mode": energy_mode,
+        "Ei": Ei,
+        "Ef": Ef,
+        "geometry": geometry,
+        "sign_config": sign_config
+    }
+    approximation = {
+        "method": method
+    }
+    focusing = {
+        "monochromator": {
+            "horizontal": {
+                "enabled": mono_h,
+                "blades": mono_h_blade if mono_h else None
+            },
+            "vertical": {
+                "enabled": mono_v,
+                "blades": mono_v_blade if mono_v else None
+            }
+        },
+        "analyzer": {
+            "horizontal": {
+                "enabled": ana_h,
+                "blades": ana_h_blade if ana_h else None
+            },
+            "vertical": {
+                "enabled": ana_v,
+                "blades": ana_v_blade if ana_v else None
+            }
+        }
+    }
     # ===== 下：コンポーネントサイズ入力 =====
+
     with st.container(border=True):
         st.markdown("<h5>Components size</h5>", unsafe_allow_html=True)
 
@@ -484,17 +542,16 @@ with st.container(border=True):
         with c4:
             l = st.number_input("L", value=0.0, step=0.001, key="single_l",format="%.3f")
 
-        if st.button("Calculate single"):
-            st.write("single mode selected")
-            st.write(hw, h, k, l)
-
         calc_params = {
-                "mode": "single",
                 "hw": hw,
                 "h": h,
                 "k": k,
                 "l": l
             }
+
+        if st.button("Calc single"):
+            rl = RL_calc(lc_param)
+            calcresolution_scan3(lc_param,rl,col_param,mos_param,geom,calc_params)
     
     # ======================
     # scan mode
@@ -551,45 +608,3 @@ with st.container(border=True):
 
 ##################################################################################
 
-if st.button("Calc"):
-
-    rl = RL_calc(lc_param)
-    UB = UB_calc(lc_param,rl)
-
-    st.subheader("Reciprocal lattice vectors")
-    
-    def safe_matrix(M):
-        return np.array(M, dtype=float)
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        a = rl["astar"]
-        st.markdown("### astar")
-        st.write(f"({a[0]:.6f}, {a[1]:.6f}, {a[2]:.6f})")
-    with col2:
-        b = rl["bstar"]
-        st.markdown("### bstar")
-        st.write(f"({b[0]:.6f}, {b[1]:.6f}, {b[2]:.6f})")
-    with col3:
-        c = rl["cstar"]
-        st.markdown("### cstar")
-        st.write(f"({c[0]:.6f}, {c[1]:.6f}, {c[2]:.6f})")
-
-    st.subheader("Matrices (U, B, UB)")
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown("### U matrix")
-        df_U = pd.DataFrame(UB["U"], columns=["x", "y", "z"])
-        st.dataframe(df_U)
-
-    with col2:
-        st.markdown("### B matrix")
-        df_B = pd.DataFrame(UB["B"], columns=["x", "y", "z"])
-        st.dataframe(df_B)
-
-    with col3:
-        st.markdown("### UB matrix")
-        df_UB = pd.DataFrame(UB["UB"], columns=["x", "y", "z"])
-        st.dataframe(df_UB)
