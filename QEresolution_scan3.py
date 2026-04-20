@@ -18,9 +18,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     # divergenceの読み出し
     gm_1st = col_param["gm_1st"]
-    div_1st_m = col_param["div_1st_m"]
-    div_1st_h = col_param["div_1st_h"]
-    div_1st_v = col_param["div_1st_v"]
+    if not gm_1st:
+        div_1st_h = col_param["div_1st_h"]
+        div_1st_v = col_param["div_1st_v"]
+    else:
+        div_1st_m = col_param["div_1st_m"]
     div_2nd_h = col_param["div_2nd_h"]
     div_2nd_v = col_param["div_2nd_v"]
     div_3rd_h = col_param["div_3rd_h"]
