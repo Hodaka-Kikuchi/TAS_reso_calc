@@ -392,36 +392,30 @@ with st.container(border=True):
 
         st.markdown("### Scan calculation")
 
-        c1, c2, c3 = st.columns(3)
+        c1, c2, c3, c4, c5 = st.columns(5)
 
         with c1:
-            hw = st.number_input("hw (meV)", value=5.0, step=0.1, key="scan_hw")
+            hw_i = st.number_input("hw (meV)", value=0.0, step=0.1, key="hw_i")
+            hw_f = st.number_input("hw (meV)", value=0.0, step=0.1, key="hw_f")
 
-        st.markdown("#### Q vector")
-
-        c1, c2, c3 = st.columns(3)
-        with c1:
+        with c2:
             h_i = st.number_input("H initial", value=0.0, step=1.0, key="h_i")
             h_f = st.number_input("H final", value=1.0, step=1.0, key="h_f")
 
-        with c2:
+        with c3:
             k_i = st.number_input("K initial", value=0.0, step=1.0, key="k_i")
             k_f = st.number_input("K final", value=0.0, step=1.0, key="k_f")
 
-        with c3:
+        with c4:
             l_i = st.number_input("L initial", value=0.0, step=1.0, key="l_i")
             l_f = st.number_input("L final", value=0.0, step=1.0, key="l_f")
 
-        npts = st.number_input(
-            "Number of scan points",
-            value=10,
-            step=1,
-            key="scan_npts"
-        )
+        with c5:
+            npts = st.number_input("Number of scan points", value=11, step=1, key="scan_npts")
 
         if st.button("Run scan"):
             st.write("scan mode selected")
-            st.write(h_i, h_f, k_i, k_f, l_i, l_f, npts)
+            st.write(hw_i,hw_f,h_i, h_f, k_i, k_f, l_i, l_f, npts)
 
 ##################################################################################
 
