@@ -14,7 +14,7 @@ from scipy.linalg import block_diag
 
 from PIL import Image  # GIF 保存のために必要
 
-def calcresolution_scan3calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params):
+def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params):
 
     # divergenceの読み出し
     gm_1st = col_param["gm_1st"]
