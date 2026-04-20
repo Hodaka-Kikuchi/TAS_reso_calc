@@ -301,8 +301,6 @@ with st.container(border=True):
                         key="ana_v_blade"
                     )
     # ===== 下：コンポーネントサイズ入力 =====
-    st.markdown("---")  # 区切り線
-
     with st.container(border=True):
         st.markdown("<h5>Components size</h5>", unsafe_allow_html=True)
 
