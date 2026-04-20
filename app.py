@@ -12,21 +12,7 @@ from UB_calc import UB_calc
 # single QE positionでの計算
 from QEresolution_scan3 import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
-import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from numpy import pi, sin, cos, tan, sqrt, arcsin, arccos
-from numpy import arctan2  # atan2はarctan2としてインポートする必要があります
-import configparser
-import os
-import sys
-from matplotlib.widgets import Slider
-from scipy.optimize import minimize_scalar
-from scipy.optimize import minimize
-import pandas as pd
-from scipy.linalg import block_diag
 
-from PIL import Image  # GIF 保存のために必要
 
 #################################################################################
 
