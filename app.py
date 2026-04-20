@@ -385,6 +385,14 @@ with st.container(border=True):
             st.write("single mode selected")
             st.write(hw, h, k, l)
 
+        calc_params = {
+                "mode": "single",
+                "hw": hw,
+                "h": h,
+                "k": k,
+                "l": l
+            }
+    
     # ======================
     # scan mode
     # ======================
@@ -413,24 +421,93 @@ with st.container(border=True):
         with c5:
             npts = st.number_input("Number of scan points", value=11, step=1, key="scan_npts")
 
+        calc_params = {
+            "mode": "scan",
+            "hw": {
+                "initial": hw_i,
+                "final": hw_f
+            },
+            "h": {
+                "initial": h_i,
+                "final": h_f
+            },
+            "k": {
+                "initial": k_i,
+                "final": k_f
+            },
+            "l": {
+                "initial": l_i,
+                "final": l_f
+            },
+            "npts": npts
+        }
+
         if st.button("Run scan"):
             st.write("scan mode selected")
             st.write(hw_i,hw_f,h_i, h_f, k_i, k_f, l_i, l_f, npts)
 
 ##################################################################################
+# パラメータまとめ
+lc_param = {
+    "a":a,
+    "b":b,
+    "c":c,
+    "alpha":alpha,
+    "beta":beta,
+    "gamma":gamma,
+    "sv1":np.array([h1, k1, l1]),
+    "sv2":np.array([h2, k2, l2]),
+    "sv3":np.array([h3, k3, l3]),
+}
+
+col_param = {
+    "gm_1st":gm_1st,
+    "div_1st_m":div_1st_m,
+    "div_1st_h":div_1st_h,
+    "div_1st_v":div_1st_v,
+    "div_2nd_h":div_2nd_h,
+    "div_2nd_v":div_2nd_v,
+    "div_3rd_h":div_3rd_h,
+    "div_3rd_v":div_3rd_v,
+    "div_4th_h":div_4th_h,
+    "div_4th_v":div_4th_v,
+}
+
+mos_param = {
+    "d_mono":d_mono,
+    "mos_mono_h":mos_mono_h,
+    "mos_mono_v":mos_mono_v,
+    "mos_sam_h":mos_sam_h,
+    "mos_sam_v":mos_sam_v,
+    "d_ana":d_ana,
+    "mos_ana_h":mos_ana_h,
+    "mos_ana_h":mos_ana_h,
+}
+
+geom = {
+    "L0": L0,
+    "L1": L1,
+    "L2": L2,
+    "L3": L3,
+    "beam_width": beam_width,
+    "beam_height": beam_height,
+    "mono_width": mono_width,
+    "mono_height": mono_height,
+    "mono_thickness": mono_thickness,
+    "ana_width": ana_width,
+    "ana_height": ana_height,
+    "ana_thickness": ana_thickness,
+    "det_width": det_width,
+    "det_height": det_height,
+}
+
+
+##################################################################################
 
 if st.button("Calc"):
 
-    rl = RL_calc(a, b, c, alpha, beta, gamma)
-
-    UB = UB_calc(
-        np.array([h1, k1, l1]),
-        np.array([h2, k2, l2]),
-        rl["astar"], rl["bstar"], rl["cstar"],
-        rl["alpha_star"], rl["beta_star"], rl["gamma_star"],
-        rl["n_a"], rl["n_b"], rl["n_c"],
-        a, b, c, alpha, beta, gamma
-    )
+    rl = RL_calc(lc_param)
+    UB = UB_calc(lc_param,rl)
 
     st.subheader("Reciprocal lattice vectors")
     

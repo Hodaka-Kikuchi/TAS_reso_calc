@@ -2,7 +2,14 @@
 import math
 import numpy as np
 
-def RL_calc(a, b, c, alpha, beta, gamma):
+def RL_calc(lc_param):
+
+    a = lc_param['a']
+    b = lc_param['b']
+    c = lc_param['c']
+    alpha = lc_param['alpha']
+    beta = lc_param['beta']
+    gamma = lc_param['gamma']
 
     V = a * b * c * math.sqrt(
         1 - math.cos(math.radians(alpha))**2

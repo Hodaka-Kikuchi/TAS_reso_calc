@@ -1,9 +1,28 @@
 import math
 import numpy as np
 
-def UB_calc(sv1, sv2, astar, bstar, cstar,
-            alpha_star, beta_star, gamma_star,
-            n_a, n_b, n_c, a, b, c, alpha, beta, gamma):
+def UB_calc(lc_param,rl):
+
+    sv1 = lc_param[sv1]
+    sv2 = lc_param[sv2]
+    a = lc_param['a']
+    b = lc_param['b']
+    c = lc_param['c']
+    alpha = lc_param['alpha']
+    beta = lc_param['beta']
+    gamma = lc_param['gamma']
+
+    astar = rl['astar']
+    bstar = rl['bstar']
+    cstar = rl['bstar']
+    n_a = rl['n_a']
+    n_b = rl['n_b']
+    n_c = rl['n_c']
+    gamma_star = rl['gamma_star']
+    beta_star = rl['beta_star']
+    alpha_star = rl['alpha_star']
+    V = rl['V']
+    V0 = rl['V0']
 
     u1 = sv1[0]*astar + sv1[1]*bstar + sv1[2]*cstar
     U1 = u1 / np.linalg.norm(u1)
