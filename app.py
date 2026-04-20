@@ -2,8 +2,6 @@ import streamlit as st
 import numpy as np
 import math
 import pandas as pd
-import matplotlib
-matplotlib.use("Agg")
 
 # 逆格子計算
 from RL_calc import RL_calc
