@@ -147,7 +147,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     
     # ここでscanの最初と最後のポイントの分解能の計算する。
     # 空リストに格納
-    X_vals, Y_vals, Z_vals, W_vals = [0.3], [0.3], [0.3], [0.3]
+    X_vals, Y_vals, Z_vals, W_vals = [], [], [], []
     
     for index in [0, -1]:
         A1, A2, A3 = A_sets[index]
