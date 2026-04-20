@@ -203,7 +203,7 @@ with st.container(border=True):
 with st.container(border=True):
     st.subheader("Instrument setting")
 
-    col1, col2, col3 = st.columns([3, 1, 4])
+    col1, col2, col3 = st.columns([3, 2, 4])
     with col1:
         with st.container(border=True):
             st.markdown("<h5>Scan configuration</h5>", unsafe_allow_html=True)
