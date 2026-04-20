@@ -370,16 +370,16 @@ with st.container(border=True):
         c1, c2, c3, c4 = st.columns(4)
 
         with c1:
-            hw = st.number_input("hw (meV)", value=5.0, step=0.1, key="single_hw",format="%.3f")
+            hw = st.number_input("hw (meV)", value=0.0, step=0.001, key="single_hw",format="%.3f")
 
         with c2:
-            h = st.number_input("H", value=1.0, step=1.0, key="single_h",format="%.3f")
+            h = st.number_input("H", value=0.0, step=0.001, key="single_h",format="%.3f")
 
         with c3:
-            k = st.number_input("K", value=0.0, step=1.0, key="single_k",format="%.3f")
+            k = st.number_input("K", value=0.0, step=0.001, key="single_k",format="%.3f")
 
         with c4:
-            l = st.number_input("L", value=0.0, step=1.0, key="single_l",format="%.3f")
+            l = st.number_input("L", value=0.0, step=0.001, key="single_l",format="%.3f")
 
         if st.button("Calculate single"):
             st.write("single mode selected")
@@ -395,20 +395,20 @@ with st.container(border=True):
         c1, c2, c3, c4, c5 = st.columns(5)
 
         with c1:
-            hw_i = st.number_input("hw initial (meV)", value=0.00, step=0.01, key="hw_i",format="%.3f")
-            hw_f = st.number_input("hw final (meV)", value=0.00, step=0.01, key="hw_f",format="%.3f")
+            hw_i = st.number_input("hw initial (meV)", value=0.00, step=0.001, key="hw_i",format="%.3f")
+            hw_f = st.number_input("hw final (meV)", value=0.00, step=0.001, key="hw_f",format="%.3f")
 
         with c2:
-            h_i = st.number_input("H initial", value=0.0, step=1.0, key="h_i",format="%.3f")
-            h_f = st.number_input("H final", value=1.0, step=1.0, key="h_f",format="%.3f")
+            h_i = st.number_input("H initial", value=0.0, step=0.001, key="h_i",format="%.3f")
+            h_f = st.number_input("H final", value=0.001, step=0.001, key="h_f",format="%.3f")
 
         with c3:
-            k_i = st.number_input("K initial", value=0.0, step=1.0, key="k_i",format="%.3f")
-            k_f = st.number_input("K final", value=0.0, step=1.0, key="k_f",format="%.3f")
+            k_i = st.number_input("K initial", value=0.0, step=0.001, key="k_i",format="%.3f")
+            k_f = st.number_input("K final", value=0.0, step=0.001, key="k_f",format="%.3f")
 
         with c4:
-            l_i = st.number_input("L initial", value=0.0, step=1.0, key="l_i",format="%.3f")
-            l_f = st.number_input("L final", value=0.0, step=1.0, key="l_f",format="%.3f")
+            l_i = st.number_input("L initial", value=0.0, step=0.001, key="l_i",format="%.3f")
+            l_f = st.number_input("L final", value=0.0, step=0.001, key="l_f",format="%.3f")
 
         with c5:
             npts = st.number_input("Number of scan points", value=11, step=1, key="scan_npts")
