@@ -10,7 +10,7 @@ from RL_calc import RL_calc
 from UB_calc import UB_calc
 
 # single QE positionでの計算
-from QEresolution_scan_test import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+from QEresolution_scan3 import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
 
 #################################################################################
