@@ -303,67 +303,46 @@ with st.container(border=True):
     # ===== 下：コンポーネントサイズ入力 =====
     st.markdown("---")  # 区切り線
 
-    st.markdown("<h5>Component size (unit:m)</h5>", unsafe_allow_html=True)
-    # ===== 距離 =====
-    st.markdown("**Distances (m)**")
-    c1, c2, c3, c4 = st.columns(4)
+    with st.container(border=True):
+        st.markdown("<h5>Instrument geometry</h5>", unsafe_allow_html=True)
 
-    with c1:
-        L0 = st.number_input("L0 (source→mono)", value=2.0, step=0.1)
-    with c2:
-        L1 = st.number_input("L1 (mono→sample)", value=2.0, step=0.1)
-    with c3:
-        L2 = st.number_input("L2 (sample→ana)", value=2.0, step=0.1)
-    with c4:
-        L3 = st.number_input("L3 (ana→det)", value=2.0, step=0.1)
+        col1, col2, col3, col4 = st.columns(4)
 
-    st.markdown("---")
+        # ===== Distances =====
+        with col1:
+            with st.container(border=True):
+                st.markdown("**Distances (m)**")
 
-    # ===== ビームサイズ =====
-    st.markdown("**Beam size (cm)**")
-    c1, c2 = st.columns(2)
+                L0 = st.number_input("L0 (source→mono)", value=2.0, step=0.1)
+                L1 = st.number_input("L1 (mono→sample)", value=2.0, step=0.1)
+                L2 = st.number_input("L2 (sample→ana)", value=2.0, step=0.1)
+                L3 = st.number_input("L3 (ana→det)", value=2.0, step=0.1)
 
-    with c1:
-        beam_width = st.number_input("Beam width", value=1.0, step=0.1)
-    with c2:
-        beam_height = st.number_input("Beam height", value=1.0, step=0.1)
+        # ===== Beam =====
+        with col2:
+            with st.container(border=True):
+                st.markdown("**Beam (cm)**")
 
-    st.markdown("---")
+                beam_width = st.number_input("Width", value=1.0, step=0.1)
+                beam_height = st.number_input("Height", value=1.0, step=0.1)
 
-    # ===== モノクロメータ =====
-    st.markdown("**Monochromator (cm)**")
-    c1, c2, c3 = st.columns(3)
+        # ===== Monochromator =====
+        with col3:
+            with st.container(border=True):
+                st.markdown("**Monochromator (cm)**")
 
-    with c1:
-        mono_width = st.number_input("Width", value=5.0, step=0.1)
-    with c2:
-        mono_height = st.number_input("Height", value=5.0, step=0.1)
-    with c3:
-        mono_thickness = st.number_input("Thickness", value=0.2, step=0.01)
+                mono_width = st.number_input("Width", value=5.0, step=0.1)
+                mono_height = st.number_input("Height", value=5.0, step=0.1)
+                mono_thickness = st.number_input("Thickness", value=0.2, step=0.01)
 
-    st.markdown("---")
+        # ===== Analyzer =====
+        with col4:
+            with st.container(border=True):
+                st.markdown("**Analyzer (cm)**")
 
-    # ===== アナライザー =====
-    st.markdown("**Analyzer (cm)**")
-    c1, c2, c3 = st.columns(3)
-
-    with c1:
-        ana_width = st.number_input("Width", value=5.0, step=0.1)
-    with c2:
-        ana_height = st.number_input("Height", value=5.0, step=0.1)
-    with c3:
-        ana_thickness = st.number_input("Thickness", value=0.2, step=0.01)
-
-    st.markdown("---")
-
-    # ===== 検出器 =====
-    st.markdown("**Detector (cm)**")
-    c1, c2 = st.columns(2)
-
-    with c1:
-        det_width = st.number_input("Width", value=5.0, step=0.1)
-    with c2:
-        det_height = st.number_input("Height", value=5.0, step=0.1)
+                ana_width = st.number_input("Width", value=5.0, step=0.1)
+                ana_height = st.number_input("Height", value=5.0, step=0.1)
+                ana_thickness = st.number_input("Thickness", value=0.2, step=0.01)
 
 ##################################################################################
 
