@@ -322,7 +322,7 @@ with st.container(border=True):
                 st.markdown("**Beam**")
 
                 beam_width = st.number_input("B_Width", value=0.140, step=0.001,format="%.3f")
-                beam_height = st.number_input("B_Height", value=0.020, step=0.001,format="%.3f")
+                beam_height = st.number_input("B_Height", value=0.200, step=0.001,format="%.3f")
 
         # ===== Monochromator =====
         with col3:
