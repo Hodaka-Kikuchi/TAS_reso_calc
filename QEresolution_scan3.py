@@ -32,15 +32,18 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     # focusing conditionの読み出し
     MHF = focusing["fc_mono_h"]
+    if MHF:
+        num_mono_h = focusing["mono_h_blade"]
     MVF = focusing["fc_mono_v"]
+    if MVF:
+        num_mono_v = focusing["mono_v_blade"]
     AHF = focusing["fc_ana_h"]
+    if AHF:
+        num_ana_h  = focusing["ana_h_blade"]
     AVF = focusing["fc_ana_v"]
+    if AVF:
+        num_ana_v  = focusing["ana_v_blade"]
 
-    num_mono_h = focusing["mono_h_blade"]
-    num_mono_v = focusing["mono_v_blade"]
-    num_ana_h  = focusing["ana_h_blade"]
-    num_ana_v  = focusing["ana_v_blade"]
-    
     # geom
     L0 = geom["L0"]
     L1 = geom["L1"]
@@ -68,8 +71,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     mos_ana_v = mos_param["mos_ana_vs"]
 
     energy_mode = config["energy_mode"]
-    Ei = config["Ei"]
-    Ef = config["Ef"]
+    if energy_mode == "Ei fixed":
+        Ei = config["Ei"]
+    else:
+        Ef = config["Ef"]
     geometry = config["geometry"]
     sense = config["sign_config"]
     method = approximation["method"]
@@ -313,21 +318,21 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 return R
 
             # focusing:
-            if MVF == 0:
+            if MVF:
                 monorv = 1e10
-            elif MVF ==1:
+            else:
                 monorv = focusing_curvature(L0,L1,thetaM)
-            if MHF == 0:
+            if MHF:
                 monorh = 1e10
-            elif MHF ==1:
+            else:
                 monorh = focusing_curvature(L0,L1,thetaM)
-            if AVF == 0:
+            if AVF:
                 anarv = 1e10
-            elif AVF ==1:
+            else:
                 anarv = focusing_curvature(L2,L3,thetaA)
-            if AHF == 0:
+            if AHF:
                 anarh = 1e10
-            elif AHF ==1:
+            else:
                 anarh = focusing_curvature(L2,L3,thetaA)
 
             # ==== T matrix ====
@@ -737,21 +742,21 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 return R
 
             # focusing:
-            if MVF == 0:
+            if MVF:
                 monorv = 1e10
-            elif MVF ==1:
+            else:
                 monorv = focusing_curvature(L0,L1,thetaM)
-            if MHF == 0:
+            if MHF:
                 monorh = 1e10
-            elif MHF ==1:
+            else:
                 monorh = focusing_curvature(L0,L1,thetaM)
-            if AVF == 0:
+            if AVF:
                 anarv = 1e10
-            elif AVF ==1:
+            else:
                 anarv = focusing_curvature(L2,L3,thetaA)
-            if AHF == 0:
+            if AHF:
                 anarh = 1e10
-            elif AHF ==1:
+            else:
                 anarh = focusing_curvature(L2,L3,thetaA)
 
             # ==== T matrix ====
