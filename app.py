@@ -304,14 +304,14 @@ with st.container(border=True):
     st.markdown("---")  # 区切り線
 
     with st.container(border=True):
-        st.markdown("<h5>Instrument geometry</h5>", unsafe_allow_html=True)
+        st.markdown("<h5>Components size</h5>", unsafe_allow_html=True)
 
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3, col4, col5 = st.columns(5)
 
         # ===== Distances =====
         with col1:
             with st.container(border=True):
-                st.markdown("**Distances (m)**")
+                st.markdown("**Distance**")
 
                 L0 = st.number_input("L0 (source→mono)", value=2.0, step=0.1)
                 L1 = st.number_input("L1 (mono→sample)", value=2.0, step=0.1)
@@ -321,28 +321,36 @@ with st.container(border=True):
         # ===== Beam =====
         with col2:
             with st.container(border=True):
-                st.markdown("**Beam (cm)**")
+                st.markdown("**Beam**")
 
-                beam_width = st.number_input("Width", value=1.0, step=0.1)
-                beam_height = st.number_input("Height", value=1.0, step=0.1)
+                beam_width = st.number_input("B_Width", value=1.0, step=0.1)
+                beam_height = st.number_input("B_Height", value=1.0, step=0.1)
 
         # ===== Monochromator =====
         with col3:
             with st.container(border=True):
-                st.markdown("**Monochromator (cm)**")
+                st.markdown("**Monochromator**")
 
-                mono_width = st.number_input("Width", value=5.0, step=0.1)
-                mono_height = st.number_input("Height", value=5.0, step=0.1)
-                mono_thickness = st.number_input("Thickness", value=0.2, step=0.01)
+                mono_width = st.number_input("M_Width", value=5.0, step=0.1)
+                mono_height = st.number_input("M_Height", value=5.0, step=0.1)
+                mono_thickness = st.number_input("M_Thickness", value=0.2, step=0.01)
 
         # ===== Analyzer =====
         with col4:
             with st.container(border=True):
-                st.markdown("**Analyzer (cm)**")
+                st.markdown("**Analyzer**")
 
-                ana_width = st.number_input("Width", value=5.0, step=0.1)
-                ana_height = st.number_input("Height", value=5.0, step=0.1)
-                ana_thickness = st.number_input("Thickness", value=0.2, step=0.01)
+                ana_width = st.number_input("A_Width", value=5.0, step=0.1)
+                ana_height = st.number_input("A_Height", value=5.0, step=0.1)
+                ana_thickness = st.number_input("A_Thickness", value=0.2, step=0.01)
+
+        # ===== Detector =====
+        with col5:
+            with st.container(border=True):
+                st.markdown("**Detector**")
+
+                det_width = st.number_input("D_Width", value=5.0, step=0.1)
+                det_height = st.number_input("D_Height", value=5.0, step=0.1)
 
 ##################################################################################
 
