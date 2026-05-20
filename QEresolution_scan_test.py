@@ -115,14 +115,14 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     QE_sets.append([cphw, cph, cpk, cpl])
     ####################
     
-    fig, axs = plt.subplots(2, 2, figsize=(10, 8))  # 2x2グリッドのサブプロット作成
+    fig, axs = plt.subplots(1, 4, figsize=(10, 8))  # 2x2グリッドのサブプロット作成
     plt.subplots_adjust(left=0.1, bottom=0.15, wspace=0.3, hspace=0.4)
 
     # サブプロットの指定：左上 (0, 0)、右上 (0, 1)
     ax1 = axs[0,0]
     ax2 = axs[0,1]
-    ax3 = axs[1,0]
-    ax4 = axs[1,1]
+    ax3 = axs[0,2]
+    ax4 = axs[0,3]
 
     # 初期タイトル
     plt.suptitle(
