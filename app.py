@@ -562,6 +562,8 @@ with st.container(border=True):
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
             st.pyplot(fig)
+            st.write("RM matrix:")
+            st.text(np.array2string(RM, precision=6, suppress_small=False))
     
     # ======================
     # scan mode
@@ -611,9 +613,65 @@ with st.container(border=True):
             "npts": npts
         }
 
-        if st.button("calc scan"):
-            st.write("scan mode selected")
-            st.write(hw_i,hw_f,h_i, h_f, k_i, k_f, l_i, l_f, npts)
+        # scan arrays
+        hw_vals = np.linspace(hw_i, hw_f, int(npts))
+        h_vals  = np.linspace(h_i,  h_f,  int(npts))
+        k_vals  = np.linspace(k_i,  k_f,  int(npts))
+        l_vals  = np.linspace(l_i,  l_f,  int(npts))
+
+        if st.button("Calc scan"):
+
+            rl = RL_calc(lc_param)
+
+            results = []
+
+            for i in range(int(npts)):
+
+                calc_params_i = {
+                    "hw": hw_vals[i],
+                    "h":  h_vals[i],
+                    "k":  k_vals[i],
+                    "l":  l_vals[i]
+                }
+
+                RM, fig = calcresolution_scan3(
+                    lc_param, rl, col_param, mos_param,
+                    config, approximation, focusing, geom,
+                    calc_params_i
+                )
+
+                results.append((RM, fig))
+
+            st.session_state.scan_results = results
+
+        if "scan_results" in st.session_state:
+
+            results = st.session_state.scan_results
+
+            col1, col2, col3 = st.columns([4, 1, 1])
+
+            with col2:
+                if st.button("◀ Prev"):
+                    st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
+
+            with col3:
+                if st.button("Next ▶"):
+                    st.session_state.scan_slider = min(len(results), st.session_state.scan_slider + 1)
+
+            with col1:
+                i = st.slider(
+                    "Scan index",
+                    1,
+                    len(results),
+                    1,
+                    key="scan_slider"
+                )
+
+            RM, fig = results[i - 1]
+
+            st.pyplot(fig)
+            st.write("RM matrix:")
+            st.text(np.array2string(RM, precision=6, suppress_small=False))
 
 ##################################################################################
 
