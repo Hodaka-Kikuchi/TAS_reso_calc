@@ -135,7 +135,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     X_vals, Y_vals, Z_vals, W_vals = [], [], [], []
     
     for index in [0, -1]:
-        A1, A2, A3 = A_sets[index]
+        A1, -A2, A3 = A_sets[index]
         hw = QE_sets[index][0]
         
         if energy_mode == "Ei fixed":
