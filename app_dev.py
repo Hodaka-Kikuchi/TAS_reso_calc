@@ -616,9 +616,55 @@ with st.container(border=True):
             "npts": npts
         }
 
+        # scan arrays
+        hw_vals = np.linspace(hw_i, hw_f, int(npts))
+        h_vals  = np.linspace(h_i,  h_f,  int(npts))
+        k_vals  = np.linspace(k_i,  k_f,  int(npts))
+        l_vals  = np.linspace(l_i,  l_f,  int(npts))
+
         if st.button("calc scan"):
-            st.write("scan mode selected")
-            st.write(hw_i,hw_f,h_i, h_f, k_i, k_f, l_i, l_f, npts)
+            rl = RL_calc(lc_param)
+
+            results = []
+
+            for i in range(int(npts)):
+
+                calc_params_i = {
+                    "hw": hw_vals[i],
+                    "h":  h_vals[i],
+                    "k":  k_vals[i],
+                    "l":  l_vals[i]
+                }
+
+                RM, fig = calcresolution_scan3(
+                    lc_param, rl, col_param, mos_param,
+                    config, approximation, focusing, geom,
+                    calc_params_i
+                )
+
+                results.append((RM, fig))
+
+            st.session_state.scan_results = results
+            st.session_state.scan_index = 0
+
+            if "scan_results" in st.session_state:
+
+                results = st.session_state.scan_results
+
+                i = st.slider(
+                    "Scan index",
+                    0,
+                    len(results) - 1,
+                    st.session_state.get("scan_index", 0)
+                )
+
+                st.session_state.scan_index = i
+
+                RM, fig = results[i]
+
+                st.pyplot(fig)
+                st.write("RM matrix:")
+                st.text(np.array2string(RM, precision=6, suppress_small=False))
 
 ##################################################################################
 
