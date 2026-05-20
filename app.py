@@ -18,8 +18,8 @@ from QEresolution_scan_test import calcresolution_scan3 # スライダー形式�
 # =========================
 # Streamlit UI
 # =========================
-st.set_page_config(page_title="TAS Resolution Calculator (under development)", layout="wide")
-st.title("TAS Resolution Calculator")
+st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
+st.title("TAS Resolution Calculator(under development)")
 
 with st.container(border=True):
     st.markdown("<h5>Lattice information</h5>", unsafe_allow_html=True)
