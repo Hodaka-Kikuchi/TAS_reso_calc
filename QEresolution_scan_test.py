@@ -184,7 +184,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             
         alpha2 = div_2nd_h / 60 / 180 * pi * 0.4246609
         # focusingの場合式が異なる。
-        
+        alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
         if AHF:
             L=L2
             W=ana_width*num_ana_h*np.sin(np.radians(A3))
@@ -193,8 +193,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             alpha3 = af / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
             
             #alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
-        else:
-            alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
 
         alpha4 = div_4th_h / 60 / 180 * pi * 0.4246609
         beta2 = div_2nd_v / 60 / 180 * pi * 0.4246609
