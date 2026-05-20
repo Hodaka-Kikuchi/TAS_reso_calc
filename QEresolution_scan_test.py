@@ -33,11 +33,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # focusing conditionの読み出し
     # Monochromator Horizontal
     MHF = focusing["monochromator"]["horizontal"]["enabled"]
-    num_mono_h =  focusing["monochromator"]["horizontal"]["blades"] if MHF else None
+    num_mono_h = focusing["monochromator"]["horizontal"]["blades"] if MHF else None
 
     # Monochromator Vertical
     MVF = focusing["monochromator"]["vertical"]["enabled"]
-    num_mono_v =  focusing["monochromator"]["vertical"]["blades"] if MVF else None
+    num_mono_v = focusing["monochromator"]["vertical"]["blades"] if MVF else None
 
     # Analyzer Horizontal
     AHF = focusing["analyzer"]["horizontal"]["enabled"]
@@ -184,7 +184,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             
         alpha2 = div_2nd_h / 60 / 180 * pi * 0.4246609
         # focusingの場合式が異なる。
-        alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
+        
         if AHF:
             L=L2
             W=ana_width*num_ana_h*np.sin(np.radians(A3))
