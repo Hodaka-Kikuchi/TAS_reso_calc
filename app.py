@@ -552,7 +552,7 @@ with st.container(border=True):
         if st.button("Calc single"):
             rl = RL_calc(lc_param)
             mat = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
-            st.write("mat", mat)
+            st.text(np.array2string(mat, precision=18, suppress_small=False))
             #A_sets,QE_sets,RM, fig
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
