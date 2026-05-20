@@ -652,45 +652,32 @@ with st.container(border=True):
         if "scan_results" in st.session_state:
 
             results = st.session_state.scan_results
-            n = len(results)
 
-            # =========================
-            # initialize index safely
-            # =========================
-            if "scan_slider" not in st.session_state:
-                st.session_state.scan_slider = 1
+            i = st.session_state.get("scan_slider", 1)
 
-            # =========================
-            # UI layout
-            # =========================
-            col1, col2, col3 = st.columns([1, 6, 1])
+            col1, col2 = st.columns(2)
 
             with col1:
                 if st.button("◀ Prev"):
-                    st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
-
-            with col3:
-                if st.button("Next ▶"):
-                    st.session_state.scan_slider = min(n, st.session_state.scan_slider + 1)
+                    i = max(1, i - 1)
 
             with col2:
-                st.session_state.scan_slider = st.slider(
-                    "Scan index",
-                    1,
-                    n,
-                    value=st.session_state.scan_slider,
-                    key="scan_slider"
-                )
+                if st.button("Next ▶"):
+                    i = min(len(results), i + 1)
 
-            # =========================
-            # display
-            # =========================
-            i = st.session_state.scan_slider
+            i = st.slider(
+                "Scan index",
+                1,
+                len(results),
+                value=i,
+                key="scan_slider"
+            )
+
+            st.session_state.scan_slider = i
 
             RM, fig = results[i - 1]
 
             st.pyplot(fig)
-
             st.write("RM matrix:")
             st.text(np.array2string(RM, precision=6, suppress_small=False))
 
