@@ -364,7 +364,6 @@ with st.container(border=True):
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not fc_mono_h,
                         key="mono_h_blade"
                     )
 
@@ -377,7 +376,6 @@ with st.container(border=True):
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not fc_mono_v,
                         key="mono_v_blade"
                     )
 
@@ -394,7 +392,6 @@ with st.container(border=True):
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not fc_ana_h,
                         key="ana_h_blade"
                     )
 
@@ -407,7 +404,6 @@ with st.container(border=True):
                         "Blade number",
                         min_value=1,
                         value=10,
-                        disabled=not fc_ana_v,
                         key="ana_v_blade"
                     )
 
@@ -425,21 +421,21 @@ with st.container(border=True):
         "monochromator": {
             "horizontal": {
                 "enabled": fc_mono_h,
-                "blades": mono_h_blade
+                "blades": mono_h_blade if fc_mono_h else None
             },
             "vertical": {
                 "enabled": fc_mono_v,
-                "blades": mono_v_blade
+                "blades": mono_v_blade if fc_mono_v else None
             }
         },
         "analyzer": {
             "horizontal": {
                 "enabled": fc_ana_h,
-                "blades": ana_h_blade
+                "blades": ana_h_blade if fc_ana_h else None
             },
             "vertical": {
                 "enabled": fc_ana_v,
-                "blades": ana_v_blade
+                "blades": ana_v_blade if fc_ana_v else None
             }
         }
     }
