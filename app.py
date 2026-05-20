@@ -10,11 +10,7 @@ from RL_calc import RL_calc
 from UB_calc import UB_calc
 
 # single QE positionでの計算
-from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
-
-# 使用方法
-# powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
-# 続けて　streamlit run app_dev.py
+from QEresolution_scan import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
 #################################################################################
 
@@ -22,8 +18,7 @@ from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式�
 # Streamlit UI
 # =========================
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
-st.title("TAS Resolution Calculator [development]")
-st.warning("Development version")
+st.title("TAS Resolution Calculator(only single QE point calculation is available.)")
 
 # development note
 
