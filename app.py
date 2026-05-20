@@ -551,10 +551,12 @@ with st.container(border=True):
 
         if st.button("Calc single"):
             rl = RL_calc(lc_param)
-            A_sets,QE_sets,RM, fig = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
-            st.write("A_sets", A_sets)
-            st.write("QE_sets", QE_sets)
-            st.pyplot(fig)
+            C = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            st.write("matrix", C)
+            #A_sets,QE_sets,RM, fig
+            #st.write("A_sets", A_sets)
+            #st.write("QE_sets", QE_sets)
+            #st.pyplot(fig)
     
     # ======================
     # scan mode
