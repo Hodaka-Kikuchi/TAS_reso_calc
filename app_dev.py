@@ -653,7 +653,7 @@ with st.container(border=True):
 
             results = st.session_state.scan_results
 
-            col1, col2, col3 = st.columns([1, 1, 4])
+            col1, col2, col3 = st.columns([4, 1, 1])
 
             with col1:
                 i = st.slider(
