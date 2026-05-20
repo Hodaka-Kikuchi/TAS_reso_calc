@@ -551,8 +551,8 @@ with st.container(border=True):
 
         if st.button("Calc single"):
             rl = RL_calc(lc_param)
-            D = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
-            st.write("matrix", D)
+            mat = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            st.write("mat", mat)
             #A_sets,QE_sets,RM, fig
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)

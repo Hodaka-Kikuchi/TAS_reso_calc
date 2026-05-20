@@ -299,7 +299,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
             # ==== Distances ====
 
-            def focusing_curvature(L_1, L_2, theta):
+            def Vfocusing_curvature(L_1, L_2, theta):
                 # 有効焦点距離。ただし、単位をmmからmに直す必要がある。
                 f = 1.0 / (1.0/L_1 + 1.0/L_2)
 
@@ -310,22 +310,35 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 R = 2.0 * f * np.abs(np.sin(theta_rad))
 
                 return R
+            
+            def Hfocusing_curvature(L_1, L_2, theta):
+                # 有効焦点距離。ただし、単位をmmからmに直す必要がある。
+                f = 1.0 / (1.0/L_1 + 1.0/L_2)
 
+                # θ をラジアンに変換
+                theta_rad = np.radians(theta)
+
+                # 曲率 R = 2*f*|sin(theta)|
+                Rinv = (1.0/L_1 + 1.0/L_2)*np.abs(np.sin(theta_rad))/2
+                R = 1/Rinv
+
+                return R
+            
             # focusing:
             if MVF:
-                monorv = focusing_curvature(L0,L1,thetaM)
+                monorv = Vfocusing_curvature(L0,L1,thetaM)
             else:
                 monorv = 1e10
             if MHF:
-                monorh = focusing_curvature(L0,L1,thetaM)
+                monorh = Hfocusing_curvature(L0,L1,thetaM)
             else:
                 monorh = 1e10
             if AVF:
-                anarv = focusing_curvature(L2,L3,thetaA)
+                anarv = Vfocusing_curvature(L2,L3,thetaA)
             else:
                 anarv = 1e10
             if AHF:
-                anarh = focusing_curvature(L2,L3,thetaA)
+                anarh = Hfocusing_curvature(L2,L3,thetaA)
             else:
                 anarh = 1e10
 
@@ -848,4 +861,4 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax4.grid(True)
 
     #return A_sets,QE_sets,RM, fig
-    return D
+    return T
