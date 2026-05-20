@@ -336,7 +336,8 @@ with st.container(border=True):
             with c3:
                 sign_config = st.radio(
                     "Sign",
-                    ["+-+", "-+-"]
+                    ["+-+", "-+-"],
+                    index=1   # ← これ
                 )
     with col2:
         with st.container(border=True):
