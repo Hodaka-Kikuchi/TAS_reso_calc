@@ -1,7 +1,5 @@
-2026/04/16 立ち上げ。
-2026/04/20 理由はわからないが、スタンドアローン版と分解能関数が違う。A2が負の値になっていた。
-2026/05/20 単一のQEでの分解能関数をスタンドアローン版と同じに。
-2026/05/20 分解能関数の不具合を修正。
-2026/05/20 Focusingのチェックボックスの機能が逆になっている問題を解決。
-2026/05/20 単一のQEでの分解能関数をスタンドアローン版と同じに。
-2026/05/20 スキャンの場合に対応できるように対処。
+2026/04/16: Project launched.
+2026/04/20: For reasons unknown, the resolution function differed from that of the standalone version. -> It was discovered that parameter A2 had taken on a negative value.
+2026/05/20: Fixed the bug in the resolution function.
+2026/05/20: Resolved an issue where the functionality of the "Focusing" checkbox was inverted.
+2026/05/20: Currently working on implementing support for scan operations.
