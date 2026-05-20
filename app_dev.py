@@ -653,32 +653,29 @@ with st.container(border=True):
 
             results = st.session_state.scan_results
 
-            i = st.session_state.get("scan_slider", 1)
-
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
 
             with col1:
                 if st.button("◀ Prev"):
-                    i = max(1, i - 1)
+                    st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
 
             with col2:
                 if st.button("Next ▶"):
-                    i = min(len(results), i + 1)
+                    st.session_state.scan_slider = min(len(results), st.session_state.scan_slider + 1)
 
-            i = st.slider(
-                "Scan index",
-                1,
-                len(results),
-                value=i,
-                key="scan_slider"
-            )
-
-            # ❌ これを削除！
-            # st.session_state.scan_slider = i
+            with col3:
+                i = st.slider(
+                    "Scan index",
+                    1,
+                    len(results),
+                    1,
+                    key="scan_slider"
+                )
 
             RM, fig = results[i - 1]
 
             st.pyplot(fig)
+            st.write("RM matrix:")
             st.text(np.array2string(RM, precision=6, suppress_small=False))
 
 ##################################################################################
