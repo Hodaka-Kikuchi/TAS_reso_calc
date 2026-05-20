@@ -303,6 +303,7 @@ with st.container(border=True):
                 energy_mode = st.radio(
                     "Mode",
                     ["Ei fixed", "Ef fixed"],
+                    index=1,   # ← これ
                     key="energy_mode"
                 )
 
@@ -551,11 +552,10 @@ with st.container(border=True):
             #st.text(np.array2string(mat1, precision=18, suppress_small=False))
             #st.text(np.array2string(mat2, precision=18, suppress_small=False))
             #st.text(np.array2string(mat3, precision=18, suppress_small=False))
-            RM, fig, status = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            RM, fig = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
             st.pyplot(fig)
-            st.text(status)
     
     # ======================
     # scan mode
