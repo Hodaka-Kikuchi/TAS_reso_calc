@@ -555,10 +555,11 @@ with st.container(border=True):
             #st.text(np.array2string(mat1, precision=18, suppress_small=False))
             #st.text(np.array2string(mat2, precision=18, suppress_small=False))
             #st.text(np.array2string(mat3, precision=18, suppress_small=False))
-            RM, fig = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            RM, fig, status = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
-            st.pyplot(fig)
+            #st.pyplot(fig)
+            st.text(np.status)
     
     # ======================
     # scan mode
