@@ -40,7 +40,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     num_mono_v = focusing["monochromator"]["vertical"]["blades"] if MVF else None
 
     # Analyzer Horizontal
-    AHF = focusing["analyzer"]["horizontal"]["enabled"]
+    AHF = not focusing["analyzer"]["horizontal"]["enabled"]
     num_ana_h = focusing["analyzer"]["horizontal"]["blades"] if AHF else None
 
     # Analyzer Vertical
