@@ -647,24 +647,24 @@ with st.container(border=True):
             st.session_state.scan_results = results
             st.session_state.scan_index = 0
 
-            if "scan_results" in st.session_state:
+        if "scan_results" in st.session_state:
 
-                results = st.session_state.scan_results
+            results = st.session_state.scan_results
 
-                i = st.slider(
-                    "Scan index",
-                    0,
-                    len(results) - 1,
-                    st.session_state.get("scan_index", 0)
-                )
+            i = st.slider(
+                "Scan index",
+                0,
+                len(results) - 1,
+                st.session_state.get("scan_index", 0)
+            )
 
-                st.session_state.scan_index = i
+            st.session_state.scan_index = i
 
-                RM, fig = results[i]
+            RM, fig = results[i]
 
-                st.pyplot(fig)
-                st.write("RM matrix:")
-                st.text(np.array2string(RM, precision=6, suppress_small=False))
+            st.pyplot(fig)
+            st.write("RM matrix:")
+            st.text(np.array2string(RM, precision=6, suppress_small=False))
 
 ##################################################################################
 
