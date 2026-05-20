@@ -325,21 +325,21 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             
             # focusing:
             if MVF:
-                monorv = 1e10
-            else:
                 monorv = Vfocusing_curvature(L0,L1,thetaM)
+            else:
+                monorv = 1e10
             if MHF:
-                monorh = 1e10
-            else:
                 monorh = Hfocusing_curvature(L0,L1,thetaM)
+            else:
+                monorh = 1e10
             if AVF:
-                anarv = 1e10
-            else:
                 anarv = Vfocusing_curvature(L2,L3,thetaA)
-            if AHF:
-                anarh = 1e10
             else:
+                anarv = 1e10
+            if AHF:
                 anarh = Hfocusing_curvature(L2,L3,thetaA)
+            else:
+                anarh = 1e10
 
             # ==== T matrix ====
             T = np.zeros((4, 13))
