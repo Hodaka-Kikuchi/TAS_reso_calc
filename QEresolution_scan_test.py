@@ -849,6 +849,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     #return A_sets,QE_sets,RM, fig
     # matrix確認
     # 問題なしA,
-    # 問題あり
+    # 問題ありB
 
-    return B
+    return phi
