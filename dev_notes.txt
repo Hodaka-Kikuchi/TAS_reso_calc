@@ -3,3 +3,4 @@
 2026/05/20: Fixed the bug in the resolution function.
 2026/05/20: Resolved an issue where the functionality of the "Focusing" checkbox was inverted.
 2026/05/20: Currently working on implementing support for scan operations.
+2026/05/20: Support has been added for displaying the resolution function in Scan mode.
