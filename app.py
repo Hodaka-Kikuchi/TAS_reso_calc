@@ -10,7 +10,11 @@ from RL_calc import RL_calc
 from UB_calc import UB_calc
 
 # single QE positionでの計算
-from QEresolution_scan import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+
+# 使用方法
+# powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
+# 続けて　streamlit run app_dev.py
 
 #################################################################################
 
@@ -18,7 +22,14 @@ from QEresolution_scan import calcresolution_scan3 # スライダー形式、Qz�
 # Streamlit UI
 # =========================
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
-st.title("TAS Resolution Calculator(only single QE point calculation is available.)")
+st.title("TAS Resolution Calculator [development]")
+st.warning("Development version")
+
+# development note
+
+st.markdown(
+    "📒 [Development Notes](https://tasresocalc-4mzh7b5efdx5qsyzkztcaf.streamlit.app/)"
+)
 
 with st.container(border=True):
     st.markdown("<h5>Lattice information</h5>", unsafe_allow_html=True)
@@ -548,7 +559,7 @@ with st.container(border=True):
 
         if st.button("Calc single"):
             rl = RL_calc(lc_param)
-            #mat1,mat2,mat3 = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            #mat1,mat2 = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
             #st.text(np.array2string(mat1, precision=18, suppress_small=False))
             #st.text(np.array2string(mat2, precision=18, suppress_small=False))
             #st.text(np.array2string(mat3, precision=18, suppress_small=False))

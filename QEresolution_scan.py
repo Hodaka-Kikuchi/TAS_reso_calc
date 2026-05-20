@@ -307,8 +307,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 theta_rad = np.radians(theta)
 
                 # 曲率 R = 2*f*|sin(theta)|
-                Rinv = (1.0/L_1 + 1.0/L_2)/(2.0 * np.abs(np.sin(theta_rad)))
-                R = 1/Rinv
+                R = 2.0 * f * np.abs(np.sin(theta_rad))
 
                 return R
             
@@ -320,28 +319,27 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 theta_rad = np.radians(theta)
 
                 # 曲率 R = 2*f*|sin(theta)|
-                Rinv = (1.0/L_1 + 1.0/L_2)*np.abs(np.sin(theta_rad))/2
-                R = 1/Rinv
+                R = 2.0 * f / np.abs(np.sin(theta_rad))
 
                 return R
             
             # focusing:
             if MVF:
-                monorv = 1e10
-            else:
                 monorv = Vfocusing_curvature(L0,L1,thetaM)
+            else:
+                monorv = 1e10
             if MHF:
-                monorh = 1e10
-            else:
                 monorh = Hfocusing_curvature(L0,L1,thetaM)
+            else:
+                monorh = 1e10
             if AVF:
-                anarv = 1e10
-            else:
                 anarv = Vfocusing_curvature(L2,L3,thetaA)
-            if AHF:
-                anarh = 1e10
             else:
+                anarv = 1e10
+            if AHF:
                 anarh = Hfocusing_curvature(L2,L3,thetaA)
+            else:
+                anarh = 1e10
 
             # ==== T matrix ====
             T = np.zeros((4, 13))
