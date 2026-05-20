@@ -559,7 +559,7 @@ with st.container(border=True):
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
             #st.pyplot(fig)
-            st.text(np.status)
+            st.text(status)
     
     # ======================
     # scan mode
