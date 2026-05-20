@@ -32,11 +32,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     # focusing conditionの読み出し
     # Monochromator Horizontal
-    MHF = not focusing["monochromator"]["horizontal"]["enabled"]
+    MHF = focusing["monochromator"]["horizontal"]["enabled"]
     num_mono_h = not focusing["monochromator"]["horizontal"]["blades"] if MHF else None
 
     # Monochromator Vertical
-    MVF = not focusing["monochromator"]["vertical"]["enabled"]
+    MVF = focusing["monochromator"]["vertical"]["enabled"]
     num_mono_v = not focusing["monochromator"]["vertical"]["blades"] if MVF else None
 
     # Analyzer Horizontal
@@ -44,10 +44,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     num_ana_h = not focusing["analyzer"]["horizontal"]["blades"] if AHF else None
 
     # Analyzer Vertical
-    AVF = not focusing["analyzer"]["vertical"]["enabled"]
-    num_ana_v = not focusing["analyzer"]["vertical"]["blades"] if AVF else None
-
-    ERRR=1+1
+    AVF = focusing["analyzer"]["vertical"]["enabled"]
+    num_ana_v = focusing["analyzer"]["vertical"]["blades"] if AVF else None
 
     # geom
     L0 = geom["L0"]
