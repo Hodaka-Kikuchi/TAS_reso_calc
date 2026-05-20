@@ -319,7 +319,7 @@ with st.container(border=True):
                 else:
                     Ef = st.number_input(
                         "Ef (meV)",
-                        value=14.7,
+                        value=3.635,
                         step=0.1,
                         format="%.3f",
                         key="Ef"
