@@ -656,6 +656,14 @@ with st.container(border=True):
             col1, col2, col3 = st.columns(3)
 
             with col1:
+                if st.button("◀ Prev"):
+                    st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
+
+            with col2:
+                if st.button("Next ▶"):
+                    st.session_state.scan_slider = min(len(results), st.session_state.scan_slider + 1)
+
+            with col3:
                 i = st.slider(
                     "Scan index",
                     1,
@@ -663,14 +671,6 @@ with st.container(border=True):
                     1,
                     key="scan_slider"
                 )
-
-            with col2:
-                if st.button("◀ Prev"):
-                    st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
-
-            with col3:
-                if st.button("Next ▶"):
-                    st.session_state.scan_slider = min(len(results), st.session_state.scan_slider + 1)
 
             RM, fig = results[i - 1]
 
