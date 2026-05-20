@@ -47,6 +47,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     AVF = not focusing["analyzer"]["vertical"]["enabled"]
     num_ana_v = not focusing["analyzer"]["vertical"]["blades"] if AVF else None
 
+    ERRR=1+1
+
     # geom
     L0 = geom["L0"]
     L1 = geom["L1"]
