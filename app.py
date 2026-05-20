@@ -558,7 +558,7 @@ with st.container(border=True):
             RM, fig, status = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
-            #st.pyplot(fig)
+            st.pyplot(fig)
             st.text(status)
     
     # ======================
