@@ -184,7 +184,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             
         alpha2 = div_2nd_h / 60 / 180 * pi * 0.4246609
         # focusingの場合式が異なる。
-        status= np.zeros(4)
+        status = np.empty(4, dtype=object)
         if MHF:
             status[0] = "flat"
         else:
