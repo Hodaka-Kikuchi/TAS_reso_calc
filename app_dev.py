@@ -567,6 +567,8 @@ with st.container(border=True):
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
             st.pyplot(fig)
+            st.write("RM matrix:")
+            st.text(np.array2string(RM, precision=6, suppress_small=False))
     
     # ======================
     # scan mode
@@ -622,7 +624,8 @@ with st.container(border=True):
         k_vals  = np.linspace(k_i,  k_f,  int(npts))
         l_vals  = np.linspace(l_i,  l_f,  int(npts))
 
-        if st.button("calc scan"):
+        if st.button("Calc scan"):
+
             rl = RL_calc(lc_param)
 
             results = []
@@ -645,7 +648,6 @@ with st.container(border=True):
                 results.append((RM, fig))
 
             st.session_state.scan_results = results
-            st.session_state.scan_index = 0
 
         if "scan_results" in st.session_state:
 
@@ -655,15 +657,12 @@ with st.container(border=True):
                 "Scan index",
                 0,
                 len(results) - 1,
-                st.session_state.get("scan_index", 0)
+                key="scan_slider"
             )
-
-            st.session_state.scan_index = i
 
             RM, fig = results[i]
 
             st.pyplot(fig)
-            st.write("RM matrix:")
             st.text(np.array2string(RM, precision=6, suppress_small=False))
 
 ##################################################################################
