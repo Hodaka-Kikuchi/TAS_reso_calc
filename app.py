@@ -310,7 +310,7 @@ with st.container(border=True):
                 if energy_mode == "Ei fixed":
                     Ei = st.number_input(
                         "Ei (meV)",
-                        value=3.635,
+                        value=4.8,
                         step=0.001,
                         format="%.3f",
                         key="Ei"
@@ -320,7 +320,7 @@ with st.container(border=True):
                 else:
                     Ef = st.number_input(
                         "Ef (meV)",
-                        value=3.635,
+                        value=4.8,
                         step=0.1,
                         format="%.3f",
                         key="Ef"
