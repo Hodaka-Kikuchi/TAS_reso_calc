@@ -655,12 +655,13 @@ with st.container(border=True):
 
             i = st.slider(
                 "Scan index",
-                0,
-                len(results) - 1,
+                1,
+                len(results),
+                1,
                 key="scan_slider"
             )
 
-            RM, fig = results[i]
+            RM, fig = results[i - 1]
 
             st.pyplot(fig)
             st.text(np.array2string(RM, precision=6, suppress_small=False))
