@@ -421,21 +421,21 @@ with st.container(border=True):
         "monochromator": {
             "horizontal": {
                 "enabled": fc_mono_h,
-                "blades": mono_h_blade if fc_mono_h else None
+                "blades": mono_h_blade
             },
             "vertical": {
                 "enabled": fc_mono_v,
-                "blades": mono_v_blade if fc_mono_v else None
+                "blades": mono_v_blade
             }
         },
         "analyzer": {
             "horizontal": {
                 "enabled": fc_ana_h,
-                "blades": ana_h_blade if fc_ana_h else None
+                "blades": ana_h_blade
             },
             "vertical": {
                 "enabled": fc_ana_v,
-                "blades": ana_v_blade if fc_ana_v else None
+                "blades": ana_v_blade
             }
         }
     }
@@ -551,12 +551,11 @@ with st.container(border=True):
             #st.text(np.array2string(mat1, precision=18, suppress_small=False))
             #st.text(np.array2string(mat2, precision=18, suppress_small=False))
             #st.text(np.array2string(mat3, precision=18, suppress_small=False))
-            RM, fig, status,num_mono_h = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            RM, fig, status = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
             st.pyplot(fig)
             st.text(status)
-            st.write("num_mono_h", num_mono_h)
     
     # ======================
     # scan mode
