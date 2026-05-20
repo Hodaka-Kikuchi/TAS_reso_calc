@@ -307,8 +307,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 theta_rad = np.radians(theta)
 
                 # 曲率 R = 2*f*|sin(theta)|
-                Rinv = (1.0/L_1 + 1.0/L_2)/(2.0 * np.abs(np.sin(theta_rad)))
-                R = 1/Rinv
+                R = 2.0 * f * np.abs(np.sin(theta_rad))
 
                 return R
             
@@ -320,8 +319,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 theta_rad = np.radians(theta)
 
                 # 曲率 R = 2*f*|sin(theta)|
-                Rinv = (1.0/L_1 + 1.0/L_2)*np.abs(np.sin(theta_rad))/2
-                R = 1/Rinv
+                R = 2.0 * f / np.abs(np.sin(theta_rad))
 
                 return R
             
@@ -863,4 +861,4 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax4.grid(True)
 
     #return A_sets,QE_sets,RM, fig
-    return T,D
+    return T
