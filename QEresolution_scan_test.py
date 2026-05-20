@@ -32,20 +32,20 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     # focusing conditionの読み出し
     # Monochromator Horizontal
-    MHF = focusing["monochromator"]["horizontal"]["enabled"]
-    num_mono_h = focusing["monochromator"]["horizontal"]["blades"] if MHF else None
+    MHF = not focusing["monochromator"]["horizontal"]["enabled"]
+    num_mono_h = not focusing["monochromator"]["horizontal"]["blades"] if MHF else None
 
     # Monochromator Vertical
-    MVF = focusing["monochromator"]["vertical"]["enabled"]
-    num_mono_v = focusing["monochromator"]["vertical"]["blades"] if MVF else None
+    MVF = not focusing["monochromator"]["vertical"]["enabled"]
+    num_mono_v = not focusing["monochromator"]["vertical"]["blades"] if MVF else None
 
     # Analyzer Horizontal
-    AHF = focusing["analyzer"]["horizontal"]["enabled"]
-    num_ana_h = focusing["analyzer"]["horizontal"]["blades"] if AHF else None
+    AHF = not focusing["analyzer"]["horizontal"]["enabled"]
+    num_ana_h = not focusing["analyzer"]["horizontal"]["blades"] if AHF else None
 
     # Analyzer Vertical
-    AVF = focusing["analyzer"]["vertical"]["enabled"]
-    num_ana_v = focusing["analyzer"]["vertical"]["blades"] if AVF else None
+    AVF = not focusing["analyzer"]["vertical"]["enabled"]
+    num_ana_v = not focusing["analyzer"]["vertical"]["blades"] if AVF else None
 
     # geom
     L0 = geom["L0"]
@@ -184,11 +184,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             
         alpha2 = div_2nd_h / 60 / 180 * pi * 0.4246609
         # focusingの場合式が異なる。
-        
+        alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
         if AHF:
-            alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
-
-        else:
             L=L2
             W=ana_width*num_ana_h*np.sin(np.radians(A3))
             af=2 * np.degrees(np.arctan((W / 2) / L))
@@ -196,7 +193,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             alpha3 = af / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
             
             #alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609 * (8*np.log(2)/12)**(1/2)
-            
+        else:
+            alpha3 = div_3rd_h / 60 / 180 * pi * 0.4246609
+
         alpha4 = div_4th_h / 60 / 180 * pi * 0.4246609
         beta2 = div_2nd_v / 60 / 180 * pi * 0.4246609
         beta3 = div_3rd_v / 60 / 180 * pi * 0.4246609
