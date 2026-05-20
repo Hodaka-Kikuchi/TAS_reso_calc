@@ -25,6 +25,12 @@ st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
 st.title("TAS Resolution Calculator [development]")
 st.warning("Development version")
 
+# development note
+
+st.markdown(
+    "📒 [Development Notes](https://tasresocalc-4mzh7b5efdx5qsyzkztcaf.streamlit.app/)"
+)
+
 with st.container(border=True):
     st.markdown("<h5>Lattice information</h5>", unsafe_allow_html=True)
 
