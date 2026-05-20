@@ -18,7 +18,7 @@ from QEresolution_scan_test import calcresolution_scan3 # スライダー形式�
 # =========================
 # Streamlit UI
 # =========================
-st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
+st.set_page_config(page_title="TAS Resolution Calculator (under development)", layout="wide")
 st.title("TAS Resolution Calculator")
 
 with st.container(border=True):
