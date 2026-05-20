@@ -480,8 +480,8 @@ with st.container(border=True):
             with st.container(border=True):
                 st.markdown("**Analyzer(per piece)**")
 
-                ana_width = st.number_input("A_Width", value=0.020, step=0.001,format="%.3f")
-                ana_height = st.number_input("A_Height", value=0.015, step=0.001,format="%.3f")
+                ana_width = st.number_input("A_Width", value=0.20, step=0.001,format="%.3f")
+                ana_height = st.number_input("A_Height", value=0.15, step=0.001,format="%.3f")
                 ana_thickness = st.number_input("A_Thickness", value=0.002, step=0.001,format="%.3f")
 
         # ===== Detector =====
