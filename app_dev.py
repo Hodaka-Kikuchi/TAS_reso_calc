@@ -653,17 +653,17 @@ with st.container(border=True):
 
             results = st.session_state.scan_results
 
-            col1, col2, col3 = st.columns([1, 1, 4])
+            col1, col2, col3 = st.columns([4, 1, 1])
 
-            with col1:
+            with col2:
                 if st.button("◀ Prev"):
                     st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
 
-            with col2:
+            with col3:
                 if st.button("Next ▶"):
                     st.session_state.scan_slider = min(len(results), st.session_state.scan_slider + 1)
 
-            with col3:
+            with col1:
                 i = st.slider(
                     "Scan index",
                     1,
