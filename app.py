@@ -144,7 +144,7 @@ with st.container(border=True):
     with col1:
         with st.container(border=True):
             st.markdown("### 1st")
-            gm_1st = st.checkbox("supermirror", key="gm_1st")
+            gm_1st = st.checkbox("supermirror", value=True, key="gm_1st")
 
             if gm_1st:
                 div_1st_m = st.number_input(
@@ -377,7 +377,7 @@ with st.container(border=True):
                 c3, c4 = st.columns(2)
 
                 with c3:
-                    fc_mono_v = st.checkbox("Vertical", key="fc_mono_v")
+                    fc_mono_v = st.checkbox("Vertical", value=True, key="fc_mono_v")
                 with c4:
                     mono_v_blade = st.number_input(
                         "Blade number",
@@ -405,7 +405,7 @@ with st.container(border=True):
                 c3, c4 = st.columns(2)
 
                 with c3:
-                    fc_ana_v = st.checkbox("Vertical", key="fc_ana_v")
+                    fc_ana_v = st.checkbox("Vertical", value=True, key="fc_ana_v")
                 with c4:
                     ana_v_blade = st.number_input(
                         "Blade number",
