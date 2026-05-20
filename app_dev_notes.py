@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.set_page_config(layout="wide")
 st.title("Development Notes")
 
 with open("dev_notes.txt", "r", encoding="utf-8") as f:
