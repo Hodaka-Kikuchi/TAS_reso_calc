@@ -579,7 +579,7 @@ with st.container(border=True):
 
         with c2:
             h_i = st.number_input("H initial", value=0.0, step=0.001, key="h_i",format="%.3f")
-            h_f = st.number_input("H final", value=0.001, step=0.001, key="h_f",format="%.3f")
+            h_f = st.number_input("H final", value=0.0, step=0.001, key="h_f",format="%.3f")
 
         with c3:
             k_i = st.number_input("K initial", value=0.0, step=0.001, key="k_i",format="%.3f")
