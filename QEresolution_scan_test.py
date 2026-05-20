@@ -1,4 +1,5 @@
 import numpy as np
+np.set_printoptions(precision=15, suppress=False)
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from numpy import pi, sin, cos, tan, sqrt, arcsin, arccos

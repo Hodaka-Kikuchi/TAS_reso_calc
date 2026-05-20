@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import math
 import pandas as pd
-np.set_printoptions(precision=15, suppress=False)
+
 # 逆格子計算
 from RL_calc import RL_calc
 
