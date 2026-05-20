@@ -19,7 +19,7 @@ from QEresolution_scan_test import calcresolution_scan3 # スライダー形式�
 # Streamlit UI
 # =========================
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
-st.title("TAS Resolution Calculator(under development)")
+st.title("TAS Resolution Calculator(only single QE point calculation is available.)")
 
 with st.container(border=True):
     st.markdown("<h5>Lattice information</h5>", unsafe_allow_html=True)
