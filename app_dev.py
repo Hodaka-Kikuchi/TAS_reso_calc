@@ -307,13 +307,15 @@ with st.container(border=True):
         with st.container(border=True):
             st.markdown("<h5>Configuration</h5>", unsafe_allow_html=True)
 
-            c1, c2, c3 = st.columns(3)
+            c1, c2 = st.columns([1, 1])
 
+            # ===== Left column =====
             with c1:
+
                 energy_mode = st.radio(
                     "Mode",
                     ["Ei fixed", "Ef fixed"],
-                    index=1,   # ← これ
+                    index=1,
                     key="energy_mode"
                 )
 
@@ -337,17 +339,18 @@ with st.container(border=True):
                     )
                     Ei = None
 
+            # ===== Right column =====
             with c2:
+
                 geometry = st.radio(
                     "Geometry",
                     ["W", "anti-W"]
                 )
 
-            with c3:
                 sign_config = st.radio(
                     "Sign",
                     ["+-+", "-+-"],
-                    index=1   # ← これ
+                    index=1
                 )
     with col2:
         with st.container(border=True):
