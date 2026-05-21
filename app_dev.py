@@ -175,7 +175,7 @@ with st.container(border=True):
     with col2:
         with st.container(border=True):
             st.markdown("### 2nd")
-            div_2nd_h = st.number_input("horizontal", value=80, key="div_2nd_h")
+            div_2nd_h = st.number_input("horizontal", value=120, key="div_2nd_h")
             div_2nd_v = st.number_input("vertical", value=240, key="div_2nd_v")
 
     with col3:
@@ -187,7 +187,7 @@ with st.container(border=True):
     with col4:
         with st.container(border=True):
             st.markdown("### 4th")
-            div_4th_h = st.number_input("horizontal", value=80, key="div_4th_h")
+            div_4th_h = st.number_input("horizontal", value=120, key="div_4th_h")
             div_4th_v = st.number_input("vertical", value=240, key="div_4th_v")
 
     col_param = {
