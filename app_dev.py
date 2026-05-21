@@ -21,6 +21,11 @@ INSTRUMENTS = {
     "CTAX": CTAX
 }
 
+INSTRUMENT_LABELS = {
+    "arbitrary": "Arbitrary",
+    "CTAX": "CTAX@HFIR"
+}
+
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
 # 続けて　streamlit run app_dev.py
@@ -44,13 +49,16 @@ with col1:
     )
 
 with col2:
-    instrument = st.selectbox(
+    instrument_display = st.selectbox(
         "Instrument",
-        list(INSTRUMENTS.keys()),
+        list(INSTRUMENT_LABELS.values()),
         key="instrument_select"
     )
     
-config = INSTRUMENTS.get(instrument, arbitrary)
+label_to_key = {v: k for k, v in INSTRUMENT_LABELS.items()}
+instrument = label_to_key[instrument_display]
+
+config = INSTRUMENTS[instrument]
 
 # 初回 or instrument変更時だけ反映
 if (
