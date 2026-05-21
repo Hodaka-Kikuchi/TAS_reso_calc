@@ -16,6 +16,10 @@ from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式�
 from defaults_arbitrary import arbitrary
 from defaults_ctax import CTAX
 
+INSTRUMENTS = {
+    "arbitrary": arbitrary,
+    "CTAX": CTAX
+}
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
@@ -42,27 +46,19 @@ with col1:
 with col2:
     instrument = st.selectbox(
         "Instrument",
-        ["arbitrary", "CTAX"],
+        list(INSTRUMENTS.keys()),
         key="instrument_select"
     )
-
-def load_instrument_defaults(instrument):
-    if instrument == "arbitrary":
-        return arbitrary
-    elif instrument == "CTAX":
-        return CTAX
-    else:
-        return {}
     
-config = load_instrument_defaults(instrument)
+config = INSTRUMENTS.get(instrument, arbitrary)
 
 # 初回 or instrument変更時だけ反映
 if (
     "instrument_loaded" not in st.session_state
     or st.session_state.instrument_loaded != instrument
 ):
-    config = load_instrument_defaults(instrument)
-    st.session_state.clear()
+    config = INSTRUMENTS[instrument]
+
     st.session_state.instrument_loaded = instrument
 
     # checkbox（bool）
