@@ -68,8 +68,8 @@ if "instrument_loaded" not in st.session_state or st.session_state.instrument_lo
 
     # number_input（float / int）
     st.session_state.Ef = config.get("configuration", {}).get("Ef", 4.8)
-    st.session_state.mos_mono_h = config["monochromator"]["mosaic_h"]
-    st.session_state.mos_mono_v = config["monochromator"]["mosaic_v"]
+    st.session_state.mos_mono_h = config.get("monochromator", {}).get("mosaic_h", 30)
+    st.session_state.mos_mono_v = config.get("monochromator", {}).get("mosaic_v", 30)
 
     st.session_state.L0 = config.get("distance", {}).get("L0", 0.0)
     st.session_state.L1 = config.get("distance", {}).get("L1", 0.0)
