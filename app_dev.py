@@ -12,6 +12,9 @@ from UB_calc import UB_calc
 # single QE positionでの計算
 from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
+# デフォルト数値を読み込み
+from instrument_defaults import CTAX
+
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
 # 続けて　streamlit run app_dev.py
@@ -27,9 +30,49 @@ st.warning("Development version")
 
 # development note
 
-st.markdown(
-    "📒 [Development Notes](https://tasresocalc-4mzh7b5efdx5qsyzkztcaf.streamlit.app/)"
-)
+col1, col2 = st.columns([3, 2])
+
+with col1:
+    st.markdown(
+        "📒 [Development Notes](https://tasresocalc-4mzh7b5efdx5qsyzkztcaf.streamlit.app/)"
+    )
+
+with col2:
+    instrument = st.selectbox(
+        "Instrument",
+        ["Manual", "CTAX"],
+        key="instrument_select"
+    )
+
+def load_instrument_defaults(instrument):
+    if instrument == "CTAX":
+        return CTAX
+    else:
+        return {}
+    
+config = load_instrument_defaults(instrument)
+
+# 初回 or instrument変更時だけ反映
+if "instrument_loaded" not in st.session_state or st.session_state.instrument_loaded != instrument:
+
+    # checkbox（bool）
+    st.session_state.gm_1st = config.get("supermirror", {}).get("enabled", False)
+
+    # radio（文字列）
+    st.session_state.energy_mode = config.get("configuration", {}).get("energy_mode", "Ei fixed")
+    st.session_state.geometry = config.get("configuration", {}).get("geometry", "W")
+    st.session_state.sign_config = config.get("configuration", {}).get("sign", "+-+")
+
+    # number_input（float / int）
+    st.session_state.Ef = config.get("configuration", {}).get("Ef", 4.8)
+
+    st.session_state.L0 = config.get("distance", {}).get("L0", 0.0)
+    st.session_state.L1 = config.get("distance", {}).get("L1", 0.0)
+    st.session_state.L2 = config.get("distance", {}).get("L2", 0.0)
+    st.session_state.L3 = config.get("distance", {}).get("L3", 0.0)
+
+    # 記録
+    st.session_state.instrument_loaded = instrument
 
 with st.container(border=True):
     st.markdown("<h5>Lattice information</h5>", unsafe_allow_html=True)
@@ -598,7 +641,7 @@ with st.container(border=True):
             l_f = st.number_input("L final", value=0.0, step=0.001, key="l_f",format="%.3f")
 
         with c5:
-            npts = st.number_input("Number of scan points",min_value=2, value=2, step=1, key="scan_npts")
+            npts = st.number_input("Scan points",min_value=2, value=2, step=1, key="scan_npts")
 
         calc_params = {
             "mode": "scan",
