@@ -47,10 +47,10 @@ with col2:
     )
 
 def load_instrument_defaults(instrument):
-    if instrument == "CTAX":
-        return CTAX
-    elif instrument == "arbitrary":
+    if instrument == "arbitrary":
         return arbitrary
+    elif instrument == "CTAX":
+        return CTAX
     else:
         return {}
     
