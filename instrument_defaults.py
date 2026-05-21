@@ -68,7 +68,7 @@ CTAX = {
     },
 }
 
-Manual = {
+MANUAL = {
     "supermirror": {
         "enabled": False,
         "m_value": 1.0
