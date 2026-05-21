@@ -5,3 +5,4 @@
 2026/05/20: Currently working on implementing support for scan operations.
 2026/05/20: Support has been added for displaying the resolution function in Scan mode.
 2026/05/20: I'm working to increase the processing speed of Scan mode.
+2026/05/21: I have prepared the default values ​​for the each instrument.
