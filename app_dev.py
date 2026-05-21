@@ -439,12 +439,14 @@ with st.container(border=True):
 
                 geometry = st.radio(
                     "Geometry",
-                    ["W", "anti-W"]
+                    ["W", "anti-W"],
+                    key="geometry"
                 )
 
                 sign_config = st.radio(
                     "Sign",
-                    ["+-+", "-+-"]
+                    ["+-+", "-+-"],
+                    key="sign_config"
                 )
     with col2:
         with st.container(border=True):
@@ -556,44 +558,100 @@ with st.container(border=True):
             with st.container(border=True):
                 st.markdown("**Distance**")
 
-                L0 = st.number_input("L0 (source→mono)", step=0.1,format="%.3f")
-                L1 = st.number_input("L1 (mono→sample)", step=0.01,format="%.3f")
-                L2 = st.number_input("L2 (sample→ana)", step=0.01,format="%.3f")
-                L3 = st.number_input("L3 (ana→det)", step=0.01,format="%.3f")
+                L0 = st.number_input("L0 (source→mono)", step=0.1, format="%.3f", key="L0")
+                L1 = st.number_input("L1 (mono→sample)", step=0.01, format="%.3f", key="L1")
+                L2 = st.number_input("L2 (sample→ana)", step=0.01, format="%.3f", key="L2")
+                L3 = st.number_input("L3 (ana→det)", step=0.01, format="%.3f", key="L3")
 
         # ===== Beam =====
         with col2:
             with st.container(border=True):
                 st.markdown("**Beam**")
 
-                beam_width = st.number_input("B_Width", step=0.001,format="%.3f")
-                beam_height = st.number_input("B_Height", step=0.001,format="%.3f")
+                beam_width = st.number_input(
+                    "B_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="beam_width"
+                )
+
+                beam_height = st.number_input(
+                    "B_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="beam_height"
+                )
 
         # ===== Monochromator =====
         with col3:
             with st.container(border=True):
                 st.markdown("**Monochromator(per piece)**")
 
-                mono_width = st.number_input("M_Width", step=0.001,format="%.3f")
-                mono_height = st.number_input("M_Height", step=0.001,format="%.3f")
-                mono_thickness = st.number_input("M_Thickness", step=0.001,format="%.3f")
+                mono_width = st.number_input(
+                    "M_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="mono_width"
+                )
+
+                mono_height = st.number_input(
+                    "M_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="mono_height"
+                )
+
+                mono_thickness = st.number_input(
+                    "M_Thickness",
+                    step=0.001,
+                    format="%.3f",
+                    key="mono_thickness"
+                )
 
         # ===== Analyzer =====
         with col4:
             with st.container(border=True):
                 st.markdown("**Analyzer(per piece)**")
 
-                ana_width = st.number_input("A_Width", step=0.001,format="%.3f")
-                ana_height = st.number_input("A_Height", step=0.001,format="%.3f")
-                ana_thickness = st.number_input("A_Thickness", step=0.001,format="%.3f")
+                ana_width = st.number_input(
+                    "A_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="ana_width"
+                )
+
+                ana_height = st.number_input(
+                    "A_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="ana_height"
+                )
+
+                ana_thickness = st.number_input(
+                    "A_Thickness",
+                    step=0.001,
+                    format="%.3f",
+                    key="ana_thickness"
+                )
 
         # ===== Detector =====
         with col5:
             with st.container(border=True):
                 st.markdown("**Detector**")
 
-                det_width = st.number_input("D_Width", step=0.001,format="%.3f")
-                det_height = st.number_input("D_Height", step=0.001,format="%.3f")
+                det_width = st.number_input(
+                    "D_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="det_width"
+                )
+
+                det_height = st.number_input(
+                    "D_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="det_height"
+                )
 
     geom = {
         "L0": L0,
