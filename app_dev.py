@@ -56,7 +56,13 @@ def load_instrument_defaults(instrument):
 config = load_instrument_defaults(instrument)
 
 # 初回 or instrument変更時だけ反映
-if "instrument_loaded" not in st.session_state or st.session_state.instrument_loaded != instrument:
+if (
+    "instrument_loaded" not in st.session_state
+    or st.session_state.instrument_loaded != instrument
+):
+    config = load_instrument_defaults(instrument)
+    st.session_state.clear()
+    st.session_state.instrument_loaded = instrument
 
     # checkbox（bool）
     st.session_state.gm_1st = config.get("supermirror", {}).get("enabled")
