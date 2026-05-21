@@ -18,7 +18,7 @@ from QEresolution_scan import calcresolution_scan3 # スライダー形式、Qz�
 # Streamlit UI
 # =========================
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
-st.title("TAS Resolution Calculator(only single QE point calculation is available.)")
+st.title("TAS Resolution Calculator")
 
 # development note
 
