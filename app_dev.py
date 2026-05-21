@@ -41,7 +41,7 @@ with col1:
 with col2:
     instrument = st.selectbox(
         "Instrument",
-        ["Manual", "CTAX"],
+        ["MANUAL", "CTAX"],
         key="instrument_select"
     )
 
