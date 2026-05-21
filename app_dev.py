@@ -13,8 +13,9 @@ from UB_calc import UB_calc
 from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
 # デフォルト数値を読み込み
-from defaults_ctax import CTAX
 from defaults_arbitrary import arbitrary
+from defaults_ctax import CTAX
+
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
