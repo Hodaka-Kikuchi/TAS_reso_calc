@@ -72,7 +72,20 @@ if "instrument_loaded" not in st.session_state or st.session_state.instrument_lo
     st.session_state.ana = config.get("analyzer", {}).get("crystal")
 
     # number_input（float / int）
+    if st.session_state.gm_1st:
+        st.session_state.div_2nd_h = config.get("collimator", {}).get("2nd_h")
+        st.session_state.div_2nd_v = config.get("collimator", {}).get("2nd_v")
+        st.session_state.div_3rd_h = config.get("collimator", {}).get("3rd_h")
+        st.session_state.div_3rd_v = config.get("collimator", {}).get("3rd_v")
+        st.session_state.div_4th_h = config.get("collimator", {}).get("4th_h")
+        st.session_state.div_4th_v = config.get("collimator", {}).get("4th_v")
+        pass
+    else:
+        st.session_state.div_1st_h = config.get("collimator", {}).get("1st_h")
+        st.session_state.div_1st_v = config.get("collimator", {}).get("1st_v")
+
     st.session_state.Ef = config.get("configuration", {}).get("Ef")
+
     st.session_state.mono_h_blade = config.get("monochromator", {}).get("blade_h")
     st.session_state.mono_v_blade = config.get("monochromator", {}).get("blade_v")
     st.session_state.ana_h_blade = config.get("analyzer", {}).get("blade_h")
@@ -223,7 +236,7 @@ with st.container(border=True):
     with col1:
         with st.container(border=True):
             st.markdown("### 1st")
-            gm_1st = st.checkbox("supermirror", key="gm_1st")
+            gm_1st = st.checkbox("supermirror", value=True, key="gm_1st")
 
             if gm_1st:
                 div_1st_m = st.number_input(
