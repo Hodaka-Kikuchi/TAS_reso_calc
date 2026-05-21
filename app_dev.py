@@ -411,7 +411,6 @@ with st.container(border=True):
                 energy_mode = st.radio(
                     "Mode",
                     ["Ei fixed", "Ef fixed"],
-                    index=1,
                     key="energy_mode"
                 )
 
@@ -445,8 +444,7 @@ with st.container(border=True):
 
                 sign_config = st.radio(
                     "Sign",
-                    ["+-+", "-+-"],
-                    index=1
+                    ["+-+", "-+-"]
                 )
     with col2:
         with st.container(border=True):
@@ -474,7 +472,6 @@ with st.container(border=True):
                     mono_h_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
                         key="mono_h_blade"
                     )
 
@@ -486,7 +483,6 @@ with st.container(border=True):
                     mono_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=7,
                         key="mono_v_blade"
                     )
 
@@ -502,7 +498,6 @@ with st.container(border=True):
                     ana_h_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=9,
                         key="ana_h_blade"
                     )
 
@@ -514,7 +509,6 @@ with st.container(border=True):
                     ana_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=7,
                         key="ana_v_blade"
                     )
 
@@ -562,44 +556,44 @@ with st.container(border=True):
             with st.container(border=True):
                 st.markdown("**Distance**")
 
-                L0 = st.number_input("L0 (source→mono)", value=53.0, step=0.1,format="%.3f")
-                L1 = st.number_input("L1 (mono→sample)", value=1.60, step=0.01,format="%.3f")
-                L2 = st.number_input("L2 (sample→ana)", value=1.06, step=0.01,format="%.3f")
-                L3 = st.number_input("L3 (ana→det)", value=0.50, step=0.01,format="%.3f")
+                L0 = st.number_input("L0 (source→mono)", step=0.1,format="%.3f")
+                L1 = st.number_input("L1 (mono→sample)", step=0.01,format="%.3f")
+                L2 = st.number_input("L2 (sample→ana)", step=0.01,format="%.3f")
+                L3 = st.number_input("L3 (ana→det)", step=0.01,format="%.3f")
 
         # ===== Beam =====
         with col2:
             with st.container(border=True):
                 st.markdown("**Beam**")
 
-                beam_width = st.number_input("B_Width", value=0.07, step=0.001,format="%.3f")
-                beam_height = st.number_input("B_Height", value=0.14, step=0.001,format="%.3f")
+                beam_width = st.number_input("B_Width", step=0.001,format="%.3f")
+                beam_height = st.number_input("B_Height", step=0.001,format="%.3f")
 
         # ===== Monochromator =====
         with col3:
             with st.container(border=True):
                 st.markdown("**Monochromator(per piece)**")
 
-                mono_width = st.number_input("M_Width", value=0.07, step=0.001,format="%.3f")
-                mono_height = st.number_input("M_Height", value=0.02, step=0.001,format="%.3f")
-                mono_thickness = st.number_input("M_Thickness", value=0.002, step=0.001,format="%.3f")
+                mono_width = st.number_input("M_Width", step=0.001,format="%.3f")
+                mono_height = st.number_input("M_Height", step=0.001,format="%.3f")
+                mono_thickness = st.number_input("M_Thickness", step=0.001,format="%.3f")
 
         # ===== Analyzer =====
         with col4:
             with st.container(border=True):
                 st.markdown("**Analyzer(per piece)**")
 
-                ana_width = st.number_input("A_Width", value=0.022, step=0.001,format="%.3f")
-                ana_height = st.number_input("A_Height", value=0.022, step=0.001,format="%.3f")
-                ana_thickness = st.number_input("A_Thickness", value=0.002, step=0.001,format="%.3f")
+                ana_width = st.number_input("A_Width", step=0.001,format="%.3f")
+                ana_height = st.number_input("A_Height", step=0.001,format="%.3f")
+                ana_thickness = st.number_input("A_Thickness", step=0.001,format="%.3f")
 
         # ===== Detector =====
         with col5:
             with st.container(border=True):
                 st.markdown("**Detector**")
 
-                det_width = st.number_input("D_Width", value=0.032, step=0.001,format="%.3f")
-                det_height = st.number_input("D_Height", value=0.120, step=0.001,format="%.3f")
+                det_width = st.number_input("D_Width", step=0.001,format="%.3f")
+                det_height = st.number_input("D_Height", step=0.001,format="%.3f")
 
     geom = {
         "L0": L0,
