@@ -111,7 +111,7 @@ if (
     st.session_state.L3 = config.get("distance", {}).get("L3")
 
     st.session_state.beam_width = config.get("beam", {}).get("width")
-    st.session_state.beam_height = config.get("beam", {}).get("B_height")
+    st.session_state.beam_height = config.get("beam", {}).get("height")
 
     st.session_state.mono_width = config.get("monochromator", {}).get("width")
     st.session_state.mono_height = config.get("monochromator", {}).get("height")
