@@ -352,8 +352,8 @@ with st.container(border=True):
     with col2:
         with st.container(border=True):
             st.markdown("<h5>sample</h5>", unsafe_allow_html=True)
-            mos_sam_h = st.number_input("horizontal", key="mos_sam_h")
-            mos_sam_v = st.number_input("vertical", key="mos_sam_v")
+            mos_sam_h = st.number_input("horizontal", value=60, key="mos_sam_h")
+            mos_sam_v = st.number_input("vertical", value=60, key="mos_sam_v")
 
     with col3:
         with st.container(border=True):
