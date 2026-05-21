@@ -7,7 +7,7 @@ arbitrary = {
     },
 
     "collimator": {
-        "1st_h": 80,
+        "1st_h": 800,
         "1st_v": 120,
         "2nd_h": 80,
         "2nd_v": 120,
