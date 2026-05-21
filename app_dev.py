@@ -223,7 +223,7 @@ with st.container(border=True):
     with col1:
         with st.container(border=True):
             st.markdown("### 1st")
-            gm_1st = st.checkbox("supermirror", value=True, key="gm_1st")
+            gm_1st = st.checkbox("supermirror", key="gm_1st")
 
             if gm_1st:
                 div_1st_m = st.number_input(
