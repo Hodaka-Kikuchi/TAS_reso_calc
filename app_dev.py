@@ -81,13 +81,13 @@ if (
     st.session_state.ana = config.get("analyzer", {}).get("crystal")
 
     # number_input（float / int）
+    st.session_state.div_2nd_h = config.get("collimator", {}).get("2nd_h")
+    st.session_state.div_2nd_v = config.get("collimator", {}).get("2nd_v")
+    st.session_state.div_3rd_h = config.get("collimator", {}).get("3rd_h")
+    st.session_state.div_3rd_v = config.get("collimator", {}).get("3rd_v")
+    st.session_state.div_4th_h = config.get("collimator", {}).get("4th_h")
+    st.session_state.div_4th_v = config.get("collimator", {}).get("4th_v")
     if st.session_state.gm_1st:
-        st.session_state.div_2nd_h = config.get("collimator", {}).get("2nd_h")
-        st.session_state.div_2nd_v = config.get("collimator", {}).get("2nd_v")
-        st.session_state.div_3rd_h = config.get("collimator", {}).get("3rd_h")
-        st.session_state.div_3rd_v = config.get("collimator", {}).get("3rd_v")
-        st.session_state.div_4th_h = config.get("collimator", {}).get("4th_h")
-        st.session_state.div_4th_v = config.get("collimator", {}).get("4th_v")
         pass
     else:
         st.session_state.div_1st_h = config.get("collimator", {}).get("1st_h")
