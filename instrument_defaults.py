@@ -135,3 +135,8 @@ MANUAL = {
         "height": 0.15
     },
 }
+
+INSTRUMENT = {
+    "CTAX": CTAX,
+    "Manual": MANUAL
+}

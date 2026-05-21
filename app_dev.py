@@ -13,7 +13,7 @@ from UB_calc import UB_calc
 from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
 # デフォルト数値を読み込み
-from instrument_defaults import CTAX
+import instrument_defaults as inst
 
 
 # 使用方法
@@ -46,12 +46,7 @@ with col2:
     )
 
 def load_instrument_defaults(instrument):
-    if instrument == "CTAX":
-        return CTAX
-    elif instrument == "Manual":
-        return CTAX
-    else:
-        return {}
+    return inst.INSTRUMENT.get(instrument, {})
     
 config = load_instrument_defaults(instrument)
 
