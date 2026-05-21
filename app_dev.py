@@ -254,37 +254,37 @@ with st.container(border=True):
                     key="div_1st_m"
                 )
 
-                st.number_input("horizontal (disabled)", value=80, disabled=True, key="div_1st_h_disabled")
-                st.number_input("vertical (disabled)", value=240, disabled=True, key="div_1st_v_disabled")
+                st.number_input("horizontal (disabled)", disabled=True, key="div_1st_h_disabled")
+                st.number_input("vertical (disabled)", disabled=True, key="div_1st_v_disabled")
 
                 div_1st_h = None
                 div_1st_v = None
 
             else:
-                div_1st_h = st.number_input("horizontal", value=80, key="div_1st_h")
-                div_1st_v = st.number_input("vertical", value=240, key="div_1st_v")
+                div_1st_h = st.number_input("horizontal", key="div_1st_h")
+                div_1st_v = st.number_input("vertical", key="div_1st_v")
 
-                st.number_input("m-value (disabled)", value=1.2, disabled=True, key="div_1st_m_disabled")
+                st.number_input("m-value (disabled)", disabled=True, key="div_1st_m_disabled")
 
                 div_1st_m = None
 
     with col2:
         with st.container(border=True):
             st.markdown("### 2nd")
-            div_2nd_h = st.number_input("horizontal", value=120, key="div_2nd_h")
-            div_2nd_v = st.number_input("vertical", value=240, key="div_2nd_v")
+            div_2nd_h = st.number_input("horizontal", key="div_2nd_h")
+            div_2nd_v = st.number_input("vertical", key="div_2nd_v")
 
     with col3:
         with st.container(border=True):
             st.markdown("### 3rd")
-            div_3rd_h = st.number_input("horizontal", value=80, key="div_3rd_h")
-            div_3rd_v = st.number_input("vertical", value=240, key="div_3rd_v")
+            div_3rd_h = st.number_input("horizontal", key="div_3rd_h")
+            div_3rd_v = st.number_input("vertical", key="div_3rd_v")
 
     with col4:
         with st.container(border=True):
             st.markdown("### 4th")
-            div_4th_h = st.number_input("horizontal", value=120, key="div_4th_h")
-            div_4th_v = st.number_input("vertical", value=240, key="div_4th_v")
+            div_4th_h = st.number_input("horizontal", key="div_4th_h")
+            div_4th_v = st.number_input("vertical", key="div_4th_v")
 
     col_param = {
         'gm_1st':gm_1st,
