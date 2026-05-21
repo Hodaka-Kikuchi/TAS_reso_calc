@@ -12,6 +12,10 @@ from UB_calc import UB_calc
 # single QE positionでの計算
 from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
+import defaults_manual
+
+st.write(dir(defaults_manual))
+
 # デフォルト数値を読み込み
 from defaults_ctax import CTAX
 from defaults_manual import MANUAL
