@@ -346,14 +346,14 @@ with st.container(border=True):
 
                 st.write("d =", d_mono)
             with c2:
-                mos_mono_h= st.number_input("horizontal", value=30, key="mos_mono_h")
-                mos_mono_v = st.number_input("vertical", value=30, key="mos_mono_v")
+                mos_mono_h= st.number_input("horizontal", key="mos_mono_h")
+                mos_mono_v = st.number_input("vertical", key="mos_mono_v")
 
     with col2:
         with st.container(border=True):
             st.markdown("<h5>sample</h5>", unsafe_allow_html=True)
-            mos_sam_h = st.number_input("horizontal", value=60, key="mos_sam_h")
-            mos_sam_v = st.number_input("vertical", value=60, key="mos_sam_v")
+            mos_sam_h = st.number_input("horizontal", key="mos_sam_h")
+            mos_sam_v = st.number_input("vertical", key="mos_sam_v")
 
     with col3:
         with st.container(border=True):
@@ -381,8 +381,8 @@ with st.container(border=True):
                 st.write("d =", d_ana)
 
             with c2:
-                mos_ana_h = st.number_input("horizontal", value=30, key="mos_ana_h")
-                mos_ana_v = st.number_input("vertical", value=30, key="mos_ana_v")
+                mos_ana_h = st.number_input("horizontal", key="mos_ana_h")
+                mos_ana_v = st.number_input("vertical", key="mos_ana_v")
 
     mos_param = {
         "d_mono":d_mono,
@@ -417,7 +417,6 @@ with st.container(border=True):
                 if energy_mode == "Ei fixed":
                     Ei = st.number_input(
                         "Ei (meV)",
-                        value=4.8,
                         step=0.001,
                         format="%.3f",
                         key="Ei"
@@ -427,7 +426,6 @@ with st.container(border=True):
                 else:
                     Ef = st.number_input(
                         "Ef (meV)",
-                        value=4.8,
                         step=0.1,
                         format="%.3f",
                         key="Ef"
