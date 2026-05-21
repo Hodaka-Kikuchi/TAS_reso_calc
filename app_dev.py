@@ -12,13 +12,9 @@ from UB_calc import UB_calc
 # single QE positionでの計算
 from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
-import defaults_manual
-
-st.write(dir(defaults_manual))
-
 # デフォルト数値を読み込み
 from defaults_ctax import CTAX
-from defaults_manual import arbitrary
+from defaults_arbitrary import arbitrary
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
