@@ -61,10 +61,15 @@ if "instrument_loaded" not in st.session_state or st.session_state.instrument_lo
     # radio（文字列）
     st.session_state.energy_mode = config.get("configuration", {}).get("energy_mode", "Ei fixed")
     st.session_state.geometry = config.get("configuration", {}).get("geometry", "W")
-    st.session_state.sign_config = config.get("configuration", {}).get("sign", "+-+")
+    st.session_state.sign_config = config.get("configuration", {}).get("sign", "-+-")
+
+    # combobox
+    st.session_state.mono = config.get("monochromator", {}).get("crystal", "PG002")
 
     # number_input（float / int）
     st.session_state.Ef = config.get("configuration", {}).get("Ef", 4.8)
+    st.session_state.mos_mono_h = config["monochromator"]["mosaic_h"]
+    st.session_state.mos_mono_v = config["monochromator"]["mosaic_v"]
 
     st.session_state.L0 = config.get("distance", {}).get("L0", 0.0)
     st.session_state.L1 = config.get("distance", {}).get("L1", 0.0)
