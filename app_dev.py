@@ -58,8 +58,8 @@ if "instrument_loaded" not in st.session_state or st.session_state.instrument_lo
     # checkbox（bool）
     st.session_state.gm_1st = config.get("supermirror", {}).get("enabled", False)
     st.session_state.fc_mono_h = config.get("monochromator", {}).get("hfocus", False)
-    st.session_state.fc_ana_v = config.get("monochromator", {}).get("vfocus", False)
-    st.session_state.fc_mono_h = config.get("analyzer", {}).get("hfocus", False)
+    st.session_state.fc_mono_v = config.get("monochromator", {}).get("vfocus", False)
+    st.session_state.fc_ana_h = config.get("analyzer", {}).get("hfocus", False)
     st.session_state.fc_ana_v = config.get("analyzer", {}).get("vfocus", False)
 
     # radio（文字列）
