@@ -56,32 +56,51 @@ config = load_instrument_defaults(instrument)
 if "instrument_loaded" not in st.session_state or st.session_state.instrument_loaded != instrument:
 
     # checkbox（bool）
-    st.session_state.gm_1st = config.get("supermirror", {}).get("enabled", False)
-    st.session_state.fc_mono_h = config.get("monochromator", {}).get("hfocus", False)
-    st.session_state.fc_mono_v = config.get("monochromator", {}).get("vfocus", False)
-    st.session_state.fc_ana_h = config.get("analyzer", {}).get("hfocus", False)
-    st.session_state.fc_ana_v = config.get("analyzer", {}).get("vfocus", False)
+    st.session_state.gm_1st = config.get("supermirror", {}).get("enabled")
+    st.session_state.fc_mono_h = config.get("monochromator", {}).get("hfocus")
+    st.session_state.fc_mono_v = config.get("monochromator", {}).get("vfocus")
+    st.session_state.fc_ana_h = config.get("analyzer", {}).get("hfocus")
+    st.session_state.fc_ana_v = config.get("analyzer", {}).get("vfocus")
 
     # radio（文字列）
-    st.session_state.energy_mode = config.get("configuration", {}).get("energy_mode", "Ef fixed")
-    st.session_state.geometry = config.get("configuration", {}).get("geometry", "W")
-    st.session_state.sign_config = config.get("configuration", {}).get("sign", "-+-")
+    st.session_state.energy_mode = config.get("configuration", {}).get("energy_mode")
+    st.session_state.geometry = config.get("configuration", {}).get("geometry")
+    st.session_state.sign_config = config.get("configuration", {}).get("sign")
 
     # combobox
-    st.session_state.mono = config.get("monochromator", {}).get("crystal", "PG002")
-    st.session_state.ana = config.get("analyzer", {}).get("crystal", "PG002")
+    st.session_state.mono = config.get("monochromator", {}).get("crystal")
+    st.session_state.ana = config.get("analyzer", {}).get("crystal")
 
     # number_input（float / int）
-    st.session_state.Ef = config.get("configuration", {}).get("Ef", 4.8)
-    st.session_state.mono_h_blade = config.get("monochromator", {}).get("blade_h", 1)
+    st.session_state.Ef = config.get("configuration", {}).get("Ef")
+    st.session_state.mono_h_blade = config.get("monochromator", {}).get("blade_h")
+    st.session_state.mono_v_blade = config.get("monochromator", {}).get("blade_v")
+    st.session_state.ana_h_blade = config.get("analyzer", {}).get("blade_h")
+    st.session_state.ana_v_blade = config.get("analyzer", {}).get("blade_v")
 
-    st.session_state.mos_mono_h = config.get("monochromator", {}).get("mosaic_h", 30)
-    st.session_state.mos_mono_v = config.get("monochromator", {}).get("mosaic_v", 30)
+    st.session_state.mos_mono_h = config.get("monochromator", {}).get("mosaic_h")
+    st.session_state.mos_mono_v = config.get("monochromator", {}).get("mosaic_v")
+    st.session_state.mos_ana_h = config.get("analyzer", {}).get("mosaic_h")
+    st.session_state.mos_ana_v = config.get("analyzer", {}).get("mosaic_v")
 
-    st.session_state.L0 = config.get("distance", {}).get("L0", 0.0)
-    st.session_state.L1 = config.get("distance", {}).get("L1", 0.0)
-    st.session_state.L2 = config.get("distance", {}).get("L2", 0.0)
-    st.session_state.L3 = config.get("distance", {}).get("L3", 0.0)
+    st.session_state.L0 = config.get("distance", {}).get("L0")
+    st.session_state.L1 = config.get("distance", {}).get("L1")
+    st.session_state.L2 = config.get("distance", {}).get("L2")
+    st.session_state.L3 = config.get("distance", {}).get("L3")
+
+    st.session_state.beam_width = config.get("beam", {}).get("width")
+    st.session_state.beam_height = config.get("beam", {}).get("B_height")
+
+    st.session_state.mono_width = config.get("monochromator", {}).get("width")
+    st.session_state.mono_height = config.get("monochromator", {}).get("height")
+    st.session_state.mono_thickness = config.get("monochromator", {}).get("thickness")
+
+    st.session_state.ana_width = config.get("analyzer", {}).get("width")
+    st.session_state.ana_height = config.get("analyzer", {}).get("height")
+    st.session_state.ana_thickness = config.get("analyzer", {}).get("thickness")
+
+    st.session_state.det_width = config.get("detector", {}).get("width")
+    st.session_state.det_height = config.get("detector", {}).get("height")
 
     # 記録
     st.session_state.instrument_loaded = instrument
