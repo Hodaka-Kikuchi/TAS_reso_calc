@@ -1,4 +1,4 @@
-# instrument_defaults.py
+# defaults_manual.py
 
 Manual = {
     "supermirror": {

@@ -1,4 +1,4 @@
-# instrument_defaults.py
+# defaults_ctax.py
 CTAX = {
     "supermirror": {
         "enabled": True,
