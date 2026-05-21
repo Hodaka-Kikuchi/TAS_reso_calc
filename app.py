@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import math
 import pandas as pd
+import json
 
 # 逆格子計算
 from RL_calc import RL_calc
@@ -12,19 +13,130 @@ from UB_calc import UB_calc
 # single QE positionでの計算
 from QEresolution_scan import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
+
+
+# 逆格子計算
+from RL_calc import RL_calc
+
+# UB計算
+from UB_calc import UB_calc
+
+# single QE positionでの計算
+from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+
+# 使用方法
+# powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
+# 続けて　streamlit run app_dev.py
+
 #################################################################################
 
 # =========================
 # Streamlit UI
 # =========================
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
-st.title("TAS Resolution Calculator")
+st.title("TAS Resolution Calculator [debug mode]")
+st.warning("Development version")
 
-# development note
+# development note & default value
 
-st.markdown(
-    "📒 [Development Notes](https://tasresocalc-4mzh7b5efdx5qsyzkztcaf.streamlit.app/)"
+with open("default_instr_val.json", "r") as f:
+    INSTRUMENTS = json.load(f)
+
+INSTRUMENT_LABELS = {
+    "arbitrary": "ARBITRARY",
+    "CTAX": "CTAX@HFIR"
+}
+
+col1, col2 = st.columns([3, 2])
+
+with col1:
+    st.markdown(
+        "📒 [Development Notes](https://tasresocalc-4mzh7b5efdx5qsyzkztcaf.streamlit.app/)"
+    )
+
+with col2:
+    instrument_display = st.selectbox(
+    "Instrument",
+    list(INSTRUMENT_LABELS.values()),
+    key="instrument_select"
 )
+
+label_to_key = {v: k for k, v in INSTRUMENT_LABELS.items()}
+instrument = label_to_key[instrument_display]
+
+config = INSTRUMENTS[instrument]
+
+# 初回 or instrument変更時だけ反映
+if (
+    "instrument_loaded" not in st.session_state
+    or st.session_state.instrument_loaded != instrument
+):
+    config = INSTRUMENTS[instrument]
+
+    st.session_state.instrument_loaded = instrument
+
+    # checkbox（bool）
+    st.session_state.gm_1st = config.get("supermirror", {}).get("enabled")
+    st.session_state.fc_mono_h = config.get("monochromator", {}).get("hfocus")
+    st.session_state.fc_mono_v = config.get("monochromator", {}).get("vfocus")
+    st.session_state.fc_ana_h = config.get("analyzer", {}).get("hfocus")
+    st.session_state.fc_ana_v = config.get("analyzer", {}).get("vfocus")
+
+    # radio（文字列）
+    st.session_state.energy_mode = config.get("configuration", {}).get("energy_mode")
+    st.session_state.geometry = config.get("configuration", {}).get("geometry")
+    st.session_state.sign_config = config.get("configuration", {}).get("sign")
+
+    # combobox
+    st.session_state.mono = config.get("monochromator", {}).get("crystal")
+    st.session_state.ana = config.get("analyzer", {}).get("crystal")
+
+    # number_input（float / int）
+    st.session_state.div_2nd_h = config.get("collimator", {}).get("2nd_h")
+    st.session_state.div_2nd_v = config.get("collimator", {}).get("2nd_v")
+    st.session_state.div_3rd_h = config.get("collimator", {}).get("3rd_h")
+    st.session_state.div_3rd_v = config.get("collimator", {}).get("3rd_v")
+    st.session_state.div_4th_h = config.get("collimator", {}).get("4th_h")
+    st.session_state.div_4th_v = config.get("collimator", {}).get("4th_v")
+    if st.session_state.gm_1st:
+        st.session_state.div_1st_m = config.get("supermirror", {}).get("m_value")
+    else:
+        st.session_state.div_1st_h = config.get("collimator", {}).get("1st_h")
+        st.session_state.div_1st_v = config.get("collimator", {}).get("1st_v")
+
+    st.session_state.Ef = config.get("configuration", {}).get("Ef")
+
+    st.session_state.mono_h_blade = config.get("monochromator", {}).get("blade_h")
+    st.session_state.mono_v_blade = config.get("monochromator", {}).get("blade_v")
+    st.session_state.ana_h_blade = config.get("analyzer", {}).get("blade_h")
+    st.session_state.ana_v_blade = config.get("analyzer", {}).get("blade_v")
+
+    st.session_state.mos_mono_h = config.get("monochromator", {}).get("mosaic_h")
+    st.session_state.mos_mono_v = config.get("monochromator", {}).get("mosaic_v")
+    st.session_state.mos_ana_h = config.get("analyzer", {}).get("mosaic_h")
+    st.session_state.mos_ana_v = config.get("analyzer", {}).get("mosaic_v")
+
+    st.session_state.L0 = config.get("distance", {}).get("L0")
+    st.session_state.L1 = config.get("distance", {}).get("L1")
+    st.session_state.L2 = config.get("distance", {}).get("L2")
+    st.session_state.L3 = config.get("distance", {}).get("L3")
+
+    st.session_state.beam_width = config.get("beam", {}).get("width")
+    st.session_state.beam_height = config.get("beam", {}).get("height")
+
+    st.session_state.mono_width = config.get("monochromator", {}).get("width")
+    st.session_state.mono_height = config.get("monochromator", {}).get("height")
+    st.session_state.mono_thickness = config.get("monochromator", {}).get("thickness")
+
+    st.session_state.ana_width = config.get("analyzer", {}).get("width")
+    st.session_state.ana_height = config.get("analyzer", {}).get("height")
+    st.session_state.ana_thickness = config.get("analyzer", {}).get("thickness")
+
+    st.session_state.det_width = config.get("detector", {}).get("width")
+    st.session_state.det_height = config.get("detector", {}).get("height")
+
+    # 記録
+    st.session_state.instrument_loaded = instrument
 
 with st.container(border=True):
     st.markdown("<h5>Lattice information</h5>", unsafe_allow_html=True)
@@ -149,41 +261,40 @@ with st.container(border=True):
             if gm_1st:
                 div_1st_m = st.number_input(
                     "m-value",
-                    value=1.2,
                     key="div_1st_m"
                 )
 
-                st.number_input("horizontal (disabled)", value=80, disabled=True, key="div_1st_h_disabled")
-                st.number_input("vertical (disabled)", value=240, disabled=True, key="div_1st_v_disabled")
+                st.number_input("horizontal (disabled)", disabled=True, key="div_1st_h_disabled")
+                st.number_input("vertical (disabled)", disabled=True, key="div_1st_v_disabled")
 
                 div_1st_h = None
                 div_1st_v = None
 
             else:
-                div_1st_h = st.number_input("horizontal", value=80, key="div_1st_h")
-                div_1st_v = st.number_input("vertical", value=240, key="div_1st_v")
+                div_1st_h = st.number_input("horizontal", key="div_1st_h")
+                div_1st_v = st.number_input("vertical", key="div_1st_v")
 
-                st.number_input("m-value (disabled)", value=1.2, disabled=True, key="div_1st_m_disabled")
+                st.number_input("m-value (disabled)", disabled=True, key="div_1st_m_disabled")
 
                 div_1st_m = None
 
     with col2:
         with st.container(border=True):
             st.markdown("### 2nd")
-            div_2nd_h = st.number_input("horizontal", value=80, key="div_2nd_h")
-            div_2nd_v = st.number_input("vertical", value=240, key="div_2nd_v")
+            div_2nd_h = st.number_input("horizontal", key="div_2nd_h")
+            div_2nd_v = st.number_input("vertical", key="div_2nd_v")
 
     with col3:
         with st.container(border=True):
             st.markdown("### 3rd")
-            div_3rd_h = st.number_input("horizontal", value=80, key="div_3rd_h")
-            div_3rd_v = st.number_input("vertical", value=240, key="div_3rd_v")
+            div_3rd_h = st.number_input("horizontal", key="div_3rd_h")
+            div_3rd_v = st.number_input("vertical", key="div_3rd_v")
 
     with col4:
         with st.container(border=True):
             st.markdown("### 4th")
-            div_4th_h = st.number_input("horizontal", value=80, key="div_4th_h")
-            div_4th_v = st.number_input("vertical", value=240, key="div_4th_v")
+            div_4th_h = st.number_input("horizontal", key="div_4th_h")
+            div_4th_v = st.number_input("vertical", key="div_4th_v")
 
     col_param = {
         'gm_1st':gm_1st,
@@ -245,8 +356,8 @@ with st.container(border=True):
 
                 st.write("d =", d_mono)
             with c2:
-                mos_mono_h= st.number_input("horizontal", value=30, key="mos_mono_h")
-                mos_mono_v = st.number_input("vertical", value=30, key="mos_mono_v")
+                mos_mono_h= st.number_input("horizontal", key="mos_mono_h")
+                mos_mono_v = st.number_input("vertical", key="mos_mono_v")
 
     with col2:
         with st.container(border=True):
@@ -280,8 +391,8 @@ with st.container(border=True):
                 st.write("d =", d_ana)
 
             with c2:
-                mos_ana_h = st.number_input("horizontal", value=30, key="mos_ana_h")
-                mos_ana_v = st.number_input("vertical", value=30, key="mos_ana_v")
+                mos_ana_h = st.number_input("horizontal", key="mos_ana_h")
+                mos_ana_v = st.number_input("vertical", key="mos_ana_v")
 
     mos_param = {
         "d_mono":d_mono,
@@ -297,25 +408,25 @@ with st.container(border=True):
 with st.container(border=True):
     st.subheader("Instrument setting")
 
-    col1, col2, col3 = st.columns([3, 2, 4])
+    col1, col2, col3 = st.columns([2, 1, 2])
     with col1:
         with st.container(border=True):
             st.markdown("<h5>Configuration</h5>", unsafe_allow_html=True)
 
-            c1, c2, c3 = st.columns(3)
+            c1, c2 = st.columns([1, 1])
 
+            # ===== Left column =====
             with c1:
+
                 energy_mode = st.radio(
                     "Mode",
                     ["Ei fixed", "Ef fixed"],
-                    index=1,   # ← これ
                     key="energy_mode"
                 )
 
                 if energy_mode == "Ei fixed":
                     Ei = st.number_input(
                         "Ei (meV)",
-                        value=4.8,
                         step=0.001,
                         format="%.3f",
                         key="Ei"
@@ -325,24 +436,25 @@ with st.container(border=True):
                 else:
                     Ef = st.number_input(
                         "Ef (meV)",
-                        value=4.8,
                         step=0.1,
                         format="%.3f",
                         key="Ef"
                     )
                     Ei = None
 
+            # ===== Right column =====
             with c2:
+
                 geometry = st.radio(
                     "Geometry",
-                    ["W", "anti-W"]
+                    ["W", "anti-W"],
+                    key="geometry"
                 )
 
-            with c3:
                 sign_config = st.radio(
                     "Sign",
                     ["+-+", "-+-"],
-                    index=1   # ← これ
+                    key="sign_config"
                 )
     with col2:
         with st.container(border=True):
@@ -370,7 +482,6 @@ with st.container(border=True):
                     mono_h_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
                         key="mono_h_blade"
                     )
 
@@ -382,7 +493,6 @@ with st.container(border=True):
                     mono_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
                         key="mono_v_blade"
                     )
 
@@ -398,7 +508,6 @@ with st.container(border=True):
                     ana_h_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
                         key="ana_h_blade"
                     )
 
@@ -410,7 +519,6 @@ with st.container(border=True):
                     ana_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
                         key="ana_v_blade"
                     )
 
@@ -458,44 +566,100 @@ with st.container(border=True):
             with st.container(border=True):
                 st.markdown("**Distance**")
 
-                L0 = st.number_input("L0 (source→mono)", value=53.0, step=0.1,format="%.3f")
-                L1 = st.number_input("L1 (mono→sample)", value=1.60, step=0.01,format="%.3f")
-                L2 = st.number_input("L2 (sample→ana)", value=1.06, step=0.01,format="%.3f")
-                L3 = st.number_input("L3 (ana→det)", value=0.50, step=0.01,format="%.3f")
+                L0 = st.number_input("L0 (source→mono)", step=0.1, format="%.3f", key="L0")
+                L1 = st.number_input("L1 (mono→sample)", step=0.01, format="%.3f", key="L1")
+                L2 = st.number_input("L2 (sample→ana)", step=0.01, format="%.3f", key="L2")
+                L3 = st.number_input("L3 (ana→det)", step=0.01, format="%.3f", key="L3")
 
         # ===== Beam =====
         with col2:
             with st.container(border=True):
                 st.markdown("**Beam**")
 
-                beam_width = st.number_input("B_Width", value=0.07, step=0.001,format="%.3f")
-                beam_height = st.number_input("B_Height", value=0.14, step=0.001,format="%.3f")
+                beam_width = st.number_input(
+                    "B_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="beam_width"
+                )
+
+                beam_height = st.number_input(
+                    "B_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="beam_height"
+                )
 
         # ===== Monochromator =====
         with col3:
             with st.container(border=True):
                 st.markdown("**Monochromator(per piece)**")
 
-                mono_width = st.number_input("M_Width", value=0.07, step=0.001,format="%.3f")
-                mono_height = st.number_input("M_Height", value=0.14, step=0.001,format="%.3f")
-                mono_thickness = st.number_input("M_Thickness", value=0.002, step=0.001,format="%.3f")
+                mono_width = st.number_input(
+                    "M_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="mono_width"
+                )
+
+                mono_height = st.number_input(
+                    "M_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="mono_height"
+                )
+
+                mono_thickness = st.number_input(
+                    "M_Thickness",
+                    step=0.001,
+                    format="%.3f",
+                    key="mono_thickness"
+                )
 
         # ===== Analyzer =====
         with col4:
             with st.container(border=True):
                 st.markdown("**Analyzer(per piece)**")
 
-                ana_width = st.number_input("A_Width", value=0.20, step=0.001,format="%.3f")
-                ana_height = st.number_input("A_Height", value=0.15, step=0.001,format="%.3f")
-                ana_thickness = st.number_input("A_Thickness", value=0.002, step=0.001,format="%.3f")
+                ana_width = st.number_input(
+                    "A_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="ana_width"
+                )
+
+                ana_height = st.number_input(
+                    "A_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="ana_height"
+                )
+
+                ana_thickness = st.number_input(
+                    "A_Thickness",
+                    step=0.001,
+                    format="%.3f",
+                    key="ana_thickness"
+                )
 
         # ===== Detector =====
         with col5:
             with st.container(border=True):
                 st.markdown("**Detector**")
 
-                det_width = st.number_input("D_Width", value=0.032, step=0.001,format="%.3f")
-                det_height = st.number_input("D_Height", value=0.120, step=0.001,format="%.3f")
+                det_width = st.number_input(
+                    "D_Width",
+                    step=0.001,
+                    format="%.3f",
+                    key="det_width"
+                )
+
+                det_height = st.number_input(
+                    "D_Height",
+                    step=0.001,
+                    format="%.3f",
+                    key="det_height"
+                )
 
     geom = {
         "L0": L0,
@@ -579,7 +743,7 @@ with st.container(border=True):
 
         with c2:
             h_i = st.number_input("H initial", value=0.0, step=0.001, key="h_i",format="%.3f")
-            h_f = st.number_input("H final", value=0.0, step=0.001, key="h_f",format="%.3f")
+            h_f = st.number_input("H final", value=0.00, step=0.001, key="h_f",format="%.3f")
 
         with c3:
             k_i = st.number_input("K initial", value=0.0, step=0.001, key="k_i",format="%.3f")
@@ -590,7 +754,7 @@ with st.container(border=True):
             l_f = st.number_input("L final", value=0.0, step=0.001, key="l_f",format="%.3f")
 
         with c5:
-            npts = st.number_input("Scan points", value=11, step=1, key="scan_npts")
+            npts = st.number_input("Scan points",min_value=2, value=2, step=1, key="scan_npts")
 
         calc_params = {
             "mode": "scan",
