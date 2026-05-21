@@ -88,7 +88,7 @@ if (
     st.session_state.div_4th_h = config.get("collimator", {}).get("4th_h")
     st.session_state.div_4th_v = config.get("collimator", {}).get("4th_v")
     if st.session_state.gm_1st:
-        pass
+        st.session_state.div_1st_m = config.get("supermirror", {}).get("m_value")
     else:
         st.session_state.div_1st_h = config.get("collimator", {}).get("1st_h")
         st.session_state.div_1st_v = config.get("collimator", {}).get("1st_v")
@@ -250,7 +250,6 @@ with st.container(border=True):
             if gm_1st:
                 div_1st_m = st.number_input(
                     "m-value",
-                    value=1.2,
                     key="div_1st_m"
                 )
 
