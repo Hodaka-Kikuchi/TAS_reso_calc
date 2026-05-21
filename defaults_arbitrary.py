@@ -1,6 +1,6 @@
 # defaults_manual.py
 
-arbitrary = {
+Arbitrary = {
     "supermirror": {
         "enabled": False,
         "m_value": 1.2
