@@ -1,5 +1,8 @@
 {
   "arbitrary": {
+    "approximation": {
+      "method": "Cooper-Nathans"
+    },
     "supermirror": {
       "enabled": false,
       "m_value": 1.2
