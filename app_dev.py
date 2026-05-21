@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import math
 import pandas as pd
+import json
 
 # 逆格子計算
 from RL_calc import RL_calc
@@ -11,20 +12,6 @@ from UB_calc import UB_calc
 
 # single QE positionでの計算
 from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
-
-# デフォルト数値を読み込み
-from defaults_arbitrary import arbitrary
-from defaults_ctax import CTAX
-
-INSTRUMENTS = {
-    "arbitrary": arbitrary,
-    "CTAX": CTAX
-}
-
-INSTRUMENT_LABELS = {
-    "arbitrary": "Arbitrary",
-    "CTAX": "CTAX@HFIR"
-}
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
@@ -39,7 +26,10 @@ st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
 st.title("TAS Resolution Calculator [debug mode]")
 st.warning("Development version")
 
-# development note
+# development note & default value
+
+with open("instrument_defaults.json", "r") as f:
+    INSTRUMENTS = json.load(f)
 
 col1, col2 = st.columns([3, 2])
 
@@ -49,14 +39,11 @@ with col1:
     )
 
 with col2:
-    instrument_display = st.selectbox(
+    instrument = st.selectbox(
         "Instrument",
-        list(INSTRUMENT_LABELS.values()),
+        list(INSTRUMENTS.keys()),
         key="instrument_select"
     )
-    
-label_to_key = {v: k for k, v in INSTRUMENT_LABELS.items()}
-instrument = label_to_key[instrument_display]
 
 config = INSTRUMENTS[instrument]
 
