@@ -149,7 +149,7 @@ with st.container(border=True):
     with col1:
         with st.container(border=True):
             st.markdown("### 1st")
-            gm_1st = st.checkbox("supermirror", key="gm_1st")
+            gm_1st = st.checkbox("supermirror", value=True, key="gm_1st")
 
             if gm_1st:
                 div_1st_m = st.number_input(
@@ -390,7 +390,7 @@ with st.container(border=True):
                     mono_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
+                        value=7,
                         key="mono_v_blade"
                     )
 
@@ -406,7 +406,7 @@ with st.container(border=True):
                     ana_h_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
+                        value=9,
                         key="ana_h_blade"
                     )
 
@@ -418,7 +418,7 @@ with st.container(border=True):
                     ana_v_blade = st.number_input(
                         "Blade number",
                         min_value=1,
-                        value=1,
+                        value=7,
                         key="ana_v_blade"
                     )
 
@@ -485,7 +485,7 @@ with st.container(border=True):
                 st.markdown("**Monochromator(per piece)**")
 
                 mono_width = st.number_input("M_Width", value=0.07, step=0.001,format="%.3f")
-                mono_height = st.number_input("M_Height", value=0.14, step=0.001,format="%.3f")
+                mono_height = st.number_input("M_Height", value=0.02, step=0.001,format="%.3f")
                 mono_thickness = st.number_input("M_Thickness", value=0.002, step=0.001,format="%.3f")
 
         # ===== Analyzer =====
@@ -493,8 +493,8 @@ with st.container(border=True):
             with st.container(border=True):
                 st.markdown("**Analyzer(per piece)**")
 
-                ana_width = st.number_input("A_Width", value=0.20, step=0.001,format="%.3f")
-                ana_height = st.number_input("A_Height", value=0.15, step=0.001,format="%.3f")
+                ana_width = st.number_input("A_Width", value=0.022, step=0.001,format="%.3f")
+                ana_height = st.number_input("A_Height", value=0.022, step=0.001,format="%.3f")
                 ana_thickness = st.number_input("A_Thickness", value=0.002, step=0.001,format="%.3f")
 
         # ===== Detector =====
