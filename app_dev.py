@@ -31,6 +31,11 @@ st.warning("Development version")
 with open("default_instr_val.json", "r") as f:
     INSTRUMENTS = json.load(f)
 
+INSTRUMENT_LABELS = {
+    "arbitrary": "ARBITRARY",
+    "CTAX": "CTAX@HFIR"
+}
+
 col1, col2 = st.columns([3, 2])
 
 with col1:
@@ -39,11 +44,14 @@ with col1:
     )
 
 with col2:
-    instrument = st.selectbox(
-        "Instrument",
-        list(INSTRUMENTS.keys()),
-        key="instrument_select"
-    )
+    instrument_display = st.selectbox(
+    "Instrument",
+    list(INSTRUMENT_LABELS.values()),
+    key="instrument_select"
+)
+
+label_to_key = {v: k for k, v in INSTRUMENT_LABELS.items()}
+instrument = label_to_key[instrument_display]
 
 config = INSTRUMENTS[instrument]
 
