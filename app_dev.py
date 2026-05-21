@@ -15,6 +15,10 @@ from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式�
 # デフォルト数値を読み込み
 import instrument_defaults as inst
 
+st.write("FILE:", inst.__file__)
+st.write("HAS INSTRUMENT:", hasattr(inst, "INSTRUMENT"))
+st.write(dir(inst))
+
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
