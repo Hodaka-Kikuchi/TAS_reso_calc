@@ -46,7 +46,7 @@ with col2:
     )
 
 def load_instrument_defaults(instrument):
-    return inst.INSTRUMENTS.get(instrument, {})
+    return inst.INSTRUMENT.get(instrument, {})
     
 config = load_instrument_defaults(instrument)
 
