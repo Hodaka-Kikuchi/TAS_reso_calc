@@ -598,7 +598,7 @@ with st.container(border=True):
             l_f = st.number_input("L final", value=0.0, step=0.001, key="l_f",format="%.3f")
 
         with c5:
-            npts = st.number_input("Number of scan points", value=11, step=1, key="scan_npts")
+            npts = st.number_input("Number of scan points",min_value=2, value=2, step=1, key="scan_npts")
 
         calc_params = {
             "mode": "scan",
