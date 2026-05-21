@@ -28,7 +28,7 @@ st.warning("Development version")
 
 # development note & default value
 
-with open("instrument_defaults.json", "r") as f:
+with open("default_instr_val.json", "r") as f:
     INSTRUMENTS = json.load(f)
 
 col1, col2 = st.columns([3, 2])
