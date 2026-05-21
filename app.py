@@ -28,7 +28,8 @@ with open("default_instr_val.json", "r") as f:
 
 INSTRUMENT_LABELS = {
     "arbitrary": "ARBITRARY",
-    "CTAX": "CTAX@HFIR"
+    "CTAX": "CTAX@HFIR",
+    "HER": "HER@JRR3"
 }
 
 col1, col2 = st.columns([3, 2])
