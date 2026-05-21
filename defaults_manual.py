@@ -1,4 +1,5 @@
 # instrument_defaults.py
+
 Manual = {
     "supermirror": {
         "enabled": False,
