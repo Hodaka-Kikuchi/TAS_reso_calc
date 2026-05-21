@@ -14,7 +14,7 @@ from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式�
 
 # デフォルト数値を読み込み
 from defaults_ctax import CTAX
-from defaults_manual import Manual
+from defaults_manual import MANUAL
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
@@ -41,15 +41,15 @@ with col1:
 with col2:
     instrument = st.selectbox(
         "Instrument",
-        ["Manual", "CTAX"],
+        ["MANUAL", "CTAX"],
         key="instrument_select"
     )
 
 def load_instrument_defaults(instrument):
     if instrument == "CTAX":
         return CTAX
-    elif instrument == "Manual":
-        return Manual
+    elif instrument == "MANUAL":
+        return MANUAL
     else:
         return {}
     
