@@ -67,6 +67,8 @@ if (
     st.session_state.fc_ana_v = config.get("analyzer", {}).get("vfocus")
 
     # radio（文字列）
+    st.session_state.Method_config = config.get("approximation", {}).get("method")
+
     st.session_state.energy_mode = config.get("configuration", {}).get("energy_mode")
     st.session_state.geometry = config.get("configuration", {}).get("geometry")
     st.session_state.sign_config = config.get("configuration", {}).get("sign")
@@ -446,7 +448,8 @@ with st.container(border=True):
 
             method = st.radio(
                 "Method",
-                ["Cooper-Nathans", "Popovici"]
+                ["Cooper-Nathans", "Popovici"],
+                key="Method_config"
             )
     with col3:
         with st.container(border=True):
