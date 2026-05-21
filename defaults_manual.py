@@ -2,44 +2,44 @@
 Manual = {
     "supermirror": {
         "enabled": False,
-        "m_value": 1.0
+        "m_value": 1.2
     },
 
     "collimator": {
-        "1st_h": 60,
-        "1st_v": 180,
-        "2nd_h": 60,
-        "2nd_v": 180,
-        "3rd_h": 60,
-        "3rd_v": 180,
-        "4th_h": 60,
-        "4th_v": 180,
+        "1st_h": 80,
+        "1st_v": 120,
+        "2nd_h": 80,
+        "2nd_v": 120,
+        "3rd_h": 80,
+        "3rd_v": 120,
+        "4th_h": 80,
+        "4th_v": 120,
     },
 
     "monochromator": {
         "crystal": "PG002",
-        "mosaic_h": 40,
-        "mosaic_v": 40,
-        "width": 0.08,
-        "height": 0.03,
+        "mosaic_h": 30,
+        "mosaic_v": 30,
+        "width": 0.02,
+        "height": 0.020,
         "thickness": 0.002,
         "vfocus": False,
         "hfocus": False,
-        "blade_h": 5,
-        "blade_v": 5
+        "blade_h": 7,
+        "blade_v": 7
     },
 
     "analyzer": {
         "crystal": "PG002",
-        "mosaic_h": 40,
-        "mosaic_v": 40,
-        "width": 0.025,
-        "height": 0.025,
+        "mosaic_h": 60,
+        "mosaic_v": 60,
+        "width": 0.020,
+        "height": 0.020,
         "thickness": 0.002,
         "vfocus": False,
         "hfocus": False,
-        "blade_h": 5,
-        "blade_v": 5
+        "blade_h": 7,
+        "blade_v": 7
     },
 
     "detector": {
@@ -57,8 +57,8 @@ Manual = {
     "distance": {
         "L0": 50,
         "L1": 2.0,
-        "L2": 2.0,
-        "L3": 2.0
+        "L2": 1.0,
+        "L3": 1.0
     },
 
     "beam": {
