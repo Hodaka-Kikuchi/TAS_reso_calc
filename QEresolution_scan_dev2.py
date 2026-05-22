@@ -554,25 +554,21 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         v = abs(x) * scale
 
-        exponent = np.floor(np.log10(v))
-        base = v / 10**exponent
-
-        # 1-2-5ルールで丸める
-        if base <= 1:
-            nice_base = 1
-        elif base <= 2:
-            nice_base = 2
-        elif base <= 5:
-            nice_base = 5
+        if v <= 0.05:
+            step = 0.05
+        elif v <= 0.1:
+            step = 0.1
+        elif v <= 0.5:
+            step = 0.1
         else:
-            nice_base = 10
+            step = 0.5
 
-        return nice_base * 10**exponent
+        return np.ceil(v / step) * step
 
-    Xrange_lim = nice_limit(max_x)
-    Yrange_lim = nice_limit(max_y)
-    Zrange_lim = nice_limit(max_z)
-    Wrange_lim = nice_limit(max_w)
+        Xrange_lim = nice_limit(max_x)
+        Yrange_lim = nice_limit(max_y)
+        Zrange_lim = nice_limit(max_z)
+        Wrange_lim = nice_limit(max_w)
     
     '''
     scale = 1.25
