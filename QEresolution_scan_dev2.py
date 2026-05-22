@@ -685,8 +685,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     
     # 楕円をプロットする関数
     def plot_ellipse1(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 100)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -706,8 +706,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
     
     def plot_ellipse2(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 100)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -727,8 +727,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
     def plot_ellipse3(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 100)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -750,8 +750,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Y_display, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
     def plot_ellipse4(A, B, C, D, E, F, Wrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Wrange_lim, Wrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Wrange_lim, Wrange_lim, 100)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
