@@ -550,22 +550,24 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_z, coords_z = find_max_along_axis(RM, axis="z")# E
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
     
-    def nice_limit(x, scale=1.05):
+    def nice_limit(x, scale=1.25):
 
         v = abs(x) * scale
 
-        # ----------------------------
-        # ステップルール
-        # ----------------------------
-        if v <= 0.01:
-            step = 0.005
-        elif v <= 0.1:
-            step = 0.05
-        elif v <= 1:
-            step = 0.5
+        exponent = np.floor(np.log10(v))
+        base = v / 10**exponent
 
-        # 上に丸める（重要）
-        return np.ceil(v / step) * step
+        # 1-2-5ルールで丸める
+        if base <= 1:
+            nice_base = 1
+        elif base <= 2:
+            nice_base = 2
+        elif base <= 5:
+            nice_base = 5
+        else:
+            nice_base = 10
+
+        return nice_base * 10**exponent
 
     Xrange_lim = nice_limit(max_x)
     Yrange_lim = nice_limit(max_y)
