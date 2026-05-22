@@ -109,10 +109,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     hkl_cal=cph*astar+cpk*bstar+cpl*cstar
     Nhkl_cal=np.linalg.norm(hkl_cal)
     phi_cal = np.degrees(np.arccos((ki_cal**2 + kf_cal**2 - Nhkl_cal**2) / (2 * ki_cal * kf_cal)))
-    A_sets = []
-    A_sets.append([2*C1, phi_cal, 2*C3])  # A_sets に追加
-    QE_sets = []
-    QE_sets.append([cphw, cph, cpk, cpl])
+    A_sets = [2*C1, phi_cal, 2*C3]
+    QE_sets = [cphw, cph, cpk, cpl]
     ####################
     
     fig, axs = plt.subplots(2, 2, figsize=(10, 8))  # 2x2グリッドのサブプロット作成
