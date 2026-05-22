@@ -565,10 +565,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         return np.ceil(v / step) * step
 
-        Xrange_lim = nice_limit(max_x)
-        Yrange_lim = nice_limit(max_y)
-        Zrange_lim = nice_limit(max_z)
-        Wrange_lim = nice_limit(max_w)
+    Xrange_lim = nice_limit(max_x)
+    Yrange_lim = nice_limit(max_y)
+    Zrange_lim = nice_limit(max_z)
+    Wrange_lim = nice_limit(max_w)
     
     '''
     scale = 1.25
