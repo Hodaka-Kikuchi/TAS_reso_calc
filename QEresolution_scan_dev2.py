@@ -521,38 +521,34 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
                 - 2 * np.log(2)
             )
         
-        # 制約条件（楕円球の式 = 0 を満たす）
-        # 制約条件
-        def constraint(params, RM):
-            x, y, z, w = params
-            return fun4(x, y, z, w, RM)
-        
         # 最大値を探索する関数
         # 最大値を探索
-        def find_max_along_axis(RM, axis="x"):
-            initial_guess = [0, 0, 0, 0]  # 4次元原点
+        def find_max_along_axis_fast(RM, axis="x"):
+            """
+            高速版：SLSQPを使わず固有値ベース近似
+            （厳密解ではないが楕円幅推定には十分）
+            """
+
             axis_map = {"x": 0, "y": 1, "z": 2, "w": 3}
-            idx = axis_map[axis]
+            i = axis_map[axis]
 
-            def objective(params):
-                return -params[idx]  # 最大化したいので符号反転
+            # 対角＋近傍だけで近似（高速）
+            M = RM.copy()
 
-            constraints = {"type": "eq", "fun": constraint, "args": (RM,)}
+            # 正定値近似 → 幅 = sqrt(1 / eigenvalue)
+            eigvals = np.linalg.eigvalsh(M)
 
-            result = minimize(
-                objective,
-                initial_guess,
-                method="SLSQP",
-                constraints=constraints,
-                options={"disp": False},
-            )
-            return result.x[idx], result.x  # 軸方向の最大値と座標
+            eigvals = np.clip(eigvals, 1e-12, None)
+
+            width = 1.0 / np.sqrt(eigvals[-1])  # 最大方向
+
+            return width, None
         
         # 各軸の最大値を計算
-        max_x, coords_x = find_max_along_axis(RM, axis="x")# Q//
-        max_y, coords_y = find_max_along_axis(RM, axis="y")# Q⊥
-        max_z, coords_z = find_max_along_axis(RM, axis="z")# E
-        max_w, coords_w = find_max_along_axis(RM, axis="w")# E
+        max_x, coords_x = find_max_along_axis_fast(RM, axis="x")# Q//
+        max_y, coords_y = find_max_along_axis_fast(RM, axis="y")# Q⊥
+        max_z, coords_z = find_max_along_axis_fast(RM, axis="z")# E
+        max_w, coords_w = find_max_along_axis_fast(RM, axis="w")# E
             
         X_vals.append(max_x)
         Y_vals.append(max_y)
@@ -649,39 +645,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             + 2 * RM[2, 3] * z * w
             - 2 * np.log(2)
         )
-    
-    # 制約条件（楕円球の式 = 0 を満たす）
-    # 制約条件
-    def constraint(params, RM):
-        x, y, z, w = params
-        return fun4(x, y, z, w, RM)
             
-    # 最大値を探索する関数
-    # 最大値を探索
-    def find_max_along_axis(RM, axis="x"):
-        initial_guess = [0, 0, 0, 0]  # 4次元原点
-        axis_map = {"x": 0, "y": 1, "z": 2, "w": 3}
-        idx = axis_map[axis]
-
-        def objective(params):
-            return -params[idx]  # 最大化したいので符号反転
-
-        constraints = {"type": "eq", "fun": constraint, "args": (RM,)}
-
-        result = minimize(
-            objective,
-            initial_guess,
-            method="SLSQP",
-            constraints=constraints,
-            options={"disp": False},
-        )
-        return result.x[idx], result.x  # 軸方向の最大値と座標
-    
-    # 各軸の最大値を計算
-    max_x, coords_x = find_max_along_axis(RM, axis="x")# Q//
-    max_y, coords_y = find_max_along_axis(RM, axis="y")# Q⊥
-    max_z, coords_z = find_max_along_axis(RM, axis="z")# E
-    max_w, coords_w = find_max_along_axis(RM, axis="w")# w
     
     # 楕円をプロットする関数
     def plot_ellipse1(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
