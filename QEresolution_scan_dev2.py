@@ -546,10 +546,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             return width
         
         # 各軸の最大値を計算
-        max_x, coords_x = find_max_slice(RM, ("x","z"))# Q//
-        max_y, coords_y = find_max_slice(RM, ("y","z"))# Q⊥
-        max_z, coords_z = find_max_slice(RM, ("x","y"))# E
-        max_w, coords_w = find_max_slice(RM, ("w","z"))# E
+        max_x = find_max_slice(RM, ("x","z"))# Q//
+        max_y = find_max_slice(RM, ("y","z"))# Q⊥
+        max_z = find_max_slice(RM, ("x","y"))# E
+        max_w = find_max_slice(RM, ("w","z"))# E
             
         X_vals.append(max_x)
         Y_vals.append(max_y)
