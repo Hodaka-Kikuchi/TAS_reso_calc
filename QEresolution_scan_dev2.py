@@ -523,32 +523,33 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         
         # 最大値を探索する関数
         # 最大値を探索
-        def find_max_along_axis_fast(RM, axis="x"):
+        def find_max_slice(RM, axes=("x", "z")):
             """
-            高速版：SLSQPを使わず固有値ベース近似
-            （厳密解ではないが楕円幅推定には十分）
+            2軸断面での幅見積もり（高速・安定）
             """
 
             axis_map = {"x": 0, "y": 1, "z": 2, "w": 3}
-            i = axis_map[axis]
+            i, j = axis_map[axes[0]], axis_map[axes[1]]
 
-            # 対角＋近傍だけで近似（高速）
-            M = RM.copy()
+            # 2×2部分行列（断面）
+            M = RM[np.ix_([i, j], [i, j])]
 
-            # 正定値近似 → 幅 = sqrt(1 / eigenvalue)
+            # 楕円: x^T M x = const
+            # 最大幅 ≈ 1 / sqrt(eigenvalue)
             eigvals = np.linalg.eigvalsh(M)
 
             eigvals = np.clip(eigvals, 1e-12, None)
 
-            width = 1.0 / np.sqrt(eigvals[-1])  # 最大方向
+            # 最大方向の幅
+            width = 1.0 / np.sqrt(np.min(eigvals))
 
-            return width, None
+            return width
         
         # 各軸の最大値を計算
-        max_x, coords_x = find_max_along_axis_fast(RM, axis="x")# Q//
-        max_y, coords_y = find_max_along_axis_fast(RM, axis="y")# Q⊥
-        max_z, coords_z = find_max_along_axis_fast(RM, axis="z")# E
-        max_w, coords_w = find_max_along_axis_fast(RM, axis="w")# E
+        max_x, coords_x = find_max_slice(RM, ("x","z"))# Q//
+        max_y, coords_y = find_max_slice(RM, ("y","z"))# Q⊥
+        max_z, coords_z = find_max_slice(RM, ("x","y"))# E
+        max_w, coords_w = find_max_slice(RM, ("w","z"))# E
             
         X_vals.append(max_x)
         Y_vals.append(max_y)
