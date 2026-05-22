@@ -559,16 +559,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         # ----------------------------
         if v <= 0.01:
             step = 0.01
-        elif v <= 0.05:
-            step = 0.05
         elif v <= 0.1:
             step = 0.1
-        elif v <= 0.5:
-            step = 0.5
         elif v <= 1.0:
             step = 1.0
-        else:
-            step = 0.5
 
         # 上に丸める（重要）
         return np.ceil(v / step) * step
