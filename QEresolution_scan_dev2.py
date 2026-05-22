@@ -549,24 +549,18 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_y, coords_y = find_max_along_axis(RM, axis="y")# Q⊥
     max_z, coords_z = find_max_along_axis(RM, axis="z")# E
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
-    '''
-    def nice_limit(x, scale=1.1):
+    
+    def nice_limit(x, scale=1.25):
 
         v = abs(x) * scale
 
         # ----------------------------
         # ステップルール
         # ----------------------------
-        if v <= 0.01:
-            step = 0.005
-        elif v <= 0.05:
-            step = 0.025
-        elif v <= 0.1:
-            step = 0.05
-        elif v <= 0.5:
-            step = 0.25
-        elif v <= 1.0:
-            step = 0.5
+        if v <= 0.1:
+            step = 0.01
+        elif v <= 1:
+            step = 0.1
 
         # 上に丸める（重要）
         return np.ceil(v / step) * step
@@ -575,14 +569,15 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     Yrange_lim = nice_limit(max_y)
     Zrange_lim = nice_limit(max_z)
     Wrange_lim = nice_limit(max_w)
+    
     '''
-
     scale = 1.25
 
     Xrange_lim = max_x * scale
     Yrange_lim = max_y * scale
     Zrange_lim = max_z * scale
     Wrange_lim = max_w * scale
+    '''
 
     # 投影図の楕円の係数を計算する関数
     # fun4=@(x,y,z) RM(1,1).*x.^2+RM(2,2).*y.^2+RM(3,3).*z.^2+2*RM(1,2).*x.*y+2*RM(1,3).*x.*z+2*RM(2,3).*y.*z-2*log(2);
