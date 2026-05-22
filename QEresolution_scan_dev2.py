@@ -557,7 +557,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         # ----------------------------
         # ステップルール
         # ----------------------------
-        if v <= 0.1:
+        if v <= 0.025:
+            step = 0.025
+        elif v <= 0.05:
+            step = 0.05
+        elif v <= 0.1:
             step = 0.1
         elif v <= 0.5:
             step = 0.1
@@ -811,12 +815,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     resolution_Q_perpendicular = 2 * max_y
     resolution_energy = 2 * max_z
     resolution_Q_z = 2 * max_w
-
-    import matplotlib.ticker as mticker
-
-    for ax in [ax1, ax2, ax3, ax4]:
-        ax.xaxis.set_major_locator(mticker.MaxNLocator(5, prune='both'))
-        ax.yaxis.set_major_locator(mticker.MaxNLocator(5, prune='both'))
     
     plt.suptitle(
         f'ℏω: {QE_sets[0]} meV, h: {QE_sets[1]}, k: {QE_sets[2]}, l: {QE_sets[3]}\n'
