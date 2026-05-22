@@ -550,7 +550,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_z, coords_z = find_max_along_axis(RM, axis="z")# E
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
         
-    scale = 1.25
+    scale = 100
 
     Xrange_lim = abs(max_x) * scale
     Yrange_lim = abs(max_y) * scale
