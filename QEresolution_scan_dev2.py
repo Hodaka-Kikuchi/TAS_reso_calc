@@ -556,10 +556,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     W_vals.append(max_w)
 
     # 大きい方を採用
-    Xrange_lim = max(X_vals)
-    Yrange_lim = max(Y_vals)
-    Zrange_lim = max(Z_vals)
-    Wrange_lim = max(W_vals)
+    Xrange_lim = max_x
+    Yrange_lim = max_y
+    Zrange_lim = max_z
+    Wrange_lim = max_w
 
     # 投影図の楕円の係数を計算する関数
     # fun4=@(x,y,z) RM(1,1).*x.^2+RM(2,2).*y.^2+RM(3,3).*z.^2+2*RM(1,2).*x.*y+2*RM(1,3).*x.*z+2*RM(2,3).*y.*z-2*log(2);
