@@ -135,9 +135,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 空リストに格納
     X_vals, Y_vals, Z_vals, W_vals = [], [], [], []
     
-    A1, A2, A3 = A_sets[index]
+    A1, A2, A3 = A_sets
     A2 = -A2
-    hw = QE_sets[index][0]
+    hw = QE_sets[0]
     
     if energy_mode == "Ei fixed":
         Ef = Ei - hw
@@ -461,7 +461,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     Qx = sv1[0]*astar+sv1[1]*bstar+sv1[2]*cstar
     Qy = sv2[0]*astar+sv2[1]*bstar+sv2[2]*cstar
     Qz = sv3[0]*astar+sv3[1]*bstar+sv3[2]*cstar
-    Qvect = QE_sets[index][1]*astar+QE_sets[index][2]*bstar+QE_sets[index][3]*cstar
+    Qvect = QE_sets[1]*astar+QE_sets[2]*bstar+QE_sets[3]*cstar
     
     # Q方向の単位ベクトル
     uq = Qvect / np.linalg.norm(Qvect)
@@ -768,7 +768,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     resolution_Q_z = 2 * max_w
     
     plt.suptitle(
-        f'ℏω: {QE_sets[index][0]} meV, h: {QE_sets[index][1]}, k: {QE_sets[index][2]}, l: {QE_sets[index][3]}\n'
+        f'ℏω: {QE_sets[0]} meV, h: {QE_sets[1]}, k: {QE_sets[2]}, l: {QE_sets[3]}\n'
         r'$\delta Q_{x} (\parallel axis1)$ = ' + f'{resolution_Q_parallel/np.linalg.norm(Qx):.4f}' + r' (r.l.u.), '
         r'$\delta Q_{y} (\parallel axis2)$ = ' + f'{resolution_Q_perpendicular/np.linalg.norm(Qy):.4f}' + r' (r.l.u.), '
         r'$\delta Q_{z} (\parallel axis3)$ = ' + f'{resolution_Q_z/np.linalg.norm(Qz):.4f}' + r' (r.l.u.), '
