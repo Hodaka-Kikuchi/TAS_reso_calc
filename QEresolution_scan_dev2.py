@@ -550,14 +550,16 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_z, coords_z = find_max_along_axis(RM, axis="z")# E
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
         
-    def nice_limit(x, scale=1.25):
+    def nice_limit(x, scale=1.1):
 
         v = abs(x) * scale
 
         # ----------------------------
         # ステップルール
         # ----------------------------
-        if v <= 0.05:
+        if v <= 0.025:
+            step = 0.025
+        elif v <= 0.05:
             step = 0.05
         elif v <= 0.1:
             step = 0.1
