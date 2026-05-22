@@ -96,7 +96,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     cphw = calc_params["hw"]
 
     ####################
-    initial_index = 0
     if energy_mode == "Ei fixed":
         Ef = Ei - cphw
     else:
@@ -127,7 +126,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     # 初期タイトル
     plt.suptitle(
-        f'ℏω: {QE_sets[initial_index][0]} meV, h: {QE_sets[initial_index][1]}, k: {QE_sets[initial_index][2]}, l: {QE_sets[initial_index][3]}',
+        f'ℏω: {QE_sets[0]} meV, h: {QE_sets[1]}, k: {QE_sets[2]}, l: {QE_sets[3]}',
         fontsize=12
     )
     
@@ -440,7 +439,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 古いコード
     Qx = sv1[0]*astar+sv1[1]*bstar+sv1[2]*cstar
     Qy = sv2[0]*astar+sv2[1]*bstar+sv2[2]*cstar
-    Qvect = QE_sets[index][1]*astar+QE_sets[index][2]*bstar+QE_sets[index][3]*cstar
+    Qvect = QE_sets[1]*astar+QE_sets[2]*bstar+QE_sets[3]*cstar
     
     # 行列を作成して連立方程式を解く
     M = np.column_stack((Qx, Qy))  # 3x2 行列
@@ -520,35 +519,38 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             - 2 * np.log(2)
         )
     
+    # 制約条件（楕円球の式 = 0 を満たす）
+    # 制約条件
+    def constraint(params, RM):
+        x, y, z, w = params
+        return fun4(x, y, z, w, RM)
+    
     # 最大値を探索する関数
     # 最大値を探索
-    def find_max_slice(RM, axes=("x", "z")):
-        """
-        2軸断面での幅見積もり（高速・安定）
-        """
-
+    def find_max_along_axis(RM, axis="x"):
+        initial_guess = [0, 0, 0, 0]  # 4次元原点
         axis_map = {"x": 0, "y": 1, "z": 2, "w": 3}
-        i, j = axis_map[axes[0]], axis_map[axes[1]]
+        idx = axis_map[axis]
 
-        # 2×2部分行列（断面）
-        M = RM[np.ix_([i, j], [i, j])]
+        def objective(params):
+            return -params[idx]  # 最大化したいので符号反転
 
-        # 楕円: x^T M x = const
-        # 最大幅 ≈ 1 / sqrt(eigenvalue)
-        eigvals = np.linalg.eigvalsh(M)
+        constraints = {"type": "eq", "fun": constraint, "args": (RM,)}
 
-        eigvals = np.clip(eigvals, 1e-12, None)
-
-        # 最大方向の幅
-        width = 1.0 / np.sqrt(np.min(eigvals))
-
-        return width
+        result = minimize(
+            objective,
+            initial_guess,
+            method="SLSQP",
+            constraints=constraints,
+            options={"disp": False},
+        )
+        return result.x[idx], result.x  # 軸方向の最大値と座標
     
     # 各軸の最大値を計算
-    max_x = find_max_slice(RM, ("x","z"))# Q//
-    max_y = find_max_slice(RM, ("y","z"))# Q⊥
-    max_z = find_max_slice(RM, ("x","y"))# E
-    max_w = find_max_slice(RM, ("w","z"))# E
+    max_x, coords_x = find_max_along_axis(RM, axis="x")# Q//
+    max_y, coords_y = find_max_along_axis(RM, axis="y")# Q⊥
+    max_z, coords_z = find_max_along_axis(RM, axis="z")# E
+    max_w, coords_w = find_max_along_axis(RM, axis="w")# E
         
     X_vals.append(max_x)
     Y_vals.append(max_y)
@@ -556,10 +558,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     W_vals.append(max_w)
 
     # 大きい方を採用
-    Xrange_lim = max_x
-    Yrange_lim = max_y
-    Zrange_lim = max_z
-    Wrange_lim = max_w
+    Xrange_lim = max(X_vals) * 1.25
+    Yrange_lim = max(Y_vals) * 1.25
+    Zrange_lim = max(Z_vals) * 1.25
+    Wrange_lim = max(W_vals) * 1.25
 
     # 投影図の楕円の係数を計算する関数
     # fun4=@(x,y,z) RM(1,1).*x.^2+RM(2,2).*y.^2+RM(3,3).*z.^2+2*RM(1,2).*x.*y+2*RM(1,3).*x.*z+2*RM(2,3).*y.*z-2*log(2);
@@ -645,12 +647,44 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             + 2 * RM[2, 3] * z * w
             - 2 * np.log(2)
         )
+    
+    # 制約条件（楕円球の式 = 0 を満たす）
+    # 制約条件
+    def constraint(params, RM):
+        x, y, z, w = params
+        return fun4(x, y, z, w, RM)
             
+    # 最大値を探索する関数
+    # 最大値を探索
+    def find_max_along_axis(RM, axis="x"):
+        initial_guess = [0, 0, 0, 0]  # 4次元原点
+        axis_map = {"x": 0, "y": 1, "z": 2, "w": 3}
+        idx = axis_map[axis]
+
+        def objective(params):
+            return -params[idx]  # 最大化したいので符号反転
+
+        constraints = {"type": "eq", "fun": constraint, "args": (RM,)}
+
+        result = minimize(
+            objective,
+            initial_guess,
+            method="SLSQP",
+            constraints=constraints,
+            options={"disp": False},
+        )
+        return result.x[idx], result.x  # 軸方向の最大値と座標
+    
+    # 各軸の最大値を計算
+    max_x, coords_x = find_max_along_axis(RM, axis="x")# Q//
+    max_y, coords_y = find_max_along_axis(RM, axis="y")# Q⊥
+    max_z, coords_z = find_max_along_axis(RM, axis="z")# E
+    max_w, coords_w = find_max_along_axis(RM, axis="w")# w
     
     # 楕円をプロットする関数
     def plot_ellipse1(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 100)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -670,8 +704,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
     
     def plot_ellipse2(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 100)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -691,8 +725,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
     def plot_ellipse3(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 100)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -714,8 +748,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Y_display, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
     def plot_ellipse4(A, B, C, D, E, F, Wrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Wrange_lim, Wrange_lim, 100)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 100)
+        x = np.linspace(-Wrange_lim, Wrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
