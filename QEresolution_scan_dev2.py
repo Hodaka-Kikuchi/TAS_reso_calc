@@ -495,8 +495,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # これを(qx(axis1),qy(axis2),hw,qz)に置ける空間分布に変換する。
     
     # プロット範囲
-    #max_x = 0.1
-    #max_z = 0.5
+    #Xrange_lim = 0.1
+    #Zrange_lim = 0.5
     
     # Qx=Q//,Qy=Q⊥の定義
     
@@ -549,6 +549,13 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_y, coords_y = find_max_along_axis(RM, axis="y")# Q⊥
     max_z, coords_z = find_max_along_axis(RM, axis="z")# E
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
+        
+    scale = 1.25
+
+    Xrange_lim = abs(max_x) * scale
+    Yrange_lim = abs(max_y) * scale
+    Zrange_lim = abs(max_z) * scale
+    Wrange_lim = abs(max_w) * scale
 
     # 投影図の楕円の係数を計算する関数
     # fun4=@(x,y,z) RM(1,1).*x.^2+RM(2,2).*y.^2+RM(3,3).*z.^2+2*RM(1,2).*x.*y+2*RM(1,3).*x.*z+2*RM(2,3).*y.*z-2*log(2);
@@ -669,9 +676,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_w, coords_w = find_max_along_axis(RM, axis="w")# w
     
     # 楕円をプロットする関数
-    def plot_ellipse1(A, B, C, D, E, F, max_x, max_z, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-max_x, max_x, 500)
-        z = np.linspace(-max_z, max_z, 500)
+    def plot_ellipse1(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
+        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -690,9 +697,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         #plt.contour(X_shifted, Z_shifted, ellipse, levels=[0], colors=color, label=label)
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
     
-    def plot_ellipse2(A, B, C, D, E, F, max_x, max_z, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-max_x, max_x, 500)
-        z = np.linspace(-max_z, max_z, 500)
+    def plot_ellipse2(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
+        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -711,9 +718,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         #plt.contour(X_shifted, Z_shifted, ellipse, levels=[0], colors=color, label=label)
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
-    def plot_ellipse3(A, B, C, D, E, F, max_x, max_z, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-max_x, max_x, 500)
-        z = np.linspace(-max_z, max_z, 500)
+    def plot_ellipse3(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
+        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -734,9 +741,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         #plt.contour(X_shifted, Z_shifted, ellipse, levels=[0], colors=color, label=label)
         ax.contour(X_display, Y_display, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
-    def plot_ellipse4(A, B, C, D, E, F, max_w, max_z, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-max_w, max_w, 500)
-        z = np.linspace(-max_z, max_z, 500)
+    def plot_ellipse4(A, B, C, D, E, F, Wrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
+        x = np.linspace(-Wrange_lim, Wrange_lim, 500)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -756,29 +763,29 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
             
     # x=Q//,y=Q⊥,z=E,w=out of plane
-    plot_ellipse1(A_xz, B_xz, C_xz, D_xz, E_xz, F_xz, max_x, max_z, ax1, labels = "", color="red",ls=["-"],shift_x=0, shift_y=0)
-    plot_ellipse2(A_yz, B_yz, C_yz, D_yz, E_yz, F_yz, max_y, max_z, ax2, labels = "", color="blue",ls=["-"],shift_x=0, shift_y=0)
-    plot_ellipse3(A_xy, B_xy, C_xy, D_xy, E_xy, F_xy, max_x, max_y, ax3, labels = "", color="black",ls=["-"],shift_x=0, shift_y=0)
-    plot_ellipse4(A_wz, B_wz, C_wz, D_wz, E_wz, F_wz, max_w, max_z, ax4, labels = "", color="green",ls=["-"],shift_x=0, shift_y=0)
+    plot_ellipse1(A_xz, B_xz, C_xz, D_xz, E_xz, F_xz, Xrange_lim, Zrange_lim, ax1, labels = "", color="red",ls=["-"],shift_x=0, shift_y=0)
+    plot_ellipse2(A_yz, B_yz, C_yz, D_yz, E_yz, F_yz, Yrange_lim, Zrange_lim, ax2, labels = "", color="blue",ls=["-"],shift_x=0, shift_y=0)
+    plot_ellipse3(A_xy, B_xy, C_xy, D_xy, E_xy, F_xy, Xrange_lim, Yrange_lim, ax3, labels = "", color="black",ls=["-"],shift_x=0, shift_y=0)
+    plot_ellipse4(A_wz, B_wz, C_wz, D_wz, E_wz, F_wz, Wrange_lim, Zrange_lim, ax4, labels = "", color="green",ls=["-"],shift_x=0, shift_y=0)
 
     A_xz_s, B_xz_s, C_xz_s, D_xz_s, E_xz_s, F_xz_s = ellipse_slice_coefficients(RM, ("x","z"))
     plot_ellipse1(A_xz_s, B_xz_s, C_xz_s, D_xz_s, E_xz_s, F_xz_s,
-            max_x, max_z, ax1,
+            Xrange_lim, Zrange_lim, ax1,
             labels = "",color="red",ls=["--"], 
             shift_x=0, shift_y=0)
     A_yz_s, B_yz_s, C_yz_s, D_yz_s, E_yz_s, F_yz_s = ellipse_slice_coefficients(RM, ("y","z"))
     plot_ellipse2(A_yz_s, B_yz_s, C_yz_s, D_yz_s, E_yz_s, F_yz_s,
-            max_y, max_z, ax2,
+            Yrange_lim, Zrange_lim, ax2,
             labels = "",color="blue",ls=["--"],
             shift_x=0, shift_y=0)
     A_xy_s, B_xy_s, C_xy_s, D_xy_s, E_xy_s, F_xy_s = ellipse_slice_coefficients(RM, ("x","y"))
     plot_ellipse3(A_xy_s, B_xy_s, C_xy_s, D_xy_s, E_xy_s, F_xy_s,
-            max_x, max_y, ax3,
+            Xrange_lim, Yrange_lim, ax3,
             labels = "",color="black",ls=["--"],
             shift_x=0, shift_y=0)
     A_wz_s, B_wz_s, C_wz_s, D_wz_s, E_wz_s, F_wz_s = ellipse_slice_coefficients(RM, ("w","z"))
     plot_ellipse4(A_wz_s, B_wz_s, C_wz_s, D_wz_s, E_wz_s, F_wz_s,
-            max_w, max_z, ax4,
+            Wrange_lim, Zrange_lim, ax4,
             labels = "",color="green",ls=["--"],
             shift_x=0, shift_y=0)
     
@@ -805,8 +812,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax1.set_ylabel("δℏω (meV)")
     ax1.set_title(r"$Q_{x} \parallel$" + f"({sv1[0]:.4f}, {sv1[1]:.4f}, {sv1[2]:.4f})", fontsize=12)
 
-    ax1.set_xlim([-max_x/np.linalg.norm(Qx), max_x/np.linalg.norm(Qx)])
-    ax1.set_ylim([-max_z, max_z])
+    ax1.set_xlim([-Xrange_lim/np.linalg.norm(Qx), Xrange_lim/np.linalg.norm(Qx)])
+    ax1.set_ylim([-Zrange_lim, Zrange_lim])
     ax1.grid(True)
 
     # === Q_perp vs E の楕円描画===
@@ -817,8 +824,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax2.set_title(r"$Q_{y} \parallel$" + f"({sv2[0]:.4f}, {sv2[1]:.4f}, {sv2[2]:.4f})", fontsize=12)
 
     # 必要であれば同様に情報を追加（または省略）
-    ax2.set_xlim([-max_y/np.linalg.norm(Qy), max_y/np.linalg.norm(Qy)])
-    ax2.set_ylim([-max_z, max_z])
+    ax2.set_xlim([-Yrange_lim/np.linalg.norm(Qy), Yrange_lim/np.linalg.norm(Qy)])
+    ax2.set_ylim([-Zrange_lim, Zrange_lim])
     ax2.grid(True)
     
     # === Q_perp vs Q_parallelの楕円描画===
@@ -829,8 +836,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax3.set_title(r"$\delta Q_{x} ({\parallel}axis1)$ vs $\delta Q_{y} ({\parallel}axis2)$ ellipse", fontsize=12)
 
     # 必要であれば同様に情報を追加（または省略）
-    ax3.set_xlim([-max_x/np.linalg.norm(Qx), max_x/np.linalg.norm(Qx)])
-    ax3.set_ylim([-max_y/np.linalg.norm(Qy), max_y/np.linalg.norm(Qy)])
+    ax3.set_xlim([-Xrange_lim/np.linalg.norm(Qx), Xrange_lim/np.linalg.norm(Qx)])
+    ax3.set_ylim([-Yrange_lim/np.linalg.norm(Qy), Yrange_lim/np.linalg.norm(Qy)])
     #ax3.set_aspect(np.linalg.norm(Qy)/np.linalg.norm(Qx))  # ここで縦横比を1:1に固定
     ax3.grid(True)
     
@@ -842,8 +849,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax4.set_title(r"$Q_{z} \parallel$" + f"({sv3[0]:.4f}, {sv3[1]:.4f}, {sv3[2]:.4f})", fontsize=12)
 
     # 必要であれば同様に情報を追加（または省略）
-    ax4.set_xlim([-max_w/np.linalg.norm(Qz), max_w/np.linalg.norm(Qz)])
-    ax4.set_ylim([-max_z, max_z])
+    ax4.set_xlim([-Wrange_lim/np.linalg.norm(Qz), Wrange_lim/np.linalg.norm(Qz)])
+    ax4.set_ylim([-Zrange_lim, Zrange_lim])
     ax4.grid(True)
 
     #return A_sets,QE_sets,RM, fig
