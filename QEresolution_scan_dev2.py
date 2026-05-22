@@ -554,12 +554,22 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         v = abs(x) * scale
 
-        exponent = np.floor(np.log10(v))
-        mantissa = v / 10**exponent
+        # ----------------------------
+        # ステップルール
+        # ----------------------------
+        if v <= 0.05:
+            step = 0.05
+        elif v <= 0.1:
+            step = 0.1
+        elif v <= 0.5:
+            step = 0.1
+        elif v <= 1.0:
+            step = 0.2
+        else:
+            step = 0.5
 
-        nice_mantissa = np.round(mantissa / 0.5) * 0.5
-
-        return nice_mantissa * 10**exponent
+        # 上に丸める（重要）
+        return np.ceil(v / step) * step
 
     Xrange_lim = nice_limit(max_x)
     Yrange_lim = nice_limit(max_y)
