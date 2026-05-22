@@ -862,3 +862,19 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     #return A_sets,QE_sets,RM, fig
     return RM, fig
+
+def make_resolution_fig(RM, i=None):
+    """
+    RMから図を毎回軽く生成する関数
+    （figを保存しない設計）
+    """
+
+    fig, ax = plt.subplots()
+
+    # ここはあなたの元のfig内容に合わせて書き換え
+    im = ax.imshow(RM, aspect="auto", origin="lower")
+
+    ax.set_title(f"Scan index: {i}")
+    plt.colorbar(im, ax=ax)
+
+    return fig
