@@ -568,26 +568,25 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         return rounded * scale
     '''
-    def round_up_first_digit(x):
+    def nice_ceiling_1sig(x):
         if x == 0:
             return 0
 
         exponent = math.floor(math.log10(abs(x)))
+        scale = 10 ** exponent
 
-        scale = 1 ** exponent
+        normalized = x / scale  # 1〜10の範囲にする
 
-        normalized = x / scale
-
-        rounded = math.ceil(normalized)
+        rounded = math.ceil(normalized * 10) / 10  # 有効数字1桁で切り上げ
 
         return rounded * scale
 
-    scale = 1.0
+    scale = 1.2
 
-    Xrange_lim = round_up_first_digit(max_x * scale)
-    Yrange_lim = round_up_first_digit(max_y * scale)
-    Zrange_lim = round_up_first_digit(max_z * scale)
-    Wrange_lim = round_up_first_digit(max_w * scale)
+    Xrange_lim = nice_ceiling_1sig(max_x * scale)
+    Yrange_lim = nice_ceiling_1sig(max_y * scale)
+    Zrange_lim = nice_ceiling_1sig(max_z * scale)
+    Wrange_lim = nice_ceiling_1sig(max_w * scale)
 
     '''
     scale = 1.25
