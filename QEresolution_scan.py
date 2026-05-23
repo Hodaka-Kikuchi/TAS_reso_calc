@@ -552,28 +552,28 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     
     import math
 
-    def nice_limit(value):
-        if value == 0:
-            return 1
+    def round_to_0_or_5(x):
+        if x == 0:
+            return 0
 
-        exponent = math.floor(math.log10(abs(value)))
-        fraction = value / (10 ** exponent)
+        exponent = math.floor(math.log10(abs(x)))
 
-        candidates = [1, 1.5, 2, 2.5, 5, 10]
+        # 1桁上げて処理
+        scale = 10 ** exponent
 
-        for c in candidates:
-            if fraction <= c:
-                nice_fraction = c
-                break
+        normalized = x / scale
 
-        return nice_fraction * (10 ** exponent)
+        # 0.5刻みに切り上げ
+        rounded = math.ceil(normalized * 2) / 2
+
+        return rounded * scale
     
     scale = 1.25
 
-    Xrange_lim = nice_limit(max_x * scale)
-    Yrange_lim = nice_limit(max_y * scale)
-    Zrange_lim = nice_limit(max_z * scale)
-    Wrange_lim = nice_limit(max_w * scale)
+    Xrange_lim = round_to_0_or_5(max_x * scale)
+    Yrange_lim = round_to_0_or_5(max_y * scale)
+    Zrange_lim = round_to_0_or_5(max_z * scale)
+    Wrange_lim = round_to_0_or_5(max_w * scale)
 
     '''
     scale = 1.25
