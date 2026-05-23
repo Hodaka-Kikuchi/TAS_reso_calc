@@ -11,8 +11,7 @@ from RL_calc import RL_calc
 from UB_calc import UB_calc
 
 # single QE positionでの計算
-from QEresolution_scan_dev2 import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
-from QEresolution_scan_dev2_makefig import make_figure_from_RM
+from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
@@ -777,9 +776,9 @@ with st.container(border=True):
         k_vals  = np.linspace(k_i,  k_f,  int(npts))
         l_vals  = np.linspace(l_i,  l_f,  int(npts))
 
-        rl = RL_calc(lc_param)
-
         if st.button("Calc scan"):
+
+            rl = RL_calc(lc_param)
 
             results = []
 
@@ -792,18 +791,17 @@ with st.container(border=True):
                     "l":  l_vals[i]
                 }
 
-                RM = calcresolution_scan3(
+                RM, fig = calcresolution_scan3(
                     lc_param, rl, col_param, mos_param,
                     config, approximation, focusing, geom,
                     calc_params_i
                 )
 
-                results.append((RM))
+                results.append((RM, fig))
 
             st.session_state.scan_results = results
 
-        @st.fragment
-        def show_scan_results():
+        if "scan_results" in st.session_state:
 
             results = st.session_state.scan_results
 
@@ -811,17 +809,11 @@ with st.container(border=True):
 
             with col2:
                 if st.button("◀ Prev"):
-                    st.session_state.scan_slider = max(
-                        1,
-                        st.session_state.scan_slider - 1
-                    )
+                    st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
 
             with col3:
                 if st.button("Next ▶"):
-                    st.session_state.scan_slider = min(
-                        len(results),
-                        st.session_state.scan_slider + 1
-                    )
+                    st.session_state.scan_slider = min(len(results), st.session_state.scan_slider + 1)
 
             with col1:
                 i = st.slider(
@@ -832,19 +824,11 @@ with st.container(border=True):
                     key="scan_slider"
                 )
 
-            RM = results[i - 1]
-
-            fig = make_figure_from_RM(RM,lc_param,rl,calc_params_i)
+            RM, fig = results[i - 1]
 
             st.pyplot(fig)
-
             st.write("RM matrix:")
             st.text(np.array2string(RM, precision=6, suppress_small=False))
 
-        if "scan_results" in st.session_state:
-            show_scan_results()
-
 ##################################################################################
-
-
 
