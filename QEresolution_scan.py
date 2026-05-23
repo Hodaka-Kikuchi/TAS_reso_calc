@@ -550,52 +550,13 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_z, coords_z = find_max_along_axis(RM, axis="z")# E
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
     
-    import math
-    '''
-    def round_to_0_or_5(x):
-        if x == 0:
-            return 0
-
-        exponent = math.floor(math.log10(abs(x)))
-
-        # 1桁上げて処理
-        scale = 10 ** exponent
-
-        normalized = x / scale
-
-        # 0.5刻みに切り上げ
-        rounded = math.ceil(normalized * 2) / 2
-
-        return rounded * scale
-    '''
-    def nice_ceiling_1sig(x):
-        if x == 0:
-            return 0
-
-        exponent = math.floor(math.log10(abs(x)))
-        scale = 100 ** exponent
-
-        normalized = x / scale  # 1〜10の範囲にする
-
-        rounded = math.ceil(normalized * 10) / 10  # 有効数字1桁で切り上げ
-
-        return rounded * scale
-
-    scale = 1.2
-
-    Xrange_lim = nice_ceiling_1sig(max_x * scale)
-    Yrange_lim = nice_ceiling_1sig(max_y * scale)
-    Zrange_lim = nice_ceiling_1sig(max_z * scale)
-    Wrange_lim = nice_ceiling_1sig(max_w * scale)
-
-    '''
     scale = 1.25
 
     Xrange_lim = max_x * scale
     Yrange_lim = max_y * scale
     Zrange_lim = max_z * scale
     Wrange_lim = max_w * scale
-    '''
+    
 
     # 投影図の楕円の係数を計算する関数
     # fun4=@(x,y,z) RM(1,1).*x.^2+RM(2,2).*y.^2+RM(3,3).*z.^2+2*RM(1,2).*x.*y+2*RM(1,3).*x.*z+2*RM(2,3).*y.*z-2*log(2);
