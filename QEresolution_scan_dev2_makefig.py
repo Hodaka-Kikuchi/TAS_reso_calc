@@ -31,7 +31,6 @@ def make_figure_from_RM(RM,lc_param,rl,calc_params):
     Qy = sv2[0]*astar+sv2[1]*bstar+sv2[2]*cstar
     Qz = sv3[0]*astar+sv3[1]*bstar+sv3[2]*cstar
     QE_sets = [cphw, cph, cpk, cpl]
-    Qvect = QE_sets[1]*astar+QE_sets[2]*bstar+QE_sets[3]*cstar
 
     fig, axs = plt.subplots(2, 2, figsize=(10, 8))  # 2x2グリッドのサブプロット作成
     plt.subplots_adjust(left=0.1, bottom=0.15, wspace=0.3, hspace=0.4)
