@@ -549,38 +549,46 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_y, coords_y = find_max_along_axis(RM, axis="y")# Q⊥
     max_z, coords_z = find_max_along_axis(RM, axis="z")# E
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
-    '''
-    def nice_round(v):
-        if v <= 0:
-            return 0
-
-        exponent = np.floor(np.log10(v))
-        base = v / 10**exponent
-
-        if base <= 1:
-            nice_base = 1
-        elif base <= 2:
-            nice_base = 2
-        elif base <= 5:
-            nice_base = 5
-        else:
-            nice_base = 10
-
-        return nice_base * 10**exponent
-
-    Xrange_lim = nice_round(max_x)
-    Yrange_lim = nice_round(max_y)
-    Zrange_lim = nice_round(max_z)
-    Wrange_lim = nice_round(max_w)
-    '''
     
+    import math
+
+    def nice_limit(value):
+        """
+        value以上になる「キリの良い値」を返す
+        1,2,5 × 10^n 系列
+        """
+        if value == 0:
+            return 1
+
+        exponent = math.floor(math.log10(abs(value)))
+        fraction = value / (10 ** exponent)
+
+        if fraction <= 1:
+            nice_fraction = 1
+        elif fraction <= 2:
+            nice_fraction = 2
+        elif fraction <= 5:
+            nice_fraction = 5
+        else:
+            nice_fraction = 10
+
+        return nice_fraction * (10 ** exponent)
+    
+    scale = 1.25
+
+    Xrange_lim = nice_limit(max_x * scale)
+    Yrange_lim = nice_limit(max_y * scale)
+    Zrange_lim = nice_limit(max_z * scale)
+    Wrange_lim = nice_limit(max_w * scale)
+    
+    '''
     scale = 1.25
 
     Xrange_lim = max_x * scale
     Yrange_lim = max_y * scale
     Zrange_lim = max_z * scale
     Wrange_lim = max_w * scale
-    
+    '''
 
     # 投影図の楕円の係数を計算する関数
     # fun4=@(x,y,z) RM(1,1).*x.^2+RM(2,2).*y.^2+RM(3,3).*z.^2+2*RM(1,2).*x.*y+2*RM(1,3).*x.*z+2*RM(2,3).*y.*z-2*log(2);
