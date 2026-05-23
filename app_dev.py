@@ -12,6 +12,7 @@ from UB_calc import UB_calc
 
 # single QE positionでの計算
 from QEresolution_scan_dev2 import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+from QEresolution_scan_dev2_makefig import make_figure_from_RM
 
 # 使用方法
 # powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
@@ -791,13 +792,13 @@ with st.container(border=True):
                     "l":  l_vals[i]
                 }
 
-                RM, fig = calcresolution_scan3(
+                RM = calcresolution_scan3(
                     lc_param, rl, col_param, mos_param,
                     config, approximation, focusing, geom,
                     calc_params_i
                 )
 
-                results.append((RM, fig))
+                results.append((RM))
 
             st.session_state.scan_results = results
 
@@ -831,7 +832,11 @@ with st.container(border=True):
                     key="scan_slider"
                 )
 
-            RM, fig = results[i - 1]
+            RM = results[i - 1]
+
+            fig = make_figure_from_RM(RM,lc_param,rl,calc_params)
+
+            st.pyplot(fig)
 
             st.pyplot(fig)
 
