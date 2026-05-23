@@ -777,9 +777,9 @@ with st.container(border=True):
         k_vals  = np.linspace(k_i,  k_f,  int(npts))
         l_vals  = np.linspace(l_i,  l_f,  int(npts))
 
-        if st.button("Calc scan"):
+        rl = RL_calc(lc_param)
 
-            rl = RL_calc(lc_param)
+        if st.button("Calc scan"):
 
             results = []
 
