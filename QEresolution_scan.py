@@ -582,7 +582,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         return rounded * scale
 
-    scale = 1.25
+    scale = 1.1
 
     Xrange_lim = round_up_first_digit(max_x * scale)
     Yrange_lim = round_up_first_digit(max_y * scale)
