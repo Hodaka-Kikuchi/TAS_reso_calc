@@ -801,7 +801,8 @@ with st.container(border=True):
 
             st.session_state.scan_results = results
 
-        if "scan_results" in st.session_state:
+        @st.fragment
+        def show_scan_results():
 
             results = st.session_state.scan_results
 
@@ -809,11 +810,17 @@ with st.container(border=True):
 
             with col2:
                 if st.button("◀ Prev"):
-                    st.session_state.scan_slider = max(1, st.session_state.scan_slider - 1)
+                    st.session_state.scan_slider = max(
+                        1,
+                        st.session_state.scan_slider - 1
+                    )
 
             with col3:
                 if st.button("Next ▶"):
-                    st.session_state.scan_slider = min(len(results), st.session_state.scan_slider + 1)
+                    st.session_state.scan_slider = min(
+                        len(results),
+                        st.session_state.scan_slider + 1
+                    )
 
             with col1:
                 i = st.slider(
@@ -827,8 +834,12 @@ with st.container(border=True):
             RM, fig = results[i - 1]
 
             st.pyplot(fig)
+
             st.write("RM matrix:")
             st.text(np.array2string(RM, precision=6, suppress_small=False))
+
+        if "scan_results" in st.session_state:
+            show_scan_results()
 
 ##################################################################################
 
