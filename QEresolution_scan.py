@@ -574,7 +574,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         exponent = math.floor(math.log10(abs(x)))
 
-        scale = 10 ** exponent
+        scale = 1 ** exponent
 
         normalized = x / scale
 
