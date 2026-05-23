@@ -834,9 +834,7 @@ with st.container(border=True):
 
             RM = results[i - 1]
 
-            fig = make_figure_from_RM(RM,lc_param,rl,calc_params)
-
-            st.pyplot(fig)
+            fig = make_figure_from_RM(RM,lc_param,rl,calc_params_i)
 
             st.pyplot(fig)
 
