@@ -553,24 +553,18 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     import math
 
     def nice_limit(value):
-        """
-        value以上になる「キリの良い値」を返す
-        1,2,5 × 10^n 系列
-        """
         if value == 0:
             return 1
 
         exponent = math.floor(math.log10(abs(value)))
         fraction = value / (10 ** exponent)
 
-        if fraction <= 1:
-            nice_fraction = 1
-        elif fraction <= 2:
-            nice_fraction = 2
-        elif fraction <= 5:
-            nice_fraction = 5
-        else:
-            nice_fraction = 10
+        candidates = [1, 1.5, 2, 2.5, 5, 10]
+
+        for c in candidates:
+            if fraction <= c:
+                nice_fraction = c
+                break
 
         return nice_fraction * (10 ** exponent)
     
@@ -580,7 +574,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     Yrange_lim = nice_limit(max_y * scale)
     Zrange_lim = nice_limit(max_z * scale)
     Wrange_lim = nice_limit(max_w * scale)
-    
+
     '''
     scale = 1.25
 
