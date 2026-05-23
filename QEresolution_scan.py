@@ -551,7 +551,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     max_w, coords_w = find_max_along_axis(RM, axis="w")# E
     
     import math
-
+    '''
     def round_to_0_or_5(x):
         if x == 0:
             return 0
@@ -567,13 +567,27 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         rounded = math.ceil(normalized * 2) / 2
 
         return rounded * scale
-    
+    '''
+    def round_up_first_digit(x):
+        if x == 0:
+            return 0
+
+        exponent = math.floor(math.log10(abs(x)))
+
+        scale = 10 ** exponent
+
+        normalized = x / scale
+
+        rounded = math.ceil(normalized)
+
+        return rounded * scale
+
     scale = 1.25
 
-    Xrange_lim = round_to_0_or_5(max_x * scale)
-    Yrange_lim = round_to_0_or_5(max_y * scale)
-    Zrange_lim = round_to_0_or_5(max_z * scale)
-    Wrange_lim = round_to_0_or_5(max_w * scale)
+    Xrange_lim = round_up_first_digit(max_x * scale)
+    Yrange_lim = round_up_first_digit(max_y * scale)
+    Zrange_lim = round_up_first_digit(max_z * scale)
+    Wrange_lim = round_up_first_digit(max_w * scale)
 
     '''
     scale = 1.25
