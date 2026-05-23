@@ -560,10 +560,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         W_vals.append(max_w)
 
     # 大きい方を採用
-    Xrange_lim = max(X_vals) * 1.25
-    Yrange_lim = max(Y_vals) * 1.25
-    Zrange_lim = max(Z_vals) * 1.25
-    Wrange_lim = max(W_vals) * 1.25
+    Xrange_lim = max(X_vals) * 1.2
+    Yrange_lim = max(Y_vals) * 1.2
+    Zrange_lim = max(Z_vals) * 1.2
+    Wrange_lim = max(W_vals) * 1.2
 
     # 投影図の楕円の係数を計算する関数
     # fun4=@(x,y,z) RM(1,1).*x.^2+RM(2,2).*y.^2+RM(3,3).*z.^2+2*RM(1,2).*x.*y+2*RM(1,3).*x.*z+2*RM(2,3).*y.*z-2*log(2);
@@ -685,8 +685,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     
     # 楕円をプロットする関数
     def plot_ellipse1(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 50)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 50)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -706,8 +706,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
     
     def plot_ellipse2(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 50)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 50)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -727,8 +727,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Z_shifted, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
     def plot_ellipse3(A, B, C, D, E, F, Xrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Xrange_lim, Xrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Xrange_lim, Xrange_lim, 50)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 50)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
@@ -750,8 +750,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         ax.contour(X_display, Y_display, ellipse, levels=[0], colors=color, label=labels,linestyles=ls)
         
     def plot_ellipse4(A, B, C, D, E, F, Wrange_lim, Zrange_lim, ax, labels, color,ls,shift_x=0,shift_y=0):
-        x = np.linspace(-Wrange_lim, Wrange_lim, 500)
-        z = np.linspace(-Zrange_lim, Zrange_lim, 500)
+        x = np.linspace(-Wrange_lim, Wrange_lim, 50)
+        z = np.linspace(-Zrange_lim, Zrange_lim, 50)
         X, Z = np.meshgrid(x, z)
 
         # 楕円の式
