@@ -273,7 +273,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         # ==== Sample shape ====
         sshape = np.eye(3)
-        psi = thetaS -phi
+        psi = thetaS-phi
         rot = np.array([[cos(np.radians(psi)),sin(np.radians(psi)),0],
             [-sin(np.radians(psi)),cos(np.radians(psi)),0],
             [0,0,1]])

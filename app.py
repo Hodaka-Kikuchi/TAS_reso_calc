@@ -710,9 +710,11 @@ with st.container(border=True):
             #st.text(np.array2string(mat1, precision=18, suppress_small=False))
             #st.text(np.array2string(mat2, precision=18, suppress_small=False))
             #st.text(np.array2string(mat3, precision=18, suppress_small=False))
-            RM, fig = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
+            RM, fig, A_sets = calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params)
             #st.write("A_sets", A_sets)
             #st.write("QE_sets", QE_sets)
+            for label, value in zip(["M2", "S2", "A2"], A_sets):
+                st.text(f"{label} = {value}")
             st.pyplot(fig)
             st.write("RM matrix:")
             st.text(np.array2string(RM, precision=6, suppress_small=False))
@@ -786,13 +788,13 @@ with st.container(border=True):
                     "l":  l_vals[i]
                 }
 
-                RM, fig = calcresolution_scan3(
+                RM, fig, A_sets = calcresolution_scan3(
                     lc_param, rl, col_param, mos_param,
                     config, approximation, focusing, geom,
                     calc_params_i
                 )
 
-                results.append((RM, fig))
+                results.append((RM, fig, A_sets))
 
             st.session_state.scan_results = results
 
@@ -819,8 +821,10 @@ with st.container(border=True):
                     key="scan_slider"
                 )
 
-            RM, fig = results[i - 1]
+            RM, fig, A_sets = results[i - 1]
 
+            for label, value in zip(["M2", "S2", "A2"], A_sets):
+                st.text(f"{label} = {value}")
             st.pyplot(fig)
             st.write("RM matrix:")
             st.text(np.array2string(RM, precision=6, suppress_small=False))
