@@ -765,7 +765,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     
     plt.suptitle(
         f'ℏω: {QE_sets[0]} meV, h: {QE_sets[1]}, k: {QE_sets[2]}, l: {QE_sets[3]}\n'
-        f'M2 = {A_sets[0]:.3f} dg, S2 = {A_sets[1]:.3f} deg, A2 = {A_sets[2]:.3f} deg\n'
+        f'M2 = {A_sets[0]:.3f} deg, S2 = {A_sets[1]:.3f} deg, A2 = {A_sets[2]:.3f} deg\n'
         r'$\delta Q_{x} (\parallel axis1)$ = ' + f'{resolution_Q_parallel/np.linalg.norm(Qx):.4f}' + r' (r.l.u.), '
         r'$\delta Q_{y} (\parallel axis2)$ = ' + f'{resolution_Q_perpendicular/np.linalg.norm(Qy):.4f}' + r' (r.l.u.), '
         r'$\delta Q_{z} (\parallel axis3)$ = ' + f'{resolution_Q_z/np.linalg.norm(Qz):.4f}' + r' (r.l.u.), '
