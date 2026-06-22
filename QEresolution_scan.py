@@ -823,4 +823,4 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     ax4.grid(True)
 
     #return A_sets,QE_sets,RM, fig
-    return RM, fig, A_sets
+    return RM, fig
