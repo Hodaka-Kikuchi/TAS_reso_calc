@@ -22,7 +22,7 @@ from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式�
 # =========================
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
 st.title("TAS Resolution Calculator [debug mode]")
-st.warning("Development version")
+#st.warning("Development version")
 
 #################################################################################
 
