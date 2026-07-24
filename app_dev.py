@@ -34,6 +34,9 @@ with open("default_instr_val.json", "r") as f:
 INSTRUMENT_LABELS = {
     "arbitrary": "ARBITRARY",
     "CTAX": "CTAX@HFIR",
+    "HB1": "HB1@HFIR",
+    "HB1A": "HB1A@HFIR",
+    "HB3": "HB3@HFIR",
     "HER": "HER@JRR3"
 }
 
