@@ -307,7 +307,7 @@ with st.container(border=True):
 d_options = {
     "PG(002)": 3.355,
     "PG(004)": 1.677,
-    "Heusler": 3.362,
+    "Heusler": 3.437,
     "CoFe": 1.771,
     "Ge(111)": 3.266,
     "Ge(311)": 1.714,
