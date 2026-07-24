@@ -11,13 +11,18 @@ from RL_calc import RL_calc
 from UB_calc import UB_calc
 
 # single QE positionでの計算
-from QEresolution_scan import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+from QEresolution_scan_dev import calcresolution_scan3 # スライダー形式、Qz方向にも拡張
+
+# 使用方法
+# powershellで　cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
+# 続けて　streamlit run app_dev.py
 
 # =========================
 # Streamlit UI
 # =========================
 st.set_page_config(page_title="TAS Resolution Calculator", layout="wide")
-st.title("TAS Resolution Calculator")
+st.title("TAS Resolution Calculator [debug mode]")
+st.warning("Development version")
 
 #################################################################################
 
@@ -29,6 +34,9 @@ with open("default_instr_val.json", "r") as f:
 INSTRUMENT_LABELS = {
     "arbitrary": "ARBITRARY",
     "CTAX": "CTAX@HFIR",
+    "HB1": "HB1@HFIR",
+    "HB1A": "HB1A@HFIR",
+    "HB3": "HB3@HFIR",
     "HER": "HER@JRR3"
 }
 
@@ -299,7 +307,7 @@ with st.container(border=True):
 d_options = {
     "PG(002)": 3.355,
     "PG(004)": 1.677,
-    "Heusler": 3.362,
+    "Heusler": 3.437,
     "CoFe": 1.771,
     "Ge(111)": 3.266,
     "Ge(311)": 1.714,
