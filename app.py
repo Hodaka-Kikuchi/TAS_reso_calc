@@ -330,14 +330,16 @@ with st.container(border=True):
             c1, c2 = st.columns(2)
 
             with c1:
+                mono_options = list(d_options.keys()) + ["Other"]
+
+                if "mono" not in st.session_state or st.session_state["mono"] not in mono_options:
+                    st.session_state["mono"] = mono_options[0]
+
                 mono_choice = st.selectbox(
                     "crystal",
-                    list(d_options.keys()) + ["Other"],
+                    mono_options,
                     key="mono"
                 )
-                st.write("DEBUG mono_choice:", repr(mono_choice))
-                st.write("DEBUG keys:", list(d_options.keys()))
-                st.write("session state mono:", st.session_state.get("mono"))
 
                 if mono_choice == "Other":
                     d_mono = st.number_input("d (Å)", value=3.0, format="%.3f", key="d_mono_manual")
@@ -367,6 +369,10 @@ with st.container(border=True):
             st.markdown("<h5>analyzer</h5>", unsafe_allow_html=True)
             c1, c2 = st.columns(2)
             with c1:
+                if "ana" in st.session_state:
+                    if st.session_state["ana"] not in list(d_options.keys()) + ["Other"]:
+                        del st.session_state["ana"]
+
                 ana_choice = st.selectbox(
                     "crystal",
                     list(d_options.keys()) + ["Other"],
@@ -374,7 +380,12 @@ with st.container(border=True):
                 )
 
                 if ana_choice == "Other":
-                    d_ana = st.number_input("d (Å)", value=3.0, format="%.3f", key="d_ana_manual")
+                    d_ana = st.number_input(
+                        "d (Å)",
+                        value=3.0,
+                        format="%.3f",
+                        key="d_ana_manual"
+                    )
                 else:
                     d_ana = d_options[ana_choice]
                     st.number_input(
