@@ -337,6 +337,7 @@ with st.container(border=True):
                 )
                 st.write("DEBUG mono_choice:", repr(mono_choice))
                 st.write("DEBUG keys:", list(d_options.keys()))
+                st.write("session state mono:", st.session_state.get("mono"))
 
                 if mono_choice == "Other":
                     d_mono = st.number_input("d (Å)", value=3.0, format="%.3f", key="d_mono_manual")
