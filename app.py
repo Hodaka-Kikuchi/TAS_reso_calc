@@ -1412,13 +1412,7 @@ with st.container(border=True):
 
     elif mode == "scan":
 
-        # =================================================
-        # Initial
-        # =================================================
-
-        st.markdown("**Initial**")
-
-        c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3, c4, c5 = st.columns(5)
 
         with c1:
 
@@ -1427,6 +1421,14 @@ with st.container(border=True):
                 value=0.00,
                 step=0.001,
                 key="hw_i",
+                format="%.3f"
+            )
+
+            hw_f = st.number_input(
+                "ℏω final (meV)",
+                value=0.00,
+                step=0.001,
+                key="hw_f",
                 format="%.3f"
             )
 
@@ -1440,6 +1442,14 @@ with st.container(border=True):
                 format="%.3f"
             )
 
+            h_f = st.number_input(
+                "H final",
+                value=0.00,
+                step=0.001,
+                key="h_f",
+                format="%.3f"
+            )
+
         with c3:
 
             k_i = st.number_input(
@@ -1447,6 +1457,14 @@ with st.container(border=True):
                 value=0.0,
                 step=0.001,
                 key="k_i",
+                format="%.3f"
+            )
+
+            k_f = st.number_input(
+                "K final",
+                value=0.0,
+                step=0.001,
+                key="k_f",
                 format="%.3f"
             )
 
@@ -1460,47 +1478,6 @@ with st.container(border=True):
                 format="%.3f"
             )
 
-
-        # =================================================
-        # Final
-        # =================================================
-
-        st.markdown("**Final**")
-
-        c1, c2, c3, c4 = st.columns(4)
-
-        with c1:
-
-            hw_f = st.number_input(
-                "ℏω final (meV)",
-                value=0.00,
-                step=0.001,
-                key="hw_f",
-                format="%.3f"
-            )
-
-        with c2:
-
-            h_f = st.number_input(
-                "H final",
-                value=0.00,
-                step=0.001,
-                key="h_f",
-                format="%.3f"
-            )
-
-        with c3:
-
-            k_f = st.number_input(
-                "K final",
-                value=0.0,
-                step=0.001,
-                key="k_f",
-                format="%.3f"
-            )
-
-        with c4:
-
             l_f = st.number_input(
                 "L final",
                 value=0.0,
@@ -1509,14 +1486,7 @@ with st.container(border=True):
                 format="%.3f"
             )
 
-
-        # =================================================
-        # Scan points / Calculate
-        # =================================================
-
-        c1, c2 = st.columns([1, 3])
-
-        with c1:
+        with c5:
 
             npts = st.number_input(
                 "Scan points",
@@ -1525,8 +1495,6 @@ with st.container(border=True):
                 step=1,
                 key="scan_npts"
             )
-
-        with c2:
 
             st.write("")
 
