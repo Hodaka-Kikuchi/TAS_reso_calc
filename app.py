@@ -1716,25 +1716,36 @@ elif mode == "scan":
         # Scan navigation
         # ----------------------------------------------------
 
-        col1, col2, col3 = st.columns(
-            [1, 1, 1]
-        )
+        if "scan_slider" not in st.session_state:
+            st.session_state.scan_slider = 1
 
-        with col2:
+        col1, col2, col3 = st.columns([1, 5, 1])
+
+        # Previous
+        with col1:
 
             if st.button(
                 "◀ Prev",
                 use_container_width=True
             ):
 
-                if "scan_slider" not in st.session_state:
-                    st.session_state.scan_slider = 1
-
                 st.session_state.scan_slider = max(
                     1,
                     st.session_state.scan_slider - 1
                 )
 
+        # Slider
+        with col2:
+
+            i = st.slider(
+                "Scan index",
+                1,
+                len(results),
+                st.session_state.scan_slider,
+                key="scan_slider"
+            )
+
+        # Next
         with col3:
 
             if st.button(
@@ -1742,30 +1753,10 @@ elif mode == "scan":
                 use_container_width=True
             ):
 
-                if "scan_slider" not in st.session_state:
-                    st.session_state.scan_slider = 1
-
                 st.session_state.scan_slider = min(
                     len(results),
                     st.session_state.scan_slider + 1
                 )
-
-        # ----------------------------------------------------
-        # Scan slider
-        # ----------------------------------------------------
-
-        if "scan_slider" not in st.session_state:
-            st.session_state.scan_slider = 1
-
-        i = st.slider(
-            "Scan index",
-            1,
-            len(results),
-            st.session_state.scan_slider,
-            key="scan_slider"
-        )
-
-        RM, fig = results[i - 1]
 
         # ----------------------------------------------------
         # Current scan point
@@ -1776,7 +1767,7 @@ elif mode == "scan":
         )
 
         st.pyplot(
-            fig,
+            results[i - 1][1],
             use_container_width=True
         )
 
@@ -1788,6 +1779,8 @@ elif mode == "scan":
             "Resolution Matrix",
             expanded=False
         ):
+
+            RM, _ = results[i - 1]
 
             st.text(
                 np.array2string(
