@@ -356,53 +356,58 @@ with st.sidebar:
 
     with st.container(border=True):
 
-        st.markdown("### Lattice information")
+        st.markdown("#### Lattice parameter")
 
-        # ----------------------------------------------------
-        # Lattice parameter
-        # ----------------------------------------------------
+        # ------------------------------------------------
+        # Row 1 : a, b, c
+        # ------------------------------------------------
 
-        with st.container(border=True):
+        col1, col2, col3 = st.columns(3)
 
-            st.markdown("#### Lattice parameter")
+        with col1:
+            a = st.number_input(
+                "a (Å)",
+                value=5.0,
+                format="%.4f"
+            )
 
-            col1, col2, col3 = st.columns(3)
+        with col2:
+            b = st.number_input(
+                "b (Å)",
+                value=5.0,
+                format="%.4f"
+            )
 
-            with col1:
-                a = st.number_input(
-                    "a (Å)",
-                    value=5.0,
-                    format="%.4f"
-                )
+        with col3:
+            c = st.number_input(
+                "c (Å)",
+                value=5.0,
+                format="%.4f"
+            )
 
-                alpha = st.number_input(
-                    "alpha (deg)",
-                    value=90.0
-                )
+        # ------------------------------------------------
+        # Row 2 : alpha, beta, gamma
+        # ------------------------------------------------
 
-            with col2:
-                b = st.number_input(
-                    "b (Å)",
-                    value=5.0,
-                    format="%.4f"
-                )
+        col1, col2, col3 = st.columns(3)
 
-                beta = st.number_input(
-                    "beta (deg)",
-                    value=90.0
-                )
+        with col1:
+            alpha = st.number_input(
+                "alpha (deg)",
+                value=90.0
+            )
 
-            with col3:
-                c = st.number_input(
-                    "c (Å)",
-                    value=5.0,
-                    format="%.4f"
-                )
+        with col2:
+            beta = st.number_input(
+                "beta (deg)",
+                value=90.0
+            )
 
-                gamma = st.number_input(
-                    "gamma (deg)",
-                    value=90.0
-                )
+        with col3:
+            gamma = st.number_input(
+                "gamma (deg)",
+                value=90.0
+            )
 
         # ----------------------------------------------------
         # Scattering plane
