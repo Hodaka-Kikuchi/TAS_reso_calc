@@ -1699,7 +1699,6 @@ if mode == "single":
                 )
             )
 
-
 # ============================================================
 # Scan result
 # ============================================================
@@ -1716,54 +1715,66 @@ elif mode == "scan":
         # Scan navigation
         # ----------------------------------------------------
 
+        if "scan_slider" not in st.session_state:
+            st.session_state.scan_slider = 1
+
         col1, col2, col3 = st.columns(
-            [1, 1, 1]
+            [6, 1, 1]
         )
 
+        # ----------------------------------------------------
+        # Scan slider
+        # ----------------------------------------------------
+
+        with col1:
+
+            i = st.slider(
+                "Scan index",
+                1,
+                len(results),
+                st.session_state.scan_slider,
+                key="scan_slider"
+            )
+
+        # ----------------------------------------------------
+        # Prev
+        # ----------------------------------------------------
+
         with col2:
+
+            st.write("")
 
             if st.button(
                 "◀ Prev",
                 use_container_width=True
             ):
 
-                if "scan_slider" not in st.session_state:
-                    st.session_state.scan_slider = 1
-
                 st.session_state.scan_slider = max(
                     1,
                     st.session_state.scan_slider - 1
                 )
 
+                st.rerun()
+
+        # ----------------------------------------------------
+        # Next
+        # ----------------------------------------------------
+
         with col3:
+
+            st.write("")
 
             if st.button(
                 "Next ▶",
                 use_container_width=True
             ):
 
-                if "scan_slider" not in st.session_state:
-                    st.session_state.scan_slider = 1
-
                 st.session_state.scan_slider = min(
                     len(results),
                     st.session_state.scan_slider + 1
                 )
 
-        # ----------------------------------------------------
-        # Scan slider
-        # ----------------------------------------------------
-
-        if "scan_slider" not in st.session_state:
-            st.session_state.scan_slider = 1
-
-        i = st.slider(
-            "Scan index",
-            1,
-            len(results),
-            st.session_state.scan_slider,
-            key="scan_slider"
-        )
+                st.rerun()
 
         RM, fig = results[i - 1]
 
