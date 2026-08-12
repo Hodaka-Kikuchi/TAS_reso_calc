@@ -773,12 +773,17 @@ with st.sidebar:
 
                 st.markdown("**1st**")
 
-                col1, col2, col3 = st.columns(3)
+                # =================================================
+                # Row 1 : Horizontal / Vertical
+                # =================================================
+
+                col1, col2 = st.columns(2)
 
                 # Horizontal
                 with col1:
 
                     if st.session_state.get("gm_1st", True):
+
                         st.number_input(
                             "Horizontal (disabled)",
                             disabled=True,
@@ -788,6 +793,7 @@ with st.sidebar:
                         div_1st_h = None
 
                     else:
+
                         div_1st_h = st.number_input(
                             "Horizontal",
                             key="div_1st_h"
@@ -797,6 +803,7 @@ with st.sidebar:
                 with col2:
 
                     if st.session_state.get("gm_1st", True):
+
                         st.number_input(
                             "Vertical (disabled)",
                             disabled=True,
@@ -806,19 +813,30 @@ with st.sidebar:
                         div_1st_v = None
 
                     else:
+
                         div_1st_v = st.number_input(
                             "Vertical",
                             key="div_1st_v"
                         )
 
+
+                # =================================================
+                # Row 2 : Supermirror / m-value
+                # =================================================
+
+                col1, col2 = st.columns(2)
+
                 # Supermirror
-                with col3:
+                with col1:
 
                     gm_1st = st.checkbox(
                         "Supermirror",
                         value=True,
                         key="gm_1st"
                     )
+
+                # m-value
+                with col2:
 
                     if gm_1st:
 
