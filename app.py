@@ -1733,39 +1733,39 @@ elif mode == "scan":
                 len(results),
                 st.session_state.scan_slider,
                 key="scan_slider"
-    )
+            )
 
-# ------------------------------------------------
-# Previous
-# ------------------------------------------------
+        # ------------------------------------------------
+        # Previous
+        # ------------------------------------------------
 
-with col2:
+        with col2:
 
-    if st.button(
-        "◀ Prev",
-        use_container_width=True
-    ):
+            if st.button(
+                "◀ Prev",
+                use_container_width=True
+            ):
 
-        st.session_state.scan_slider = max(
-            1,
-            st.session_state.scan_slider - 1
-        )
+                st.session_state.scan_slider = max(
+                    1,
+                    st.session_state.scan_slider - 1
+                )
 
-# ------------------------------------------------
-# Next
-# ------------------------------------------------
+        # ------------------------------------------------
+        # Next
+        # ------------------------------------------------
 
-with col3:
+        with col3:
 
-    if st.button(
-        "Next ▶",
-        use_container_width=True
-    ):
+            if st.button(
+                "Next ▶",
+                use_container_width=True
+            ):
 
-        st.session_state.scan_slider = min(
-            len(results),
-            st.session_state.scan_slider + 1
-        )
+                st.session_state.scan_slider = min(
+                    len(results),
+                    st.session_state.scan_slider + 1
+                )
 
         # ----------------------------------------------------
         # Current scan point
