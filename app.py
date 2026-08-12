@@ -1699,7 +1699,6 @@ if mode == "single":
                 )
             )
 
-
 # ============================================================
 # Scan result
 # ============================================================
@@ -1717,8 +1716,29 @@ elif mode == "scan":
         # ----------------------------------------------------
 
         col1, col2, col3 = st.columns(
-            [2, 1, 1]
+            [4, 1, 1]
         )
+
+        # ----------------------------------------------------
+        # Scan slider
+        # ----------------------------------------------------
+
+        if "scan_slider" not in st.session_state:
+            st.session_state.scan_slider = 1
+
+        with col1:
+
+            i = st.slider(
+                "Scan index",
+                1,
+                len(results),
+                st.session_state.scan_slider,
+                key="scan_slider"
+            )
+
+        # ----------------------------------------------------
+        # Prev
+        # ----------------------------------------------------
 
         with col2:
 
@@ -1735,6 +1755,10 @@ elif mode == "scan":
                     st.session_state.scan_slider - 1
                 )
 
+        # ----------------------------------------------------
+        # Next
+        # ----------------------------------------------------
+
         with col3:
 
             if st.button(
@@ -1749,21 +1773,6 @@ elif mode == "scan":
                     len(results),
                     st.session_state.scan_slider + 1
                 )
-
-        # ----------------------------------------------------
-        # Scan slider
-        # ----------------------------------------------------
-
-        if "scan_slider" not in st.session_state:
-            st.session_state.scan_slider = 1
-
-        i = st.slider(
-            "Scan index",
-            1,
-            len(results),
-            st.session_state.scan_slider,
-            key="scan_slider"
-        )
 
         RM, fig = results[i - 1]
 
