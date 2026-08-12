@@ -48,23 +48,11 @@ st.markdown(
     }
 
 
-    /* --------------------------------------------------------
-       Sidebar width
-       -------------------------------------------------------- */
-
-    section[data-testid="stSidebar"] {
-        width: 600px !important;
-    }
-
-    section[data-testid="stSidebar"] > div:first-child {
-        width: 600px !important;
-    }
-
-
     /* Sidebar heading spacing */
     section[data-testid="stSidebar"] h3 {
         margin-top: 0.8rem;
     }
+
 
     </style>
     """,
