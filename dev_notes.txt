@@ -7,3 +7,4 @@
 2026/05/20: I'm working to increase the processing speed of Scan mode.
 2026/05/21: I have prepared the default values ​​for the each instrument.
 2026/07/24: I added default values ​​for TAS installed at HFIR.
+2026/08/12: I made significant changes to the UI.
