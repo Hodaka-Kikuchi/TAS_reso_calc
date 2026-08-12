@@ -1719,27 +1719,10 @@ elif mode == "scan":
         if "scan_slider" not in st.session_state:
             st.session_state.scan_slider = 1
 
-        col1, col2, col3 = st.columns([5, 1, 1])
+        col1, col2, col3 = st.columns([1, 5, 1])
 
-        # ------------------------------------------------
-        # Slider
-        # ------------------------------------------------
-
-        with col1:
-
-            i = st.slider(
-                "Scan index",
-                1,
-                len(results),
-                st.session_state.scan_slider,
-                key="scan_slider"
-            )
-
-        # ------------------------------------------------
         # Previous
-        # ------------------------------------------------
-
-        with col2:
+        with col1:
 
             if st.button(
                 "◀ Prev",
@@ -1751,10 +1734,18 @@ elif mode == "scan":
                     st.session_state.scan_slider - 1
                 )
 
-        # ------------------------------------------------
-        # Next
-        # ------------------------------------------------
+        # Slider
+        with col2:
 
+            i = st.slider(
+                "Scan index",
+                1,
+                len(results),
+                st.session_state.scan_slider,
+                key="scan_slider"
+            )
+
+        # Next
         with col3:
 
             if st.button(
