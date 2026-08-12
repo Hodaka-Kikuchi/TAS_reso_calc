@@ -1719,23 +1719,13 @@ elif mode == "scan":
         if "scan_slider" not in st.session_state:
             st.session_state.scan_slider = 1
 
-        col1, col2, col3 = st.columns([1, 5, 1])
+        col1, col2, col3 = st.columns([5, 1, 1])
 
-        # Previous
-        with col1:
-
-            if st.button(
-                "◀ Prev",
-                use_container_width=True
-            ):
-
-                st.session_state.scan_slider = max(
-                    1,
-                    st.session_state.scan_slider - 1
-                )
-
+        # ------------------------------------------------
         # Slider
-        with col2:
+        # ------------------------------------------------
+
+        with col1:
 
             i = st.slider(
                 "Scan index",
@@ -1743,20 +1733,39 @@ elif mode == "scan":
                 len(results),
                 st.session_state.scan_slider,
                 key="scan_slider"
-            )
+    )
 
-        # Next
-        with col3:
+# ------------------------------------------------
+# Previous
+# ------------------------------------------------
 
-            if st.button(
-                "Next ▶",
-                use_container_width=True
-            ):
+with col2:
 
-                st.session_state.scan_slider = min(
-                    len(results),
-                    st.session_state.scan_slider + 1
-                )
+    if st.button(
+        "◀ Prev",
+        use_container_width=True
+    ):
+
+        st.session_state.scan_slider = max(
+            1,
+            st.session_state.scan_slider - 1
+        )
+
+# ------------------------------------------------
+# Next
+# ------------------------------------------------
+
+with col3:
+
+    if st.button(
+        "Next ▶",
+        use_container_width=True
+    ):
+
+        st.session_state.scan_slider = min(
+            len(results),
+            st.session_state.scan_slider + 1
+        )
 
         # ----------------------------------------------------
         # Current scan point
