@@ -8,3 +8,4 @@
 2026/05/21: I have prepared the default values ​​for the each instrument.
 2026/07/24: I added default values ​​for TAS installed at HFIR.
 2026/08/12: I made significant changes to the UI.
+2026/08/22: I noticed that the graph labels are incorrect when the reciprocal lattice coordinate system is not orthogonal. Currently, the resolution function is displayed as a projection onto the plane perpendicular to axis 1. Until the projection onto the plane corresponding to the reciprocal lattice vectors is implemented, I will display the resolution in units of Å⁻¹.
