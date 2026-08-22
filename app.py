@@ -11,11 +11,11 @@ from RL_calc import RL_calc
 from UB_calc import UB_calc
 
 # single QE positionでの計算
-from QEresolution_scan_dev import calcresolution_scan3
+from QEresolution_scan import calcresolution_scan3
 
 # localでのDebugの仕方
 # cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
-# python -m streamlit run app_dev.py
+# python -m streamlit run app.py
 
 # ============================================================
 # Streamlit UI

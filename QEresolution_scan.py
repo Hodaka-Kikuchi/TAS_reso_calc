@@ -484,7 +484,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     if sense == '-+-':
         # 上下反転
         # rightではそのまま、leftでaxis2をaxis1に対してミラーさせる。
-        S = np.diag([1.0, -1.0, 1.0, 1.0])   # y軸のみ反転
+        S = np.diag([1.0, -1.0, 1.0, -1.0])   # y,z軸のみ反転
         RM_flipped = S @ RM @ S.T
         
         RM = RM_flipped
@@ -658,7 +658,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         Z_shifted = Z + shift_y
         
         # 表示用 x軸を Qx のノルムで割る
-        Qx_norm = np.linalg.norm(Qx)
+        #Qx_norm = np.linalg.norm(Qx)
+        Qx_norm = 1
         X_display = X_shifted / Qx_norm
 
         # 等高線をプロット（楕円の曲線部分）
@@ -679,7 +680,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         Z_shifted = Z + shift_y
         
         # 表示用 x軸を Qx のノルムで割る
-        Qy_norm = np.linalg.norm(Qy)
+        #Qy_norm = np.linalg.norm(Qy)
+        Qy_norm = 1
         X_display = X_shifted / Qy_norm
 
         # 等高線をプロット（楕円の曲線部分）
@@ -700,9 +702,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         Z_shifted = Z + shift_y
         
         # 表示用 x軸を Qx のノルムで割る
-        Qx_norm = np.linalg.norm(Qx)
+        #Qx_norm = np.linalg.norm(Qx)
+        Qx_norm = 1
         X_display = X_shifted / Qx_norm
-        Qy_norm = np.linalg.norm(Qy)
+        #Qy_norm = np.linalg.norm(Qy)
+        Qy_norm = 1
         Y_display = Z_shifted / Qy_norm
 
         # 等高線をプロット（楕円の曲線部分）
@@ -723,7 +727,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         Z_shifted = Z + shift_y
         
         # 表示用 x軸を Qx のノルムで割る
-        Qz_norm = np.linalg.norm(Qz)
+        #Qz_norm = np.linalg.norm(Qz)
+        Qz_norm = 1
         X_display = X_shifted / Qz_norm
 
         # 等高線をプロット（楕円の曲線部分）
@@ -765,10 +770,14 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     
     plt.suptitle(
         f'ℏω: {QE_sets[0]} meV, h: {QE_sets[1]}, k: {QE_sets[2]}, l: {QE_sets[3]}\n'
-        f'M2 = {A_sets[0]:.3f} deg, S2 = {A_sets[1]:.3f} deg, A2 = {A_sets[2]:.3f} deg\n'
-        r'$\delta Q_{x} (\parallel axis1)$ = ' + f'{resolution_Q_parallel/np.linalg.norm(Qx):.4f}' + r' (r.l.u.), '
-        r'$\delta Q_{y} (\parallel axis2)$ = ' + f'{resolution_Q_perpendicular/np.linalg.norm(Qy):.4f}' + r' (r.l.u.), '
-        r'$\delta Q_{z} (\parallel axis3)$ = ' + f'{resolution_Q_z/np.linalg.norm(Qz):.4f}' + r' (r.l.u.), '
+        r'(axis 1): '+ f'({sv1[0]:.3f}, {sv1[1]:.3f}, {sv1[2]:.3f})\n'
+        #f'M2 = {A_sets[0]:.3f} deg, S2 = {A_sets[1]:.3f} deg, A2 = {A_sets[2]:.3f} deg\n'
+        #r'$\delta Q_{x} (\parallel axis1)$ = ' + f'{resolution_Q_parallel/np.linalg.norm(Qx):.4f}' + r' (r.l.u.), '
+        #r'$\delta Q_{y} (\parallel axis2)$ = ' + f'{resolution_Q_perpendicular/np.linalg.norm(Qy):.4f}' + r' (r.l.u.), '
+        #r'$\delta Q_{z} (\parallel axis3)$ = ' + f'{resolution_Q_z/np.linalg.norm(Qz):.4f}' + r' (r.l.u.), '
+        r'$\delta Q_{\parallel}$ (axis 1) = ' + f'{resolution_Q_parallel:.4f}' + r' ($\mathrm{\AA}^{-1}$), '
+        r'$\delta Q_{\perp,\mathrm{in}}$ = ' + f'{resolution_Q_perpendicular:.4f}' + r' ($\mathrm{\AA}^{-1}$), '
+        r'$\delta Q_{\perp,\mathrm{out}}$ = ' + f'{resolution_Q_z:.4f}' + r' ($\mathrm{\AA}^{-1}$), '
         f'δℏω = {resolution_energy:.4f}'  + r' (meV)',
         fontsize=11,
         y=0.98  # 上の余白を調整したい場合に使用（デフォルトより少し上）
@@ -777,48 +786,62 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # === Q_parallel vs E の楕円描画 ===
     ax1.axhline(0, color="black", linestyle="--", linewidth=0.5)
     ax1.axvline(0, color="black", linestyle="--", linewidth=0.5)
-    ax1.set_xlabel(r"$\delta Q_{x}$ (r.l.u.)")
+    #ax1.set_xlabel(r"$\delta Q_{x}$ (r.l.u.)")
+    ax1.set_xlabel(r"$\delta Q_{\parallel}$ (axis 1) $(\mathrm{\AA}^{-1})$")
     ax1.set_ylabel("δℏω (meV)")
-    ax1.set_title(r"$Q_{x} \parallel$" + f"({sv1[0]:.4f}, {sv1[1]:.4f}, {sv1[2]:.4f})", fontsize=12)
+    #ax1.set_title(r"$Q_{x} \parallel$" + f"({sv1[0]:.4f}, {sv1[1]:.4f}, {sv1[2]:.4f})", fontsize=12)
+    ax1.set_title(r"$\delta Q_{\parallel}$ (axis 1) vs ℏω ellipse", fontsize=12)
 
-    ax1.set_xlim([-Xrange_lim/np.linalg.norm(Qx), Xrange_lim/np.linalg.norm(Qx)])
+    #ax1.set_xlim([-Xrange_lim/np.linalg.norm(Qx), Xrange_lim/np.linalg.norm(Qx)])
+    ax1.set_xlim([-Xrange_lim, Xrange_lim])
     ax1.set_ylim([-Zrange_lim, Zrange_lim])
     ax1.grid(True)
 
     # === Q_perp vs E の楕円描画===
     ax2.axhline(0, color="black", linestyle="--", linewidth=0.5)
     ax2.axvline(0, color="black", linestyle="--", linewidth=0.5)
-    ax2.set_xlabel(r"$\delta Q_{y}$ (r.l.u.)")
+    #ax2.set_xlabel(r"$\delta Q_{y}$ (r.l.u.)")
+    ax2.set_xlabel(r"$\delta Q_{\perp,\mathrm{in}}$ $(\mathrm{\AA}^{-1})$")
     ax2.set_ylabel("δℏω (meV)")
-    ax2.set_title(r"$Q_{y} \parallel$" + f"({sv2[0]:.4f}, {sv2[1]:.4f}, {sv2[2]:.4f})", fontsize=12)
+    #ax2.set_title(r"$Q_{y} \parallel$" + f"({sv2[0]:.4f}, {sv2[1]:.4f}, {sv2[2]:.4f})", fontsize=12)
+    ax2.set_title(r"$\delta Q_{\perp,\mathrm{in}}$ vs ℏω ellipse", fontsize=12)
 
     # 必要であれば同様に情報を追加（または省略）
-    ax2.set_xlim([-Yrange_lim/np.linalg.norm(Qy), Yrange_lim/np.linalg.norm(Qy)])
+    #ax2.set_xlim([-Yrange_lim/np.linalg.norm(Qy), Yrange_lim/np.linalg.norm(Qy)])
+    ax2.set_xlim([-Yrange_lim, Yrange_lim])
     ax2.set_ylim([-Zrange_lim, Zrange_lim])
     ax2.grid(True)
     
     # === Q_perp vs Q_parallelの楕円描画===
     ax3.axhline(0, color="black", linestyle="--", linewidth=0.5)
     ax3.axvline(0, color="black", linestyle="--", linewidth=0.5)
-    ax3.set_xlabel(r"$\delta Q_{x}$ (r.l.u.)")
-    ax3.set_ylabel(r"$\delta Q_{y}$ (r.l.u.)")
-    ax3.set_title(r"$\delta Q_{x} ({\parallel}axis1)$ vs $\delta Q_{y} ({\parallel}axis2)$ ellipse", fontsize=12)
+    #ax3.set_xlabel(r"$\delta Q_{x}$ (r.l.u.)")
+    #ax3.set_ylabel(r"$\delta Q_{y}$ (r.l.u.)")
+    ax3.set_xlabel(r"$\delta Q_{\parallel}$ (axis 1) $(\mathrm{\AA}^{-1})$")
+    ax3.set_ylabel(r"$\delta Q_{\perp,\mathrm{in}}$ $(\mathrm{\AA}^{-1})$")
+    #ax3.set_title(r"$\delta Q_{x} ({\parallel}axis1)$ vs $\delta Q_{y} ({\parallel}axis2)$ ellipse", fontsize=12)
+    ax3.set_title(r"$\delta Q_{\parallel}$ (axis 1) vs $\delta Q_{\perp,\mathrm{in}}$ ellipse", fontsize=12)
 
     # 必要であれば同様に情報を追加（または省略）
-    ax3.set_xlim([-Xrange_lim/np.linalg.norm(Qx), Xrange_lim/np.linalg.norm(Qx)])
-    ax3.set_ylim([-Yrange_lim/np.linalg.norm(Qy), Yrange_lim/np.linalg.norm(Qy)])
+    #ax3.set_xlim([-Xrange_lim/np.linalg.norm(Qx), Xrange_lim/np.linalg.norm(Qx)])
+    #ax3.set_ylim([-Yrange_lim/np.linalg.norm(Qy), Yrange_lim/np.linalg.norm(Qy)])
+    ax3.set_xlim([-Xrange_lim, Xrange_lim])
+    ax3.set_ylim([-Yrange_lim, Yrange_lim])
     #ax3.set_aspect(np.linalg.norm(Qy)/np.linalg.norm(Qx))  # ここで縦横比を1:1に固定
     ax3.grid(True)
     
     # === Q_perp vs E の楕円描画===
     ax4.axhline(0, color="green", linestyle="--", linewidth=0.5)
     ax4.axvline(0, color="green", linestyle="--", linewidth=0.5)
-    ax4.set_xlabel(r"$\delta Q_{z}$ (r.l.u.)")
+    #ax4.set_xlabel(r"$\delta Q_{z}$ (r.l.u.)")
+    ax4.set_xlabel(r"$\delta Q_{\perp,\mathrm{out}} \mathrm{\AA}^{-1}$")
     ax4.set_ylabel("δℏω (meV)")
-    ax4.set_title(r"$Q_{z} \parallel$" + f"({sv3[0]:.4f}, {sv3[1]:.4f}, {sv3[2]:.4f})", fontsize=12)
+    #ax4.set_title(r"$Q_{z} \parallel$" + f"({sv3[0]:.4f}, {sv3[1]:.4f}, {sv3[2]:.4f})", fontsize=12)
+    ax4.set_title(r"$\delta Q_{\perp,\mathrm{out}}$ (axis 1) vs ℏω ellipse", fontsize=12)
 
     # 必要であれば同様に情報を追加（または省略）
-    ax4.set_xlim([-Wrange_lim/np.linalg.norm(Qz), Wrange_lim/np.linalg.norm(Qz)])
+    #ax4.set_xlim([-Wrange_lim/np.linalg.norm(Qz), Wrange_lim/np.linalg.norm(Qz)])
+    ax4.set_xlim([-Wrange_lim, Wrange_lim])
     ax4.set_ylim([-Zrange_lim, Zrange_lim])
     ax4.grid(True)
 
