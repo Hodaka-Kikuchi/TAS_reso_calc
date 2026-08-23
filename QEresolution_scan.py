@@ -464,11 +464,64 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     uq = Qvect / np.linalg.norm(Qvect)
 
     # MATLABの scalar(u,v) に対応 → 普通の内積でOK (すでに直交座標系に変換済みなので)
-    xq = np.dot(Qx, uq) / np.linalg.norm(Qx)
-    yq = np.dot(Qy, uq) / np.linalg.norm(Qy)
+    # ============================================================
+    # U, V の単位ベクトル
+    # ============================================================
 
-    # 回転角度
-    theta_rad = np.arctan2(yq, xq)
+    u_hat = Qx / np.linalg.norm(Qx)
+    v_hat = Qy / np.linalg.norm(Qy)
+
+    # ============================================================
+    # U に垂直な U-V 平面内の方向
+    #
+    # UVperp は
+    #   U に垂直
+    #   V の U に垂直な成分の方向
+    #
+    # したがって、U -> UVperp が
+    # U-V 平面内での正の回転方向になる。
+    # ============================================================
+
+    UVperp = v_hat - np.dot(v_hat, u_hat) * u_hat
+
+    UVperp_norm = np.linalg.norm(UVperp)
+
+    UVperp = UVperp / UVperp_norm
+
+
+    # ============================================================
+    # U, UVperp, Q の関係から signed angle を計算
+    # ============================================================
+
+    uq = Qvect / np.linalg.norm(Qvect)
+
+    # Q を U-V 平面に射影
+    Q_uv = (
+        np.dot(uq, u_hat) * u_hat
+        + np.dot(uq, UVperp) * UVperp
+    )
+
+    Q_uv_norm = np.linalg.norm(Q_uv)
+
+    Q_uv_hat = Q_uv / Q_uv_norm
+
+
+    # ============================================================
+    # U から Q までの角度
+    #
+    # cos(theta) = U・Q
+    # sin(theta) = UVperp・Q
+    #
+    # atan2 を使うことで -180 ～ +180 deg の
+    # signed angle になる。
+    # ============================================================
+
+    cos_theta = np.dot(u_hat, Q_uv_hat)
+    sin_theta = np.dot(UVperp, Q_uv_hat)
+
+    theta_rad = np.arctan2(sin_theta, cos_theta)
+
+    print(f"U: theta = {np.degrees(theta_rad):.6f} deg")
 
     # 回転行列（MATLABの tmat と同じ形）
     rot_mat = np.array([
