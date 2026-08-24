@@ -1504,7 +1504,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         linewidth=0.5
     )
 
-    ax2.set_xlabel(
+    ax4.set_xlabel(
         rf"$\delta Q_W$ {q_unit}"
     )
 
