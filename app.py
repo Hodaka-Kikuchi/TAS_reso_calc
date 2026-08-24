@@ -11,7 +11,7 @@ from RL_calc import RL_calc
 from UB_calc import UB_calc
 
 # single QE positionでの計算
-from QEresolution_scan import calcresolution_scan3
+from QEresolution_scan2 import calcresolution_scan3
 
 # localでのDebugの仕方
 # cd C:\Users\h34\Documents\Python\TAS_reso_calc_web
@@ -418,71 +418,71 @@ with st.sidebar:
             st.markdown("#### Scattering plane")
 
             # axis 1
-            st.markdown("**axis 1 (in plane)**")
+            st.markdown("**$Q_U$ (in plane)**")
 
             c1, c2, c3 = st.columns(3)
 
             with c1:
                 h1 = st.number_input(
-                    "h1",
+                    "U_h",
                     value=1.0
                 )
 
             with c2:
                 k1 = st.number_input(
-                    "k1",
+                    "U_k",
                     value=0.0
                 )
 
             with c3:
                 l1 = st.number_input(
-                    "l1",
+                    "U_l",
                     value=0.0
                 )
 
             # axis 2
-            st.markdown("**axis 2 (in plane)**")
+            st.markdown("**$Q_V$ (in plane)**")
 
             c1, c2, c3 = st.columns(3)
 
             with c1:
                 h2 = st.number_input(
-                    "h2",
+                    "V_h",
                     value=0.0
                 )
 
             with c2:
                 k2 = st.number_input(
-                    "k2",
+                    "V_k",
                     value=1.0
                 )
 
             with c3:
                 l2 = st.number_input(
-                    "l2",
+                    "V_l",
                     value=0.0
                 )
 
             # axis 3
-            st.markdown("**axis 3 (out of plane)**")
+            st.markdown("**$Q_W$ (out of plane)**")
 
             c1, c2, c3 = st.columns(3)
 
             with c1:
                 h3 = st.number_input(
-                    "h3",
+                    "W_h",
                     value=0.0
                 )
 
             with c2:
                 k3 = st.number_input(
-                    "k3",
+                    "W_k",
                     value=0.0
                 )
 
             with c3:
                 l3 = st.number_input(
-                    "l3",
+                    "W_l",
                     value=1.0
                 )
 
@@ -1331,12 +1331,25 @@ with st.container(border=True):
 
     st.subheader("Calculation Point")
 
-    mode = st.radio(
-        "Mode",
-        ["single", "scan"],
-        horizontal=True,
-        key="calc_mode"
-    )
+    c1, c2 = st.columns([1,1])
+
+    with c1:
+
+        mode = st.radio(
+            "Mode",
+            ["single", "scan"],
+            horizontal=True,
+            key="calc_mode"
+        )
+
+    with c2:
+
+        unit_mode = st.radio(
+            "Unit",
+            ["(r.l.u.)", "$\mathrm{\AA}^{-1}$"],
+            horizontal=True,
+            key="unit_mode"
+        )
 
     # ========================================================
     # SINGLE MODE
@@ -1609,7 +1622,8 @@ if mode == "single":
             approximation,
             focusing,
             geom,
-            calc_params
+            calc_params,
+            unit_mode
         )
 
         st.session_state.single_result = (
@@ -1648,7 +1662,8 @@ elif mode == "scan":
                 approximation,
                 focusing,
                 geom,
-                calc_params_i
+                calc_params_i,
+                unit_mode
             )
 
             results.append(
@@ -1690,6 +1705,11 @@ if mode == "single":
             "Resolution Matrix",
             expanded=False
         ):
+
+            st.markdown(
+                "Matrix order: "
+                r"$(Q_{\parallel}, Q_{\perp}, E, Q_{\mathrm{out}})$"
+            )
 
             st.text(
                 np.array2string(
@@ -1788,6 +1808,11 @@ elif mode == "scan":
             "Resolution Matrix",
             expanded=False
         ):
+
+            st.markdown(
+                "Matrix order: "
+                r"$(Q_{\parallel}, Q_{\perp}, E, Q_{\mathrm{out}})$"
+            )
 
             st.text(
                 np.array2string(

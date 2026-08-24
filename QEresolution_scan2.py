@@ -15,7 +15,7 @@ from scipy.optimize import minimize
 
 from PIL import Image  # GIF 保存のために必要
 
-def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params):
+def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params,unit_mode):
 
     # divergenceの読み出し
     gm_1st = col_param["gm_1st"]
@@ -444,6 +444,16 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 測定しているQベクトル
     Qvect = QE_sets[1]*astar + QE_sets[2]*bstar + QE_sets[3]*cstar
 
+    # RLU用のnormを計算
+    if unit_mode == "$\mathrm{\AA}^{-1}$":
+        normQx = 1.0
+        normQy = 1.0
+        normQz = 1.0
+
+    elif unit_mode == "(r.l.u.)":
+        normQx = np.linalg.norm(Qx)
+        normQy = np.linalg.norm(Qy)
+        normQz = np.linalg.norm(Qz)
 
     # ============================================================
     # 単位ベクトル
@@ -453,6 +463,12 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     u_hat = Qx / np.linalg.norm(Qx)
     v_hat = Qy / np.linalg.norm(Qy)
     w_hat = Qz / np.linalg.norm(Qz)
+
+    uv_angle = np.arctan2(
+        np.dot(np.cross(u_hat, v_hat), w_hat),
+        np.dot(u_hat, v_hat)
+    )
+    
 
     # ============================================================
     # 現在のRMの直交座標系
@@ -465,45 +481,40 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # VをQに垂直な方向へ射影してy軸を作る
     # ============================================================
 
+    # ============================================================
     # Q方向を新しい x 軸とする
+    # ============================================================
+
     e_x = uq
 
-    # --------------------------------------------------
-    # Qに垂直な方向を V を基準に決める
-    # --------------------------------------------------
+    # ============================================================
+    # Qに垂直な面内方向を V から作る
+    # ============================================================
+
     V_perp = v_hat - np.dot(v_hat, e_x) * e_x
 
     if np.linalg.norm(V_perp) > 1e-12:
+
         e_y = V_perp / np.linalg.norm(V_perp)
 
     else:
-        # V || Q の場合は U を基準にする
+
+        # V || Q の場合は U を使う
         U_perp = u_hat - np.dot(u_hat, e_x) * e_x
 
         if np.linalg.norm(U_perp) > 1e-12:
             e_y = U_perp / np.linalg.norm(U_perp)
         else:
-            # U と V がともに Q と平行になることは
-            # 通常の3次元UVWでは起こらない
-            #raise ValueError("U, V ともに Q と平行で、e_y を定義できません。")
-            pass
+            raise ValueError(
+                "U, V ともに Q と平行で e_y を定義できません。"
+            )
 
-    # --------------------------------------------------
-    # 右手系になるように e_z を決める
-    # --------------------------------------------------
+    # ============================================================
+    # 右手系を維持
+    # ============================================================
+
     e_z = np.cross(e_x, e_y)
-    e_z = e_z / np.linalg.norm(e_z)
-
-    # --------------------------------------------------
-    # e_z の向きを W 側に合わせる
-    #
-    # e_x × e_y = e_z を維持するため、
-    # 反転するときは e_y と e_z を同時に反転する
-    # --------------------------------------------------
-    if np.dot(e_z, w_hat) < 0:
-        e_y = -e_y
-        e_z = -e_z
-
+    e_z /= np.linalg.norm(e_z)
 
     # ============================================================
     # 結晶軸をRMの直交座標系に射影して角度を求める
@@ -540,11 +551,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     theta_V, tilt_V = get_theta_tilt(Qy)
     theta_W, tilt_W = get_theta_tilt(Qz)
 
-    print("=== UVW rotation angles ===")
-    print(f"U: theta = {np.degrees(theta_U):.6f} deg, tilt = {np.degrees(tilt_U):.6f} deg")
-    print(f"V: theta = {np.degrees(theta_V):.6f} deg, tilt = {np.degrees(tilt_V):.6f} deg")
-    print(f"W: theta = {np.degrees(theta_W):.6f} deg, tilt = {np.degrees(tilt_W):.6f} deg")
-    print("============================")
+    #print("=== UVW rotation angles ===")
+    #print(f"U: theta = {np.degrees(theta_U):.6f} deg, tilt = {np.degrees(tilt_U):.6f} deg")
+    #print(f"V: theta = {np.degrees(theta_V):.6f} deg, tilt = {np.degrees(tilt_V):.6f} deg")
+    #print(f"W: theta = {np.degrees(theta_W):.6f} deg, tilt = {np.degrees(tilt_W):.6f} deg")
+    #print("============================")
 
     # ============================================================
     # TASではU,Vは散乱面内
@@ -553,7 +564,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     tilt_U = 0.0
     tilt_V = 0.0
-
 
     # ============================================================
     # 回転行列
@@ -927,6 +937,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         labels,
         color,
         ls,
+        normQ,
         shift_x=0,
         shift_y=0
     ):
@@ -945,7 +956,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         X, Z = np.meshgrid(x, z)
 
-        # 楕円の式
         ellipse = (
             A * X**2
             + B * X * Z
@@ -958,8 +968,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         X_shifted = X + shift_x
         Z_shifted = Z + shift_y
 
-        # 現在は Å^-1 の座標そのものを表示
-        X_display = X_shifted
+        # Å^-1 → 表示単位
+        X_display = X_shifted / normQ
 
         ax.contour(
             X_display,
@@ -990,6 +1000,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         labels="",
         color="red",
         ls=["-"],
+        normQ=normQx,
         shift_x=0,
         shift_y=0
     )
@@ -1009,6 +1020,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         labels="",
         color="blue",
         ls=["-"],
+        normQ=normQy,
         shift_x=0,
         shift_y=0
     )
@@ -1028,6 +1040,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         labels="",
         color="green",
         ls=["-"],
+        normQ=normQz,
         shift_x=0,
         shift_y=0
     )
@@ -1051,6 +1064,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         labels="",
         color="red",
         ls=["--"],
+        normQ=normQx,
         shift_x=0,
         shift_y=0
     )
@@ -1070,6 +1084,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         labels="",
         color="blue",
         ls=["--"],
+        normQ=normQy,
         shift_x=0,
         shift_y=0
     )
@@ -1089,184 +1104,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         labels="",
         color="green",
         ls=["--"],
+        normQ=normQz,
         shift_x=0,
         shift_y=0
     )
-
-    # ============================================================
-    # U-V 平面用の楕円描画関数
-    #
-    # U-V が直交していない場合にも対応
-    # ============================================================
-
-    def plot_ellipse_uv(
-        A, B, C, D, E, F,
-        Urange_lim,
-        Vrange_lim,
-        ax,
-        labels,
-        color,
-        ls,
-        uv_angle,
-        shift_x=0,
-        shift_y=0
-    ):
-
-        U = np.linspace(
-            -Urange_lim,
-            Urange_lim,
-            150
-        )
-
-        V = np.linspace(
-            -Vrange_lim,
-            Vrange_lim,
-            150
-        )
-
-        U_grid, V_grid = np.meshgrid(U, V)
-
-        # --------------------------------------------------------
-        # U-V 座標上で楕円を計算
-        # --------------------------------------------------------
-
-        ellipse = (
-            A * U_grid**2
-            + B * U_grid * V_grid
-            + C * V_grid**2
-            + D * U_grid
-            + E * V_grid
-            + F
-        )
-
-        # --------------------------------------------------------
-        # U-V の斜交座標を Cartesian 表示へ変換
-        #
-        # U方向 = (1, 0)
-        #
-        # V方向 = (cos(theta), sin(theta))
-        #
-        # 例えば Hexagonal なら theta = 60 deg
-        # --------------------------------------------------------
-
-        X = (
-            U_grid
-            + V_grid * np.cos(uv_angle)
-        )
-
-        Y = (
-            V_grid
-            * np.sin(uv_angle)
-        )
-
-        # 表示位置のシフト
-        X = X + shift_x
-        Y = Y + shift_y
-
-        ax.contour(
-            X,
-            Y,
-            ellipse,
-            levels=[0],
-            colors=color,
-            label=labels,
-            linestyles=ls,
-            zorder=3
-        )
-
-
-    # ============================================================
-    # U-V 斜交座標のグリッドを描画する関数
-    # ============================================================
-
-    def draw_uv_grid(
-        ax,
-        Urange_lim,
-        Vrange_lim,
-        uv_angle,
-        spacing
-    ):
-
-        # --------------------------------------------------------
-        # U, V の基底ベクトル
-        # --------------------------------------------------------
-
-        eU = np.array([
-            1.0,
-            0.0
-        ])
-
-        eV = np.array([
-            np.cos(uv_angle),
-            np.sin(uv_angle)
-        ])
-
-        # --------------------------------------------------------
-        # V = constant
-        #
-        # U方向に平行な線
-        # --------------------------------------------------------
-
-        v_values = np.arange(
-            -Vrange_lim,
-            Vrange_lim + spacing,
-            spacing
-        )
-
-        for v in v_values:
-
-            start = (
-                v * eV
-                - Urange_lim * eU
-            )
-
-            end = (
-                v * eV
-                + Urange_lim * eU
-            )
-
-            ax.plot(
-                [start[0], end[0]],
-                [start[1], end[1]],
-                color="gray",
-                linestyle=":",
-                linewidth=0.5,
-                zorder=0
-            )
-
-        # --------------------------------------------------------
-        # U = constant
-        #
-        # V方向に平行な線
-        # --------------------------------------------------------
-
-        u_values = np.arange(
-            -Urange_lim,
-            Urange_lim + spacing,
-            spacing
-        )
-
-        for u in u_values:
-
-            start = (
-                u * eU
-                - Vrange_lim * eV
-            )
-
-            end = (
-                u * eU
-                + Vrange_lim * eV
-            )
-
-            ax.plot(
-                [start[0], end[0]],
-                [start[1], end[1]],
-                color="gray",
-                linestyle=":",
-                linewidth=0.5,
-                zorder=0
-            )
-
 
     # ============================================================
     # Resolution
@@ -1282,28 +1123,51 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # Figure タイトル
     # ============================================================
 
+    # ============================================================
+    # Figure タイトル用の表示単位変換
+    # ============================================================
+
+    if unit_mode == "$\mathrm{\AA}^{-1}$":
+
+        q_unit = r"$(\mathrm{\AA}^{-1})$"
+
+        resolution_U_display = resolution_U
+        resolution_V_display = resolution_V
+        resolution_W_display = resolution_W
+
+    elif unit_mode == "(r.l.u.)":
+
+        q_unit = r"$(\mathrm{r.l.u.})$"
+
+        resolution_U_display = resolution_U / normQx
+        resolution_V_display = resolution_V / normQy
+        resolution_W_display = resolution_W / normQz
+
+
+    # ============================================================
+    # Figure タイトル
+    # ============================================================
+
     plt.suptitle(
         f'ℏω: {QE_sets[0]} meV, '
         f'h: {QE_sets[1]}, '
         f'k: {QE_sets[2]}, '
         f'l: {QE_sets[3]}\n'
 
-        r'(axis 1): '
-        + f'({sv1[0]:.3f}, '
-        f'{sv1[1]:.3f}, '
-        f'{sv1[2]:.3f})\n'
-
         r'$\delta Q_U$ = '
-        + f'{resolution_U:.4f}'
-        + r' ($\mathrm{\AA}^{-1}$), '
+        + f'{resolution_U_display:.4f} '
+        + q_unit
+        + ', '
 
         r'$\delta Q_V$ = '
-        + f'{resolution_V:.4f}'
-        + r' ($\mathrm{\AA}^{-1}$), '
+        + f'{resolution_V_display:.4f} '
+        + q_unit
+        + ', '
 
         r'$\delta Q_W$ = '
-        + f'{resolution_W:.4f}'
-        + r' ($\mathrm{\AA}^{-1}$), '
+        + f'{resolution_W_display:.4f} '
+        + q_unit
+        + ', '
 
         f'δℏω = {resolution_energy:.4f}'
         + r' (meV)',
@@ -1311,7 +1175,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         fontsize=11,
         y=0.98
     )
-
 
     # ============================================================
     # U vs E
@@ -1332,7 +1195,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax1.set_xlabel(
-        r"$\delta Q_U$ $(\mathrm{\AA}^{-1})$"
+        rf"$\delta Q_U$ {q_unit}"
     )
 
     ax1.set_ylabel(
@@ -1345,7 +1208,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax1.set_xlim(
-        [-Urange_lim, Urange_lim]
+        [-Urange_lim / normQx, Urange_lim / normQx]
     )
 
     ax1.set_ylim(
@@ -1374,7 +1237,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax2.set_xlabel(
-        r"$\delta Q_V$ $(\mathrm{\AA}^{-1})$"
+        rf"$\delta Q_V$ {q_unit}"
     )
 
     ax2.set_ylabel(
@@ -1387,7 +1250,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax2.set_xlim(
-        [-Vrange_lim, Vrange_lim]
+        [-Vrange_lim / normQy, Vrange_lim / normQy]
     )
 
     ax2.set_ylim(
@@ -1395,54 +1258,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax2.grid(True)
-
-
-    # ============================================================
-    # U-V の角度
-    #
-    # 実際の結晶の逆格子ベクトル Qx, Qy から求める
-    # ============================================================
-
-    u_hat = Qx / np.linalg.norm(Qx)
-
-    v_hat = Qy / np.linalg.norm(Qy)
-
-    uv_angle = np.arccos(
-        np.clip(
-            np.dot(u_hat, v_hat),
-            -1.0,
-            1.0
-        )
-    )
-
-    print(
-        f"U-V angle = {np.degrees(uv_angle):.6f} deg"
-    )
-
-
-    # ============================================================
-    # U-V 平面
-    #
-    # RM_U は
-    #
-    #     x = U
-    #     y = V
-    #     z = E
-    #     w = W
-    #
-    # となっている。
-    #
-    # したがって
-    #
-    # projection:
-    #     E, W を積分消去
-    #
-    # slice:
-    #     E = 0, W = 0
-    #
-    # とすれば U-V 平面が得られる。
-    # ============================================================
-
 
     # ============================================================
     # U-V projection
@@ -1458,13 +1273,72 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     # ============================================================
     # U-V slice
-    # E = 0, W = 0
     # ============================================================
 
     A_UV_s, B_UV_s, C_UV_s, D_UV_s, E_UV_s, F_UV_s = \
         ellipse_slice_coefficients(
             RM_U,
             ("x", "y")
+        )
+
+
+    # ============================================================
+    # U-V 楕円を描画する関数
+    #
+    # 今回はまず直交座標として表示する。
+    # ============================================================
+
+    def plot_ellipse_uv(
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        Urange_lim,
+        Vrange_lim,
+        ax,
+        labels,
+        color,
+        ls,
+        shift_x=0,
+        shift_y=0
+    ):
+
+        U = np.linspace(
+            -Urange_lim,
+            Urange_lim,
+            100
+        )
+
+        V = np.linspace(
+            -Vrange_lim,
+            Vrange_lim,
+            100
+        )
+
+        U_grid, V_grid = np.meshgrid(U, V)
+
+        ellipse = (
+            A * U_grid**2
+            + B * U_grid * V_grid
+            + C * V_grid**2
+            + D * U_grid
+            + E * V_grid
+            + F
+        )
+
+        U_shifted = U_grid + shift_x
+        V_shifted = V_grid + shift_y
+
+        ax.contour(
+            U_shifted,
+            V_shifted,
+            ellipse,
+            levels=[0],
+            colors=color,
+            label=labels,
+            linestyles=ls
         )
 
 
@@ -1481,12 +1355,13 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         E_UV,
         F_UV,
         Urange_lim,
-        Vrange_lim,
+        Vrange_lim / np.abs(np.sin(uv_angle)),
         ax3,
         labels="",
         color="black",
         ls=["-"],
-        uv_angle=uv_angle
+        shift_x=0,
+        shift_y=0
     )
 
 
@@ -1503,69 +1378,32 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         E_UV_s,
         F_UV_s,
         Urange_lim,
-        Vrange_lim,
+        Vrange_lim / np.abs(np.sin(uv_angle)),
         ax3,
         labels="",
         color="black",
         ls=["--"],
-        uv_angle=uv_angle
+        shift_x=0,
+        shift_y=0
     )
 
 
     # ============================================================
-    # U-V 斜交グリッド
-    #
-    # 通常の ax3.grid(True) は使わない。
+    # U-V 座標軸
     # ============================================================
 
-    draw_uv_grid(
-        ax3,
-        Urange_lim,
-        Vrange_lim,
-        uv_angle,
-        spacing=0.2
-    )
-
-
-    # ============================================================
-    # U軸
-    # ============================================================
-
-    ax3.plot(
-        [-Urange_lim, Urange_lim],
-        [0, 0],
+    ax3.axhline(
+        0,
         color="black",
-        linewidth=0.8,
-        zorder=2
+        linestyle="--",
+        linewidth=0.5
     )
 
-
-    # ============================================================
-    # V軸
-    # ============================================================
-
-    V_axis_start = (
-        -Vrange_lim
-        * np.array([
-            np.cos(uv_angle),
-            np.sin(uv_angle)
-        ])
-    )
-
-    V_axis_end = (
-        Vrange_lim
-        * np.array([
-            np.cos(uv_angle),
-            np.sin(uv_angle)
-        ])
-    )
-
-    ax3.plot(
-        [V_axis_start[0], V_axis_end[0]],
-        [V_axis_start[1], V_axis_end[1]],
+    ax3.axvline(
+        0,
         color="black",
-        linewidth=0.8,
-        zorder=2
+        linestyle="--",
+        linewidth=0.5
     )
 
 
@@ -1586,34 +1424,67 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         fontsize=12
     )
 
-
     # ============================================================
-    # U-V の表示範囲
-    #
-    # 斜交座標なので、少し余裕を持たせる
+    # 実際の V 方向を示す補助線
     # ============================================================
 
-    x_max = (
-        Urange_lim
-        + Vrange_lim * abs(np.cos(uv_angle))
+    V_line = Vrange_lim
+
+    ax3.plot(
+        [
+            -V_line * np.cos(uv_angle),
+                V_line * np.cos(uv_angle)
+        ],
+        [
+            -V_line * np.sin(uv_angle),
+                V_line * np.sin(uv_angle)
+        ],
+        color="black",
+        linestyle="-",
+        linewidth=1.0,
+        zorder=3
     )
 
-    y_max = (
-        Vrange_lim * abs(np.sin(uv_angle))
+    # ============================================================
+    # 実際の U 方向を示す補助線
+    # ============================================================
+
+    U_line = Urange_lim
+
+    ax3.plot(
+        [
+            -U_line,
+            U_line
+        ],
+        [
+            0,
+            0
+        ],
+        color="black",
+        linestyle="-",
+        linewidth=1.0,
+        zorder=3
     )
+
+    # ============================================================
+    # 表示範囲
+    # ============================================================
 
     ax3.set_xlim(
-        [-x_max, x_max]
+        [-Urange_lim, Urange_lim]
     )
 
     ax3.set_ylim(
-        [-y_max, y_max]
+        [-Vrange_lim / np.abs(np.sin(uv_angle)), Vrange_lim / np.abs(np.sin(uv_angle))]
     )
 
 
-    # 通常のCartesian gridは使用しない
-    ax3.grid(False)
+    # ============================================================
+    # 通常の直交グリッド
+    # ============================================================
 
+    ax3.grid(True)
+    ax3.set_aspect('equal', adjustable='box')
 
     # ============================================================
     # W vs E
@@ -1633,8 +1504,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         linewidth=0.5
     )
 
-    ax4.set_xlabel(
-        r"$\delta Q_W$ $(\mathrm{\AA}^{-1})$"
+    ax2.set_xlabel(
+        rf"$\delta Q_W$ {q_unit}"
     )
 
     ax4.set_ylabel(
@@ -1647,7 +1518,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax4.set_xlim(
-        [-Wrange_lim, Wrange_lim]
+        [-Wrange_lim / normQz, Wrange_lim / normQz]
     )
 
     ax4.set_ylim(

@@ -9,3 +9,4 @@
 2026/07/24: I added default values ​​for TAS installed at HFIR.
 2026/08/12: I made significant changes to the UI.
 2026/08/22: I noticed that the graph labels are incorrect when the reciprocal lattice coordinate system is not orthogonal. Currently, the resolution function is displayed as a projection onto the plane perpendicular to axis 1. Until the projection onto the plane corresponding to the reciprocal lattice vectors is implemented, I will display the resolution in units of Å⁻¹.
+2026/08/23: Improved UVW coordinate handling and resolution visualization. Corrected resolution output for non-orthogonal UVW coordinate systems. Updated resolution ellipses to follow the actual U/V/W directions for non-orthogonal coordinate systems. Added automatic handling of right-handed UVW coordinate systems. Added selectable resolution units: Å⁻¹ / r.l.u. Added automatic unit conversion for resolution values and plot axes. 
