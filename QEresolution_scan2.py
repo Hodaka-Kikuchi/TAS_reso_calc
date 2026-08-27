@@ -471,21 +471,227 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     
 
     # ============================================================
+    # Rotation 1
+    #
+    # U を XY 平面へ持ってくる。
+    #
+    # Z軸まわりの回転では U の z 成分は変わらないので、
+    # ここでは U の z 成分を除去する回転を使う。
+    #
+    # U = (ux, uy, uz)
+    #
+    # XY projection:
+    #     (ux, uy, 0)
+    #
+    # Rotation axis:
+    #     Z × U_xy
+    #
+    # この回転によって U は XY 平面へ入る。
+    # ============================================================
+
+    ux, uy, uz = u_hat
+
+    u_xy_norm = np.hypot(ux, uy)
+
+    if u_xy_norm <= 1e-12:
+
+        # U が Z 軸に平行な場合
+        #
+        # この場合は X 軸まわりに -90 deg 回転して
+        # U を +Y 方向へ持ってくる。
+        #
+        R1 = np.array([
+            [1.0,  0.0,  0.0],
+            [0.0,  0.0,  1.0],
+            [0.0, -1.0,  0.0]
+        ])
+
+    else:
+
+        # U の XY 平面内の方向
+        u_xy = np.array([
+            ux / u_xy_norm,
+            uy / u_xy_norm,
+            0.0
+        ])
+
+        # U_xy から U への回転角
+        #
+        # cos(theta) = |U_xy|
+        # sin(theta) = uz
+        #
+        cos_theta = u_xy_norm
+        sin_theta = uz
+
+        # 回転軸
+        axis = np.cross(u_xy, u_hat)
+        axis_norm = np.linalg.norm(axis)
+
+        if axis_norm <= 1e-12:
+
+            R1 = np.eye(3)
+
+        else:
+
+            axis /= axis_norm
+
+            K = np.array([
+                [0.0,       -axis[2],  axis[1]],
+                [axis[2],    0.0,     -axis[0]],
+                [-axis[1],   axis[0],  0.0]
+            ])
+
+            R1 = (
+                np.eye(3)
+                + K * sin_theta
+                + K @ K * (1.0 - cos_theta)
+            )
+
+
+    # ============================================================
+    # U と V に R1 を作用
+    # ============================================================
+
+    u1 = R1 @ u_hat
+    v1 = R1 @ v_hat
+    w1 = R1 @ w_hat
+
+    print("After R1")
+    print("U1 =", u1)
+    print("V1 =", v1)
+    print("W1 =", w1)
+
+
+    # ============================================================
+    # Rotation 2
+    #
+    # U1 はすでに XY 平面内。
+    #
+    # U1 を回転軸として V1 を回転させ、
+    # V1 も XY 平面へ持ってくる。
+    #
+    # U1 自身はこの回転では動かない。
+    # ============================================================
+
+    axis = u1 / np.linalg.norm(u1)
+
+    # V1 の U1 に垂直な成分
+    v1_perp = v1 - np.dot(v1, axis) * axis
+
+    v1_perp_norm = np.linalg.norm(v1_perp)
+
+    if v1_perp_norm <= 1e-12:
+        raise ValueError(
+            "U and V are parallel and cannot define a scattering plane."
+        )
+
+    v1_perp /= v1_perp_norm
+
+
+    # V1 を U1 軸まわりに回転したときの
+    # Z成分をゼロにする角度を求める。
+    #
+    # Rodrigues:
+    #
+    # V' = V cos(theta)
+    #    + (axis × V) sin(theta)
+    #    + axis(axis·V)(1-cos(theta))
+    #
+    # axis = U1 は XY 平面内なので、
+    # V' の z 成分について解ける。
+
+    a = v1[2]
+
+    b = np.cross(axis, v1)[2]
+
+    if abs(a) <= 1e-12 and abs(b) <= 1e-12:
+
+        # V1 はすでに XY 平面内
+        R2 = np.eye(3)
+
+    else:
+
+        # a*cos(theta) + b*sin(theta) = 0
+        #
+        # atan2 によって解を選択
+        theta = np.arctan2(-a, b)
+
+        K = np.array([
+            [0.0,       -axis[2],  axis[1]],
+            [axis[2],    0.0,     -axis[0]],
+            [-axis[1],   axis[0],  0.0]
+        ])
+
+        R2 = (
+            np.eye(3)
+            + np.sin(theta) * K
+            + (1.0 - np.cos(theta)) * (K @ K)
+        )
+
+
+    # ============================================================
+    # Total rotation
+    # ============================================================
+
+    R = R2 @ R1
+
+
+    # ============================================================
+    # Apply the same rotation to U, V and W
+    # ============================================================
+
+    u_rot = R @ u_hat
+    v_rot = R @ v_hat
+    w_rot = R @ w_hat
+
+    print("============================================")
+    print("Final rotation")
+    print("R =")
+    print(R)
+
+    print("R @ U =", u_rot)
+    print("R @ V =", v_rot)
+    print("R @ W =", w_rot)
+
+    print("(R @ U).z =", u_rot[2])
+    print("(R @ V).z =", v_rot[2])
+    print("(R @ W).z =", w_rot[2])
+
+
+    # ============================================================
+    # Check handedness
+    #
+    # U and V are now in the XY plane.
+    # Therefore W must point along +Z or -Z.
+    # ============================================================
+
+    tolerance = 1e-6
+
+    if w_rot[2] < -tolerance:
+
+        print(
+            "W points toward -Z after rotation -> FLIP V"
+        )
+
+        v_hat = -v_hat
+
+    else:
+
+        print(
+            "W points toward +Z after rotation -> DO NOT flip V"
+        )
+
+
+    # ============================================================
     # 現在のRMの直交座標系
     #
     # x : Q方向
     # y : 散乱面内Q⊥方向
     # z : 散乱面外方向
-    #
-    # QはU-V散乱面内にあるため、
-    # VをQに垂直な方向へ射影してy軸を作る
-    # ============================================================
-
-    # ============================================================
-    # Q方向を新しい x 軸とする
     # ============================================================
 
     e_x = uq
+
 
     # ============================================================
     # Qに垂直な面内方向を V から作る
@@ -503,18 +709,28 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         U_perp = u_hat - np.dot(u_hat, e_x) * e_x
 
         if np.linalg.norm(U_perp) > 1e-12:
+
             e_y = U_perp / np.linalg.norm(U_perp)
+
         else:
+
             raise ValueError(
                 "U, V ともに Q と平行で e_y を定義できません。"
             )
 
+
     # ============================================================
-    # 右手系を維持
+    # 右手系
     # ============================================================
 
     e_z = np.cross(e_x, e_y)
     e_z /= np.linalg.norm(e_z)
+
+    print("============================================")
+    print("Final RM coordinate system")
+    print("e_x =", e_x)
+    print("e_y =", e_y)
+    print("e_z =", e_z)
 
     # ============================================================
     # 結晶軸をRMの直交座標系に射影して角度を求める
