@@ -1686,12 +1686,14 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 表示範囲
     # ============================================================
 
+    max_UVrange = max(Urange_lim, Vrange_lim)
+
     ax3.set_xlim(
-        [-Urange_lim, Urange_lim]
+        [-max_UVrange, max_UVrange]
     )
 
     ax3.set_ylim(
-        [-Vrange_lim / np.abs(np.sin(uv_angle)), Vrange_lim / np.abs(np.sin(uv_angle))]
+        [-max_UVrange, max_UVrange]
     )
 
 
