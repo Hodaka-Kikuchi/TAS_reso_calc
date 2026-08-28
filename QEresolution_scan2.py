@@ -928,6 +928,29 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         return result.x[idx], result.x
 
+    # コヒーレントな分解能を求める。
+    def find_coherent_fwhm(RM, axis="x"):
+        axis_map = {
+            "x": 0,   # Q_U
+            "y": 1,   # Q_V
+            "z": 3,   # Q_W
+            "w": 2    # energy
+        }
+
+        idx = axis_map[axis]
+
+        a = RM[idx, idx]
+
+        if a <= 0:
+            raise ValueError(
+                f"RM[{idx},{idx}] must be positive."
+            )
+
+        fwhm = 2.0 * np.sqrt(
+            2.0 * np.log(2.0) / a
+        )
+
+        return fwhm
 
     # ============================================================
     # U, V, W, Energy の最大値
@@ -1334,10 +1357,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     resolution_W = 2 * max_W
     resolution_energy = 2 * max_E
 
-
-    # ============================================================
-    # Figure タイトル
-    # ============================================================
+    resolution_U_coherent = find_coherent_fwhm(RM_U, "x")
+    resolution_V_coherent = find_coherent_fwhm(RM_V, "y")
+    resolution_W_coherent = find_coherent_fwhm(RM_W, "z")
+    resolution_energy_coherent = find_coherent_fwhm(RM_W, "w")
 
     # ============================================================
     # Figure タイトル用の表示単位変換
@@ -1351,6 +1374,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         resolution_V_display = resolution_V
         resolution_W_display = resolution_W
 
+        # coherent FWHM
+        resolution_U_coherent_display = resolution_U_coherent
+        resolution_V_coherent_display = resolution_V_coherent
+        resolution_W_coherent_display = resolution_W_coherent
+
     elif unit_mode == "(r.l.u.)":
 
         q_unit = r"$(\mathrm{r.l.u.})$"
@@ -1359,6 +1387,10 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         resolution_V_display = resolution_V / normQy
         resolution_W_display = resolution_W / normQz
 
+        # coherent FWHM
+        resolution_U_coherent_display = resolution_U_coherent / normQx
+        resolution_V_coherent_display = resolution_V_coherent / normQy
+        resolution_W_coherent_display = resolution_W_coherent / normQz
 
     # ============================================================
     # Figure タイトル
@@ -1372,26 +1404,31 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         r'$\delta Q_U$ = '
         + f'{resolution_U_display:.4f} '
+        + f'({resolution_U_coherent_display:.4f}) '
         + q_unit
         + ', '
 
         r'$\delta Q_V$ = '
         + f'{resolution_V_display:.4f} '
+        + f'({resolution_V_coherent_display:.4f}) '
         + q_unit
         + ', '
 
         r'$\delta Q_W$ = '
         + f'{resolution_W_display:.4f} '
+        + f'({resolution_W_coherent_display:.4f}) '
         + q_unit
         + ', '
 
-        f'δℏω = {resolution_energy:.4f}'
+        r'$\delta\hbar\omega$ = '
+        + f'{resolution_energy:.4f} '
+        + f'({resolution_energy_coherent:.4f}) '
         + r' (meV)',
 
         fontsize=11,
         y=0.98
     )
-
+    
     # ============================================================
     # U vs E
     # ============================================================
@@ -1411,7 +1448,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax1.set_xlabel(
-        rf"$\delta Q_U$ {q_unit}"
+        rf"$\delta Q_U \parallel ({sv1[0]}, {sv1[1]}, {sv1[2]})$ {q_unit}"
     )
 
     ax1.set_ylabel(
@@ -1453,7 +1490,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax2.set_xlabel(
-        rf"$\delta Q_V$ {q_unit}"
+        rf"$\delta Q_V \parallel ({sv2[0]}, {sv2[1]}, {sv2[2]})$ {q_unit}"
     )
 
     ax2.set_ylabel(
@@ -1563,6 +1600,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 実線
     # ============================================================
 
+    max_UVrange = 2*max(Urange_lim, Vrange_lim)
+
     plot_ellipse_uv(
         A_UV,
         B_UV,
@@ -1570,8 +1609,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         D_UV,
         E_UV,
         F_UV,
-        Urange_lim,
-        Vrange_lim / np.abs(np.sin(uv_angle)),
+        max_UVrange,
+        max_UVrange,
         ax3,
         labels="",
         color="black",
@@ -1593,8 +1632,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         D_UV_s,
         E_UV_s,
         F_UV_s,
-        Urange_lim,
-        Vrange_lim / np.abs(np.sin(uv_angle)),
+        max_UVrange,
+        max_UVrange,
         ax3,
         labels="",
         color="black",
@@ -1628,11 +1667,11 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # ============================================================
 
     ax3.set_xlabel(
-        r"$\delta Q_U$ $(\mathrm{\AA}^{-1})$"
+        rf"$\delta Q_U \parallel ({sv1[0]}, {sv1[1]}, {sv1[2]})$ $(\mathrm{{\AA}}^{{-1}})$"
     )
 
     ax3.set_ylabel(
-        r"$\delta Q_V$ $(\mathrm{\AA}^{-1})$"
+        rf"$\delta Q_V \parallel ({sv2[0]}, {sv2[1]}, {sv2[2]})$ $(\mathrm{{\AA}}^{{-1}})$"
     )
 
     ax3.set_title(
@@ -1644,7 +1683,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 実際の V 方向を示す補助線
     # ============================================================
 
-    V_line = Vrange_lim
+    V_line = max_UVrange
 
     ax3.plot(
         [
@@ -1665,7 +1704,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 実際の U 方向を示す補助線
     # ============================================================
 
-    U_line = Urange_lim
+    U_line = max_UVrange
 
     ax3.plot(
         [
@@ -1686,14 +1725,12 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # 表示範囲
     # ============================================================
 
-    max_UVrange = max(Urange_lim, Vrange_lim)
-
     ax3.set_xlim(
-        [-max_UVrange, max_UVrange]
+        [-max_UVrange / normQx, max_UVrange / normQx]
     )
 
     ax3.set_ylim(
-        [-max_UVrange, max_UVrange]
+        [-max_UVrange / normQy, max_UVrange / normQy]
     )
 
 
@@ -1723,7 +1760,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     )
 
     ax4.set_xlabel(
-        rf"$\delta Q_W$ {q_unit}"
+        rf"$\delta Q_W \parallel ({sv3[0]}, {sv3[1]}, {sv3[2]})$ {q_unit}"
     )
 
     ax4.set_ylabel(
