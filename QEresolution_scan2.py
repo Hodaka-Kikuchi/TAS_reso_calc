@@ -817,6 +817,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
     sign = get_uv_handedness_sign(u_hat,v_hat,cstar)
     v_hat = sign * v_hat
+    #Qy = sign * Qy
 
     # ============================================================
     # 現在のRMの直交座標系
