@@ -190,7 +190,7 @@ def get_uv_handedness_sign(U, V, cstar):
         # W must point toward +X
         # --------------------------------------------------------
 
-        if w_norm[0] < -tolerance:
+        if max(w_norm) < -tolerance:
 
             print(
                 "Special-case W points toward -X "
