@@ -15,6 +15,352 @@ from scipy.optimize import minimize
 
 from PIL import Image  # GIF 保存のために必要
 
+# 常に右手系の図を表示するための変換関数
+def get_uv_handedness_sign(U, V, cstar):
+
+    tolerance = 1e-6
+
+    # ============================================================
+    # Normalize U / V / c*
+    # ============================================================
+
+    u = np.asarray(U, dtype=float)
+    v = np.asarray(V, dtype=float)
+    cstar = np.asarray(cstar, dtype=float)
+
+    u_norm = u / np.linalg.norm(u)
+    v_norm = v / np.linalg.norm(v)
+    cstar_norm = cstar / np.linalg.norm(cstar)
+
+    # ============================================================
+    # V を flip する代わりに sign を使う
+    #
+    # sign = +1 -> V をそのまま使う
+    # sign = -1 -> V に -1 を掛ける
+    # ============================================================
+
+    sign = 1
+
+    # ============================================================
+    # Rotation matrix
+    # ============================================================
+
+    def rotation_matrix_from_vectors(a, b):
+
+        a = a / np.linalg.norm(a)
+        b = b / np.linalg.norm(b)
+
+        cross = np.cross(a, b)
+        c = np.dot(a, b)
+
+        # ほぼ同じ方向
+        if c > 1.0 - 1e-12:
+            return np.eye(3)
+
+        # ほぼ逆方向
+        if c < -1.0 + 1e-12:
+
+            # a と直交する軸を選ぶ
+            axis = np.array([1.0, 0.0, 0.0])
+
+            if abs(a[0]) > 0.9:
+                axis = np.array([0.0, 1.0, 0.0])
+
+            axis = axis - np.dot(axis, a) * a
+            axis = axis / np.linalg.norm(axis)
+
+            return (
+                -np.eye(3)
+                + 2.0 * np.outer(axis, axis)
+            )
+
+        # Rodrigues
+        K = np.array([
+            [0.0,       -cross[2],  cross[1]],
+            [cross[2],   0.0,      -cross[0]],
+            [-cross[1],  cross[0],  0.0]
+        ])
+
+        return (
+            np.eye(3)
+            + K
+            + K @ K * (
+                (1.0 - c) / np.dot(cross, cross)
+            )
+        )
+
+    # ============================================================
+    # Check whether U or V corresponds to ±c*
+    # ============================================================
+
+    dot_u_c = np.dot(u_norm, cstar_norm)
+    dot_v_c = np.dot(v_norm, cstar_norm)
+
+    u_is_plus_c = abs(dot_u_c - 1.0) < tolerance
+    u_is_minus_c = abs(dot_u_c + 1.0) < tolerance
+
+    v_is_plus_c = abs(dot_v_c - 1.0) < tolerance
+    v_is_minus_c = abs(dot_v_c + 1.0) < tolerance
+
+    # ============================================================
+    # Special cases involving c*
+    # ============================================================
+
+    special_case = False
+
+    # ------------------------------------------------------------
+    # Case 1: U = +c*
+    # ------------------------------------------------------------
+
+    if u_is_plus_c:
+
+        special_case = True
+
+        print(
+            "Special case: U = +c* -> "
+            "DO NOT flip V"
+        )
+
+    # ------------------------------------------------------------
+    # Case 2: U = -c*
+    # ------------------------------------------------------------
+
+    elif u_is_minus_c:
+
+        special_case = True
+
+        print(
+            "Special case: U = -c* -> "
+            "FLIP V"
+        )
+
+        sign *= -1
+
+    # ------------------------------------------------------------
+    # Case 3: V = +c*
+    # ------------------------------------------------------------
+
+    elif v_is_plus_c:
+
+        special_case = True
+
+        print(
+            "Special case: V = +c* -> "
+            "FLIP V"
+        )
+
+        sign *= -1
+
+    # ------------------------------------------------------------
+    # Case 4: V = -c*
+    # ------------------------------------------------------------
+
+    elif v_is_minus_c:
+
+        special_case = True
+
+        print(
+            "Special case: V = -c* -> "
+            "DO NOT flip V"
+        )
+
+    # ============================================================
+    # Second-stage W check
+    # ============================================================
+
+    if special_case:
+
+        # 元コードではここで
+        # w = np.cross(u, v)
+        # としているので、そのまま使う
+        w = np.cross(u, sign * v)
+
+        if np.linalg.norm(w) <= tolerance:
+
+            raise ValueError(
+                "U and V are parallel and cannot define "
+                "a scattering plane."
+            )
+
+        w_norm = w / np.linalg.norm(w)
+
+        print("Special-case W =", w_norm)
+
+        # --------------------------------------------------------
+        # W must point toward +X
+        # --------------------------------------------------------
+
+        if w_norm[0] < -tolerance:
+
+            print(
+                "Special-case W points toward -X "
+                "-> FLIP V again"
+            )
+
+            sign *= -1
+
+            # Recalculate W
+            w = np.cross(u, sign * v)
+            w_norm = w / np.linalg.norm(w)
+
+        else:
+
+            print(
+                "Special-case W points toward +X "
+                "-> DO NOT flip V"
+            )
+
+    # ============================================================
+    # General case
+    # ============================================================
+
+    if not special_case:
+
+        print("General case: U/V are not ±c*")
+
+        # --------------------------------------------------------
+        # Construct W = U × V
+        # --------------------------------------------------------
+
+        w = np.cross(u, v)
+
+        if np.linalg.norm(w) <= tolerance:
+
+            raise ValueError(
+                "U and V are parallel and cannot define "
+                "a scattering plane."
+            )
+
+        w_norm = w / np.linalg.norm(w)
+
+        print("W =", w_norm)
+
+        # --------------------------------------------------------
+        # 1. Original W Z component
+        # --------------------------------------------------------
+
+        w_z = w_norm[2]
+
+        print("W · Z =", w_z)
+
+        if w_z < -tolerance:
+
+            print("W points toward -Z -> FLIP V")
+
+            sign *= -1
+
+            # Recalculate W
+            w = np.cross(u, sign * v)
+            w_norm = w / np.linalg.norm(w)
+
+        elif w_z > tolerance:
+
+            print(
+                "W points toward +Z "
+                "-> DO NOT flip V"
+            )
+
+        # --------------------------------------------------------
+        # 2. W is approximately in XY plane
+        # --------------------------------------------------------
+
+        else:
+
+            print(
+                "W is approximately in XY plane "
+                "-> use U->X / V->Y rotation check"
+            )
+
+            x_axis = np.array([1.0, 0.0, 0.0])
+            y_axis = np.array([0.0, 1.0, 0.0])
+
+            # ----------------------------------------------------
+            # U -> X
+            # ----------------------------------------------------
+
+            R_U = rotation_matrix_from_vectors(
+                u_norm,
+                x_axis
+            )
+
+            # ----------------------------------------------------
+            # V -> Y
+            # ----------------------------------------------------
+
+            R_V = rotation_matrix_from_vectors(
+                v_norm,
+                y_axis
+            )
+
+            # ----------------------------------------------------
+            # Rotate W
+            # ----------------------------------------------------
+
+            w_u = R_U @ w_norm
+            w_v = R_V @ w_norm
+
+            z_u = w_u[2]
+            z_v = w_v[2]
+
+            print("R_U(W) =", w_u)
+            print("R_V(W) =", w_v)
+            print("R_U(W).z =", z_u)
+            print("R_V(W).z =", z_v)
+
+            # ----------------------------------------------------
+            # Compare Z-direction signs
+            # ----------------------------------------------------
+
+            if (
+                abs(z_u) > tolerance
+                and
+                abs(z_v) > tolerance
+            ):
+
+                if z_u * z_v < 0:
+
+                    print(
+                        "Rotated W Z directions are opposite "
+                        "-> FLIP V"
+                    )
+
+                    sign *= -1
+
+                else:
+
+                    print(
+                        "Rotated W Z directions agree "
+                        "-> DO NOT flip V"
+                    )
+
+            else:
+
+                print(
+                    "One or both rotated W Z components are "
+                    "approximately zero -> DO NOT flip V"
+                )
+
+            # ----------------------------------------------------
+            # Recalculate W after possible flip
+            # ----------------------------------------------------
+
+            w = np.cross(u, sign * v)
+
+            if np.linalg.norm(w) <= tolerance:
+
+                raise ValueError(
+                    "U and V are parallel after "
+                    "V-direction correction."
+                )
+
+            w_norm = w / np.linalg.norm(w)
+
+    # ============================================================
+    # Return
+    # ============================================================
+
+    return sign
+
 def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,focusing,geom,calc_params,unit_mode):
 
     # divergenceの読み出し
@@ -468,219 +814,9 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         np.dot(np.cross(u_hat, v_hat), w_hat),
         np.dot(u_hat, v_hat)
     )
-    
 
-    # ============================================================
-    # Rotation 1
-    #
-    # U を XY 平面へ持ってくる。
-    #
-    # Z軸まわりの回転では U の z 成分は変わらないので、
-    # ここでは U の z 成分を除去する回転を使う。
-    #
-    # U = (ux, uy, uz)
-    #
-    # XY projection:
-    #     (ux, uy, 0)
-    #
-    # Rotation axis:
-    #     Z × U_xy
-    #
-    # この回転によって U は XY 平面へ入る。
-    # ============================================================
-
-    ux, uy, uz = u_hat
-
-    u_xy_norm = np.hypot(ux, uy)
-
-    if u_xy_norm <= 1e-12:
-
-        # U が Z 軸に平行な場合
-        #
-        # この場合は X 軸まわりに -90 deg 回転して
-        # U を +Y 方向へ持ってくる。
-        #
-        R1 = np.array([
-            [1.0,  0.0,  0.0],
-            [0.0,  0.0,  1.0],
-            [0.0, -1.0,  0.0]
-        ])
-
-    else:
-
-        # U の XY 平面内の方向
-        u_xy = np.array([
-            ux / u_xy_norm,
-            uy / u_xy_norm,
-            0.0
-        ])
-
-        # U_xy から U への回転角
-        #
-        # cos(theta) = |U_xy|
-        # sin(theta) = uz
-        #
-        cos_theta = u_xy_norm
-        sin_theta = uz
-
-        # 回転軸
-        axis = np.cross(u_xy, u_hat)
-        axis_norm = np.linalg.norm(axis)
-
-        if axis_norm <= 1e-12:
-
-            R1 = np.eye(3)
-
-        else:
-
-            axis /= axis_norm
-
-            K = np.array([
-                [0.0,       -axis[2],  axis[1]],
-                [axis[2],    0.0,     -axis[0]],
-                [-axis[1],   axis[0],  0.0]
-            ])
-
-            R1 = (
-                np.eye(3)
-                + K * sin_theta
-                + K @ K * (1.0 - cos_theta)
-            )
-
-
-    # ============================================================
-    # U と V に R1 を作用
-    # ============================================================
-
-    u1 = R1 @ u_hat
-    v1 = R1 @ v_hat
-    w1 = R1 @ w_hat
-
-    print("After R1")
-    print("U1 =", u1)
-    print("V1 =", v1)
-    print("W1 =", w1)
-
-
-    # ============================================================
-    # Rotation 2
-    #
-    # U1 はすでに XY 平面内。
-    #
-    # U1 を回転軸として V1 を回転させ、
-    # V1 も XY 平面へ持ってくる。
-    #
-    # U1 自身はこの回転では動かない。
-    # ============================================================
-
-    axis = u1 / np.linalg.norm(u1)
-
-    # V1 の U1 に垂直な成分
-    v1_perp = v1 - np.dot(v1, axis) * axis
-
-    v1_perp_norm = np.linalg.norm(v1_perp)
-
-    if v1_perp_norm <= 1e-12:
-        raise ValueError(
-            "U and V are parallel and cannot define a scattering plane."
-        )
-
-    v1_perp /= v1_perp_norm
-
-
-    # V1 を U1 軸まわりに回転したときの
-    # Z成分をゼロにする角度を求める。
-    #
-    # Rodrigues:
-    #
-    # V' = V cos(theta)
-    #    + (axis × V) sin(theta)
-    #    + axis(axis·V)(1-cos(theta))
-    #
-    # axis = U1 は XY 平面内なので、
-    # V' の z 成分について解ける。
-
-    a = v1[2]
-
-    b = np.cross(axis, v1)[2]
-
-    if abs(a) <= 1e-12 and abs(b) <= 1e-12:
-
-        # V1 はすでに XY 平面内
-        R2 = np.eye(3)
-
-    else:
-
-        # a*cos(theta) + b*sin(theta) = 0
-        #
-        # atan2 によって解を選択
-        theta = np.arctan2(-a, b)
-
-        K = np.array([
-            [0.0,       -axis[2],  axis[1]],
-            [axis[2],    0.0,     -axis[0]],
-            [-axis[1],   axis[0],  0.0]
-        ])
-
-        R2 = (
-            np.eye(3)
-            + np.sin(theta) * K
-            + (1.0 - np.cos(theta)) * (K @ K)
-        )
-
-
-    # ============================================================
-    # Total rotation
-    # ============================================================
-
-    R = R2 @ R1
-
-
-    # ============================================================
-    # Apply the same rotation to U, V and W
-    # ============================================================
-
-    u_rot = R @ u_hat
-    v_rot = R @ v_hat
-    w_rot = R @ w_hat
-
-    print("============================================")
-    print("Final rotation")
-    print("R =")
-    print(R)
-
-    print("R @ U =", u_rot)
-    print("R @ V =", v_rot)
-    print("R @ W =", w_rot)
-
-    print("(R @ U).z =", u_rot[2])
-    print("(R @ V).z =", v_rot[2])
-    print("(R @ W).z =", w_rot[2])
-
-
-    # ============================================================
-    # Check handedness
-    #
-    # U and V are now in the XY plane.
-    # Therefore W must point along +Z or -Z.
-    # ============================================================
-
-    tolerance = 1e-6
-
-    if w_rot[2] < -tolerance:
-
-        print(
-            "W points toward -Z after rotation -> FLIP V"
-        )
-
-        v_hat = -v_hat
-
-    else:
-
-        print(
-            "W points toward +Z after rotation -> DO NOT flip V"
-        )
-
+    sign = get_uv_handedness_sign(u_hat,v_hat,cstar)
+    v_hat = sign * v_hat
 
     # ============================================================
     # 現在のRMの直交座標系
@@ -691,7 +827,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # ============================================================
 
     e_x = uq
-
 
     # ============================================================
     # Qに垂直な面内方向を V から作る
