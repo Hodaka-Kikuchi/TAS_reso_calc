@@ -468,27 +468,15 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
         np.dot(np.cross(u_hat, v_hat), w_hat),
         np.dot(u_hat, v_hat)
     )
-
-    # ============================================================
-    # V の符号
-    #
-    # 元コードで
-    #
-    #     v_hat = -v_hat
-    #
-    # としていた処理を sign で管理する。
-    #
-    # sign = +1 -> V をそのまま使用
-    # sign = -1 -> V を反転して使用
-    # ============================================================
-
-    sign = 1
-
+    
 
     # ============================================================
     # Rotation 1
     #
     # U を XY 平面へ持ってくる。
+    #
+    # Z軸まわりの回転では U の z 成分は変わらないので、
+    # ここでは U の z 成分を除去する回転を使う。
     #
     # U = (ux, uy, uz)
     #
@@ -509,7 +497,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
 
         # U が Z 軸に平行な場合
         #
-        # X 軸まわりに -90 deg 回転して
+        # この場合は X 軸まわりに -90 deg 回転して
         # U を +Y 方向へ持ってくる。
         #
         R1 = np.array([
@@ -577,6 +565,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # ============================================================
     # Rotation 2
     #
+    # U1 はすでに XY 平面内。
+    #
     # U1 を回転軸として V1 を回転させ、
     # V1 も XY 平面へ持ってくる。
     #
@@ -591,7 +581,6 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     v1_perp_norm = np.linalg.norm(v1_perp)
 
     if v1_perp_norm <= 1e-12:
-
         raise ValueError(
             "U and V are parallel and cannot define a scattering plane."
         )
@@ -602,9 +591,14 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # V1 を U1 軸まわりに回転したときの
     # Z成分をゼロにする角度を求める。
     #
+    # Rodrigues:
+    #
     # V' = V cos(theta)
     #    + (axis × V) sin(theta)
     #    + axis(axis·V)(1-cos(theta))
+    #
+    # axis = U1 は XY 平面内なので、
+    # V' の z 成分について解ける。
 
     a = v1[2]
 
@@ -618,6 +612,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     else:
 
         # a*cos(theta) + b*sin(theta) = 0
+        #
+        # atan2 によって解を選択
         theta = np.arctan2(-a, b)
 
         K = np.array([
@@ -665,15 +661,8 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # ============================================================
     # Check handedness
     #
-    # U と V は XY 平面に入っているので、
-    # W は +Z または -Z を向く。
-    #
-    # 元コード:
-    #
-    #     if w_rot[2] < -tolerance:
-    #         v_hat = -v_hat
-    #
-    # を sign で置き換える。
+    # U and V are now in the XY plane.
+    # Therefore W must point along +Z or -Z.
     # ============================================================
 
     tolerance = 1e-6
@@ -684,23 +673,13 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
             "W points toward -Z after rotation -> FLIP V"
         )
 
-        sign *= -1
+        v_hat = -v_hat
 
     else:
 
         print(
             "W points toward +Z after rotation -> DO NOT flip V"
         )
-
-
-    # ============================================================
-    # Corrected V
-    #
-    # 元コードで v_hat = -v_hat した場合も含めた
-    # 現在の V の向きをここで作る。
-    # ============================================================
-
-    v_hat_corrected = sign * v_hat
 
 
     # ============================================================
@@ -718,10 +697,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     # Qに垂直な面内方向を V から作る
     # ============================================================
 
-    V_perp = (
-        v_hat_corrected
-        - np.dot(v_hat_corrected, e_x) * e_x
-    )
+    V_perp = v_hat - np.dot(v_hat, e_x) * e_x
 
     if np.linalg.norm(V_perp) > 1e-12:
 
@@ -730,10 +706,7 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     else:
 
         # V || Q の場合は U を使う
-        U_perp = (
-            u_hat
-            - np.dot(u_hat, e_x) * e_x
-        )
+        U_perp = u_hat - np.dot(u_hat, e_x) * e_x
 
         if np.linalg.norm(U_perp) > 1e-12:
 
@@ -753,18 +726,12 @@ def calcresolution_scan3(lc_param,rl,col_param,mos_param,config,approximation,fo
     e_z = np.cross(e_x, e_y)
     e_z /= np.linalg.norm(e_z)
 
-
-    # ============================================================
-    # Print
-    # ============================================================
-
     print("============================================")
     print("Final RM coordinate system")
     print("e_x =", e_x)
     print("e_y =", e_y)
     print("e_z =", e_z)
-    print("sign =", sign)
-    
+
     # ============================================================
     # 結晶軸をRMの直交座標系に射影して角度を求める
     #
